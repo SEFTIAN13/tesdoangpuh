@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Nurul Asriyat",
+    "role": "Wakil Ketua",
+    "photo": "https://website-kami.netlify.app/nurul.jpeg",
+    "social": "@nurul_asr",
+    "dream": "Network Engineer Profesional",
+    "bio": "Pecinta jaringan dan pemrograman Python"
+  },
+  {
+    "id": 2,
+    "name": "Regita Naza Melani",
+    "role": "Bendahara",
+    "photo": "https://website-kami.netlify.app/naza.jpeg",
+    "social": "@regita_naza",
+    "dream": "CTO di startup teknologi",
+    "bio": "Menyukai manajemen proyek dan data"
+  },
+  {
+    "id": 3,
+    "name": "Dimas Andaru Kusumo",
+    "role": "Siswa",
+    "photo": "https://website-kami.netlify.app/dimas.jpeg",
+    "social": "@dimas_ard",
+    "dream": "Ahli Cybersecurity",
+    "bio": "Sedang mempelajari keamanan jaringan & ethical hacking"
+  }
+]

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Kelas XII TKJ 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="header-wrapper">
+            <div class="header">
+                <div class="brand">
+                    <img src="logo.png" alt="logo" class="logo">
+                    <span>SISTEM INFORMASI A8</span>
+                </div>
+                <nav class="navbar">
+                    <a href="/">HOME</a>
+                    <a href="/profil">Profil Kelas</a>
+                    <a href="/galery">Galeri</a>
+                    <a href="/tentang">Tentang</a>
+                    <a href="/hubungi">Hubungi kami</a>
+                </nav>
+            </div>
+        </div>
+        <div class="content">
+            <h2 class="section-title">PROFIL KELAS</h2>
+            <div class="description">Kelas XII TKJ 3 berada di SMKN 1 RANCAEKEK. Kami fokus pada pembelajaran jaringan, pemrograman, dan infrastruktur TIK.</div>
+            <div class="description" style="margin-top:14px;"><img src="https://website-kami.netlify.app/hera%20fransiska.jpeg" alt="Kepala Prodi" style="max-width:180px; border-radius:14px; display:block; margin-bottom:8px;"><strong>HERA FRANSISKA, M.T.I</strong> - Kepala Program Studi TKJ</div>
+            <div class="clipboard-notice" style="flex-direction:column; align-items:flex-start; gap:8px; margin-top:18px;">
+                <div class="clipboard-item"><strong>AHMAD KURNIAWAN</strong> - Ketua Kelas</div>
+                <div class="clipboard-item"><strong>NURUL ASRIYATIN</strong> - Wakil Ketua</div>
+                <div class="clipboard-item"><strong>REGITA NAZA MELANI</strong> - Bendahara</div>
+                <div class="clipboard-item"><strong>ARSAL BAGUS ANUGRAH</strong> - Anggota</div>
+                <div class="clipboard-item"><strong>DIMAS ANDARU KUSUMO</strong> - Anggota</div>
+            </div>
+
+            <h2 class="section-title" style="margin-top:28px;">TAMBAH PROFIL SISWA</h2>
+            <form id="addStudentForm" style="background:#f7fbff;padding:16px;border-radius:16px;border:1px solid #c9d9e9;">
+                <div style="margin-bottom:10px;"><label>Nama<br><input type="text" id="studentName" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>URL Foto<br><input type="url" id="studentPhoto" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Peran (ketua/bendahara/siswa)<br><input type="text" id="studentRole" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Akun Sosmed<br><input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Cita-cita<br><input type="text" id="studentDream" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <button type="submit" style="padding:10px 16px;background:#0a2a44;color:white;border:none;border-radius:8px;cursor:pointer;">Tambah Profil</button>
+                <span id="addStatus" style="margin-left:12px; color:#1e3a5f;"></span>
+            </form>
+
+            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
+            <div class="member-grid" id="memberGrid">
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/nurul.jpeg" alt="Nurul Asriyat"><h3>Nurul Asriyat</h3>
+                    <p>Peran: Wakil Ketua</p>
+                    <p>Akun: @nurul_asr (Instagram) | @nurulasri (Twitter)</p>
+                    <p>Cita-cita: Network Engineer Profesional</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/naza.jpeg" alt="Regita Naza Melani"><h3>Regita Naza Melani</h3>
+                    <p>Peran: Bendahara</p>
+                    <p>Akun: @regita_naza (Instagram) | @regitanaza (Facebook)</p>
+                    <p>Cita-cita: CTO Startup Teknologi</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/dimas.jpeg" alt="Dimas Andaru"><h3>Dimas Andaru Kusumo</h3>
+                    <p>Peran: Siswa</p>
+                    <p>Akun: @dimas_ard (Instagram) | @dimasanda (LinkedIn)</p>
+                    <p>Cita-cita: Ahli Cybersecurity</p>
+                </div>
+            </div>
+
+            <div class="footer" style="margin-top:24px;"><span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span><span>🔔 Angkatan 2024</span></div>
+        </div>
+    </div>
+    <script>
+                <div style="margin-bottom:10px;"><label>Nama<br><input type="text" id="studentName" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>URL Foto<br><input type="url" id="studentPhoto" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Peran (ketua/bendahara/siswa)<br><input type="text" id="studentRole" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Akun Sosmed<br><input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <div style="margin-bottom:10px;"><label>Cita-cita<br><input type="text" id="studentDream" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
+                <button type="submit" style="padding:10px 16px;background:#0a2a44;color:white;border:none;border-radius:8px;cursor:pointer;">Tambah Profil</button>
+                <span id="addStatus" style="margin-left:12px; color:#1e3a5f;"></span>
+            </form>
+
+            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
+            <div class="member-grid" id="memberGrid">
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/nurul.jpeg" alt="Nurul Asriyat"><h3>Nurul Asriyat</h3>
+                    <p>Peran: Wakil Ketua</p>
+                    <p>Akun: @nurul_asr (Instagram) | @nurulasri (Twitter)</p>
+                    <p>Cita-cita: Network Engineer Profesional</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/naza.jpeg" alt="Regita Naza Melani"><h3>Regita Naza Melani</h3>
+                    <p>Peran: Bendahara</p>
+                    <p>Akun: @regita_naza (Instagram) | @regitanaza (Facebook)</p>
+                    <p>Cita-cita: CTO Startup Teknologi</p>
+                </div>
+                <div class="member-card">
+                    <img src="https://website-kami.netlify.app/dimas.jpeg" alt="Dimas Andaru"><h3>Dimas Andaru Kusumo</h3>
+                    <p>Peran: Siswa</p>
+                    <p>Akun: @dimas_ard (Instagram) | @dimasanda (LinkedIn)</p>
+                    <p>Cita-cita: Ahli Cybersecurity</p>
+                </div>
+            </div>
+
+            <div class="footer" style="margin-top:24px;"><span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span><span>🔔 Angkatan 2024</span></div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('addStudentForm');
+        const memberGrid = document.getElementById('memberGrid');
+        const status = document.getElementById('addStatus');
+        const filterSearch = document.getElementById('filterSearch');
+        const filterRole = document.getElementById('filterRole');
+        const clearFilter = document.getElementById('clearFilter');
+
+        function addMember(student) {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            card.innerHTML = `<img src="${student.photo}" alt="${student.name}"><h3>${student.name}</h3><p>Peran: ${student.role}</p><p>Akun: ${student.social}</p><p>Cita-cita: ${student.dream}</p>`;
+            memberGrid.appendChild(card);
+        }
+
+        function renderStudents(students) {
+            memberGrid.innerHTML = '';
+            if (!students.length) {
+                memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;">Tidak ada profil sesuai filter.</div>';
+                return;
+            }
+            students.forEach(addMember);
+        }
+
+        async function loadStudents() {
+            try {
+                let url = '/api/students';
+                const q = filterSearch.value.trim();
+                const role = filterRole.value.trim();
+                const params = new URLSearchParams();
+                if (role) params.set('role', role);
+                if (q) params.set('search', q);
+                if ([...params].length > 0) {
+                    url += '?' + params.toString();
+                }
+
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Gagal memuat data');
+                const students = await res.json();
+                renderStudents(students);
+            } catch (err) {
+                console.error(err);
+                status.textContent = 'Tidak dapat mengambil data siswa dari server.';
+            }
+        }
+
+        filterSearch.addEventListener('input', loadStudents);
+        filterRole.addEventListener('change', loadStudents);
+        clearFilter.addEventListener('click', (e) => {
+            e.preventDefault();
+            filterSearch.value = '';
+            filterRole.value = '';
+            loadStudents();
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const student = {
+                name: document.getElementById('studentName').value.trim(),
+                photo: document.getElementById('studentPhoto').value.trim(),
+                role: document.getElementById('studentRole').value.trim(),
+                social: document.getElementById('studentSocial').value.trim() || 'Tidak ada',
+                dream: document.getElementById('studentDream').value.trim() || 'Belum diisi'
+            };
+
+            if (!student.name || !student.photo || !student.role) {
+                status.textContent = 'Lengkapi nama, foto, dan peran!';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/students', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(student)
+                });
+
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Gagal menambahkan');
+                }
+
+                const created = await res.json();
+                addMember(created);
+                status.textContent = 'Berhasil! Profil siswa tersimpan.';
+                form.reset();
+                setTimeout(() => status.textContent = '', 3000);
+            } catch (err) {
+                console.error(err);
+                status.textContent = `Gagal menyimpan profil: ${err.message}`;
+            }
+        });
+
+        loadStudents();
+    </script>
+</body>
+</html>

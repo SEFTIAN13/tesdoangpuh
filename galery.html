@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri XIII TKJ 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="header-wrapper">
+            <div class="header">
+                <div class="brand">
+                    <img src="logo.png" alt="logo" class="logo">
+                    <span>SISTEM INFORMASI A8</span>
+                </div>
+                <nav class="navbar">
+                    <a href="/">HOME</a>
+                    <a href="/profil">Profil Kelas</a>
+                    <a href="/galery">Galeri</a>
+                    <a href="/tentang">Tentang</a>
+                    <a href="/hubungi">Hubungi kami</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2 class="section-title">GALERI KELAS</h2>
+            <div class="description">Mengabadikan momen kegiatan kelas XII TKJ 3, pelatihan, dan event akademik.</div>
+
+            <div style="margin-top:20px; margin-bottom:10px;">
+                <label for="uploadPhotos" style="font-weight:600;">Unggah Foto Baru:</label><br>
+                <input type="file" id="uploadPhotos" accept="image/*" multiple style="margin-top:8px;">
+                <div id="uploadNote" style="font-size:14px; color:#1e3a5f; margin-top:6px;">Pilih beberapa file gambar lalu lihat preview langsung di galeri.</div>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <img src="https://website-kami.netlify.app/wahid.jpeg" alt="Foto Kelas 1">
+                <img src="https://website-kami.netlify.app/arsal.jpeg" alt="Foto Kelas 2">
+                <img src="https://website-kami.netlify.app/mardiansah.jpeg" alt="Foto Kelas 3">
+                <img src="https://website-kami.netlify.app/nurul.jpeg" alt="Foto Kelas 4">
+                <img src="https://website-kami.netlify.app/naza.jpeg" alt="Foto Kelas 5">
+                <img src="https://website-kami.netlify.app/dimas.jpeg" alt="Foto Kelas 6">
+            </div>
+
+            <div class="footer" style="margin-top: 24px;">
+                <span>© 2026 - XIII TKJ 3 SMKN 1 RANCAEKEK</span>
+                <span>🔔 Angkatan 2024</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        const uploadInput = document.getElementById('uploadPhotos');
+        const galleryGrid = document.getElementById('galleryGrid');
+
+        uploadInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            if (!files.length) return;
+
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = file.name;
+                    img.style.borderRadius = '14px';
+                    img.style.objectFit = 'cover';
+                    img.style.height = '180px';
+                    galleryGrid.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('uploadNote').textContent = 'Foto sudah di-upload (hanya preview di browser, tidak tersimpan server).';
+        });
+    </script>
+</body>
+    </div>
+</body>
+</html>

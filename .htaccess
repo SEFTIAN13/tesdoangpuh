@@ -1,0 +1,8 @@
+RewriteEngine On
+# Clean URL routing for HTML files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(profil|galery|tentang|hubungi)$ $1.html [L]
+
+# Optional: default index
+DirectoryIndex index.html
