@@ -77,27 +77,73 @@ body {
     display: none;
 }
 
+/* ===== NAVIGASI YANG SUDAH DIPERBAIKI ===== */
+/* ===== NAVIGASI DENGAN BACKGROUND TERPISAH ===== */
 .navbar {
-    background-color: #123456;
-    padding: 15px 40px;
+    background-color: transparent;  /* Hilangkan background biru di sini */
+    padding: 20px 40px;
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 30px;  /* Jarak antar menu */
+    justify-content: center;
     border-bottom: 1px solid #2a4a6a;
 }
 
 .navbar a {
     color: #f0f8ff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
-    padding-bottom: 3px;
-    border-bottom: 2px solid transparent;
+    padding: 12px 25px;  /* Padding dalam kotak */
+    background-color: #123456;  /* Background biru di setiap link */
+    border-radius: 30px;  /* Membuat kotak melengkung */
+    border: 1px solid #2a4a6a;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);  /* Bayangan ringan */
 }
 
 .navbar a:hover {
-    border-bottom-color: #ffd966;
+    background-color: #1e4a7a;  /* Biru lebih terang saat hover */
+    color: #ffd966 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
 }
+
+.navbar a:active {
+    background-color: #0a2a44;  /* Biru lebih gelap saat diklik */
+    transform: translateY(0);
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 800px) {
+    .navbar {
+        gap: 15px;
+        padding: 15px 20px;
+    }
+    
+    .navbar a {
+        font-size: 16px;
+        padding: 8px 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        gap: 10px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 15px 15px;
+    }
+    
+    .navbar a {
+        font-size: 14px;
+        padding: 6px 15px;
+    }
+}
+/* ===== AKHIR NAVIGASI ===== */
+}
+/* ===== AKHIR NAVIGASI ===== */
 
 .content {
     padding: 40px;
@@ -326,10 +372,15 @@ hr {
     box-shadow: 0 10px 22px rgba(17,56,93,0.1);
 }
 
+/* ===== RESPONSIVE UNTUK MOBILE ===== */
 @media (max-width: 700px) {
     .navbar {
-        gap: 15px;
+        gap: 25px;  /* Jarak lebih kecil untuk HP */
         padding: 15px 20px;
+    }
+    
+    .navbar a {
+        font-size: 16px;  /* Font lebih kecil untuk HP */
     }
     
     .content {

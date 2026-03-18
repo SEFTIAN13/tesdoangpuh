@@ -15,24 +15,44 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
-                    <a href="/">HOME</a>
-                    <a href="/profil">Profil Kelas</a>
-                    <a href="/galery">Galeri</a>
-                    <a href="/tentang">Tentang</a>
-                    <a href="/hubungi">Hubungi kami</a>
+                    <a href="index.html">HOME</a>
+                    <a href="profil.html">Profil Kelas</a>
+                    <a href="galery.html">Galeri</a>
+                    <a href="tentang.html">Tentang</a>
+                    <a href="hubungi.html">Hubungi kami</a>
                 </nav>
             </div>
         </div>
         <div class="content">
             <h2 class="section-title">PROFIL KELAS</h2>
             <div class="description">Kelas XII TKJ 3 berada di SMKN 1 RANCAEKEK. Kami fokus pada pembelajaran jaringan, pemrograman, dan infrastruktur TIK.</div>
-            <div class="description" style="margin-top:14px;"><img src="https://website-kami.netlify.app/hera%20fransiska.jpeg" alt="Kepala Prodi" style="max-width:180px; border-radius:14px; display:block; margin-bottom:8px;"><strong>HERA FRANSISKA, M.T.I</strong> - Kepala Program Studi TKJ</div>
+            <div class="description" style="margin-top:14px;">
+                <strong>HERA FRANSISKA, M.T.I</strong> - Kepala Program Studi TKJ
+            </div>
             <div class="clipboard-notice" style="flex-direction:column; align-items:flex-start; gap:8px; margin-top:18px;">
                 <div class="clipboard-item"><strong>AHMAD KURNIAWAN</strong> - Ketua Kelas</div>
                 <div class="clipboard-item"><strong>NURUL ASRIYATIN</strong> - Wakil Ketua</div>
                 <div class="clipboard-item"><strong>REGITA NAZA MELANI</strong> - Bendahara</div>
                 <div class="clipboard-item"><strong>ARSAL BAGUS ANUGRAH</strong> - Anggota</div>
                 <div class="clipboard-item"><strong>DIMAS ANDARU KUSUMO</strong> - Anggota</div>
+            </div>
+
+            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
+            
+            <!-- Filter Section -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <input type="text" id="filterSearch" placeholder="Cari nama/cita-cita/sosmed..." style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
+                <select id="filterRole" style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
+                    <option value="">Semua Role</option>
+                    <option value="KETUA KELAS">Ketua Kelas</option>
+                    <option value="Bendahara">Bendahara</option>
+                    <option value="Siswa">Siswa</option>
+                </select>
+                <button id="clearFilter" style="padding: 10px 20px; background: #0a2a44; color: white; border: none; border-radius: 8px; cursor: pointer;">Reset</button>
+            </div>
+
+            <div class="member-grid" id="memberGrid">
+                <!-- Data akan diisi oleh JavaScript -->
             </div>
 
             <h2 class="section-title" style="margin-top:28px;">TAMBAH PROFIL SISWA</h2>
@@ -46,62 +66,13 @@
                 <span id="addStatus" style="margin-left:12px; color:#1e3a5f;"></span>
             </form>
 
-            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
-            <div class="member-grid" id="memberGrid">
-                <div class="member-card">
-                    <p>Peran: Wakil Ketua</p>
-                    <p>Akun: @nurul_asr (Instagram) | @nurulasri (Twitter)</p>
-                    <p>Cita-cita: Network Engineer Profesional</p>
-                </div>
-                <div class="member-card">
-                    <h3>Regita Naza Melani</h3>
-                    <p>Peran: Bendahara</p>
-                    <p>Akun: @regita_naza (Instagram) | @regitanaza (Facebook)</p>
-                    <p>Cita-cita: CTO Startup Teknologi</p>
-                </div>
-                <div class="member-card">
-                    <h3>Dimas Andaru Kusumo</h3>
-                    <p>Peran: Siswa</p>
-                    <p>Akun: @dimas_ard (Instagram) | @dimasanda (LinkedIn)</p>
-                    <p>Cita-cita: Ahli Cybersecurity</p>
-                </div>
+            <div class="footer" style="margin-top:24px;">
+                <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
+                <span>🔔 Angkatan 2024</span>
             </div>
-
-            <div class="footer" style="margin-top:24px;"><span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span><span>🔔 Angkatan 2026</span></div>
         </div>
     </div>
-    <script>
-                <div style="margin-bottom:10px;"><label>Nama<br><input type="text" id="studentName" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
-                <div style="margin-bottom:10px;"><label>URL Foto<br><input type="url" id="studentPhoto" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
-                <div style="margin-bottom:10px;"><label>Peran (ketua/bendahara/siswa)<br><input type="text" id="studentRole" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
-                <div style="margin-bottom:10px;"><label>Akun Sosmed<br><input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
-                <div style="margin-bottom:10px;"><label>Cita-cita<br><input type="text" id="studentDream" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;"></label></div>
-                <button type="submit" style="padding:10px 16px;background:#0a2a44;color:white;border:none;border-radius:8px;cursor:pointer;">Tambah Profil</button>
-                <span id="addStatus" style="margin-left:12px; color:#1e3a5f;"></span>
-            </form>
 
-            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
-            <div class="member-grid" id="memberGrid">
-                <div class="member-card">
-                    <p>Peran: Wakil Ketua</p>
-                    <p>Akun: @nurul_asr (Instagram) | @nurulasri (Twitter)</p>
-                    <p>Cita-cita: Network Engineer Profesional</p>
-                </div>
-                <div class="member-card">
-                    <p>Peran: Bendahara</p>
-                    <p>Akun: @regita_naza (Instagram) | @regitanaza (Facebook)</p>
-                    <p>Cita-cita: CTO Startup Teknologi</p>
-                </div>
-                <div class="member-card">
-                    <p>Peran: Siswa</p>
-                    <p>Akun: @dimas_ard (Instagram) | @dimasanda (LinkedIn)</p>
-                    <p>Cita-cita: Ahli Cybersecurity</p>
-                </div>
-            </div>
-
-            <div class="footer" style="margin-top:24px;"><span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span><span>🔔 Angkatan 2024</span></div>
-        </div>
-    </div>
     <script>
         const form = document.getElementById('addStudentForm');
         const memberGrid = document.getElementById('memberGrid');

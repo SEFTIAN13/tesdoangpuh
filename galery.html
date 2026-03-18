@@ -15,11 +15,11 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
-                    <a href="/">HOME</a>
-                    <a href="/profil">Profil Kelas</a>
-                    <a href="/galery">Galeri</a>
-                    <a href="/tentang">Tentang</a>
-                    <a href="/hubungi">Hubungi kami</a>
+                    <a href="index.html">HOME</a>
+                    <a href="profil.html">Profil Kelas</a>
+                    <a href="galery.html">Galeri</a>
+                    <a href="tentang.html">Tentang</a>
+                    <a href="hubungi.html">Hubungi kami</a>
                 </nav>
             </div>
         </div>
@@ -35,41 +35,69 @@
             </div>
 
             <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery akan diisi oleh JavaScript -->
             </div>
 
             <div class="footer" style="margin-top: 24px;">
                 <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
-                <span>🔔 Angkatan 2026</span>
+                <span>🔔 Angkatan 2024</span>
             </div>
         </div>
     </div>
+    
     <script>
         const uploadInput = document.getElementById('uploadPhotos');
         const galleryGrid = document.getElementById('galleryGrid');
+
+        // Load saved images from localStorage
+        function loadGallery() {
+            const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            galleryGrid.innerHTML = '';
+            savedImages.forEach(imgData => {
+                const img = document.createElement('img');
+                img.src = imgData;
+                img.alt = 'Gallery image';
+                img.style.borderRadius = '14px';
+                img.style.objectFit = 'cover';
+                img.style.height = '180px';
+                galleryGrid.appendChild(img);
+            });
+        }
+
+        // Save images to localStorage
+        function saveToLocalStorage(images) {
+            localStorage.setItem('galleryImages', JSON.stringify(images));
+        }
 
         uploadInput.addEventListener('change', (event) => {
             const files = event.target.files;
             if (!files.length) return;
 
+            const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            const readers = [];
+
             Array.from(files).forEach(file => {
                 if (!file.type.startsWith('image/')) return;
+                
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.alt = file.name;
-                    img.style.borderRadius = '14px';
-                    img.style.objectFit = 'cover';
-                    img.style.height = '180px';
-                    galleryGrid.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+                readers.push(new Promise((resolve) => {
+                    reader.onload = function(e) {
+                        savedImages.push(e.target.result);
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                }));
             });
 
-            document.getElementById('uploadNote').textContent = 'Foto sudah di-upload (hanya preview di browser, tidak tersimpan server).';
+            Promise.all(readers).then(() => {
+                saveToLocalStorage(savedImages);
+                loadGallery();
+                document.getElementById('uploadNote').textContent = 'Foto berhasil ditambahkan! Tersimpan di browser.';
+            });
         });
+
+        // Initial load
+        loadGallery();
     </script>
-</body>
-    </div>
 </body>
 </html>
