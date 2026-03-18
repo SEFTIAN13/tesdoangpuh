@@ -116,29 +116,66 @@ body {
 }
 
 /* Responsive untuk layar kecil */
-@media (max-width: 800px) {
-    .navbar {
-        gap: 15px;
-        padding: 15px 20px;
+/* ===== PERBAIKAN NAVBAR UNTUK HP ===== */
+@media screen and (max-width: 768px) {
+    .header-wrapper {
+        position: relative;
     }
     
-    .navbar a {
-        font-size: 16px;
-        padding: 8px 18px;
+    .header {
+        flex-direction: column;
+        padding: 10px 15px;
+        min-height: auto;
     }
-}
-
-@media (max-width: 600px) {
+    
+    .brand {
+        margin-bottom: 5px;
+    }
+    
+    .brand span {
+        font-size: 18px;
+    }
+    
     .navbar {
-        gap: 10px;
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding: 15px 15px;
+        padding: 10px 15px;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
     }
     
     .navbar a {
         font-size: 14px;
-        padding: 6px 15px;
+        padding: 5px 0;
+        white-space: nowrap;
+    }
+}
+
+/* Untuk HP kecil */
+@media screen and (max-width: 480px) {
+    .brand span {
+        font-size: 16px;
+    }
+    
+    .navbar {
+        gap: 8px;
+    }
+    
+    .navbar a {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+}
+
+/* Untuk HP dengan layar sangat kecil */
+@media screen and (max-width: 360px) {
+    .navbar {
+        gap: 5px;
+    }
+    
+    .navbar a {
+        font-size: 11px;
+    }
+}
     }
 }
 /* ===== AKHIR NAVIGASI ===== */
