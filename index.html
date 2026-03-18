@@ -16,10 +16,10 @@
                 </div>
                 <nav class="navbar">
                     <a href="/">HOME</a>
-                    <a href="/profil.html">Profil Kelas</a>
-                    <a href="/galery.html">Galeri</a>
-                    <a href="/tentang.html">Tentang</a>
-                    <a href="/hubungi.html">Hubungi kami</a>
+                    <a href="/profil">Profil Kelas</a>
+                    <a href="/galery">Galeri</a>
+                    <a href="/tentang">Tentang</a>
+                    <a href="/hubungi">Hubungi kami</a>
                 </nav>
             </div>
         </div>
@@ -49,11 +49,12 @@
             </div>
 
             <div class="description" style="margin-top:16px;">
+                <!-- Foto sementara dihapus -->
                 <strong>HERA FRANSISKA, M.T.I</strong><br>
                 Kepala Program Studi TKJ
             </div>
 
-            <h2 class="section-title" style="margin-top:32px;">STRUKTUR KELAS XIII TKJ 3</h2>
+            <h2 class="section-title" style="margin-top:32px;">STRUKTUR KELAS XII TKJ 3</h2>
 
             <div class="clipboard-notice" style="flex-direction:column; align-items:flex-start; gap:8px;">
                 <strong style="font-size:16px; margin-bottom:6px;">Daftar Pengurus Kelas</strong>
@@ -85,8 +86,12 @@
             <h2 class="section-title">GALERI</h2>
             <div class="description">Berisi momen kegiatan kelas, workshop, dan event.</div>
             <div class="clipboard-notice" style="flex-direction:row; flex-wrap:wrap; gap:12px;">
-                
-        
+                <!-- Foto-foto sementara dihapus -->
+                <div style="width:calc(33% - 8px); height:120px; background:#f0f8ff; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#1e3a5f; border:1px dashed #a0b8d0;">Foto 1</div>
+                <div style="width:calc(33% - 8px); height:120px; background:#f0f8ff; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#1e3a5f; border:1px dashed #a0b8d0;">Foto 2</div>
+                <div style="width:calc(33% - 8px); height:120px; background:#f0f8ff; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#1e3a5f; border:1px dashed #a0b8d0;">Foto 3</div>
+            </div>
+        </div>
 
         <div class="content" id="tentang">
             <h2 class="section-title">TENTANG</h2>
@@ -104,40 +109,6 @@
         </div>
     </div>
 
-    <script>
-        const sectionHash = window.location.pathname.replace(/^\/+|\/+$/g, '');
-        const sections = ['profil', 'galery', 'tentang', 'hubungi'];
-
-        if (sections.includes(sectionHash)) {
-            const target = document.getElementById(sectionHash);
-            if (target) {
-                setTimeout(() => {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        }
-
-        // fallback: klik nav tetap di halaman index tanpa reload berlebihan
-        document.querySelectorAll('.navbar a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href.startsWith('/')) {
-                    const key = href.replace(/^\/+/, '');
-                    if (!key || sections.includes(key)) {
-                        e.preventDefault();
-                        history.pushState({}, '', href || '/');
-                        const dest = key ? document.getElementById(key) : document.getElementById('home');
-                        if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-            });
-        });
-
-        window.addEventListener('popstate', () => {
-            const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-            const dest = path ? document.getElementById(path) : document.getElementById('home');
-            if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    </script>
+    <!-- TIDAK ADA JAVASCRIPT LAGI - NAVIGASI NORMAL KE HALAMAN LAIN -->
 </body>
 </html>
