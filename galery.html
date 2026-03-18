@@ -5,6 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri XII TKJ 3</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Background putih kebiruan */
+        body {
+            background-color: #e6f0fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card {
+            background-color: transparent;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 70vh;
+        }
+        
+        .main-container {
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 30px 30px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,40,80,0.1);
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        h2 {
+            font-size: 28px;
+            color: #0a2a44;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .description {
+            color: #4a5568;
+            font-size: 15px;
+            margin: 5px 0 0 0;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #d0e0f0;
+            width: 100%;
+            margin: 15px 0 20px 0;
+        }
+        
+        /* ===== ADD FOTO BUTTON DI POJOK ===== */
+        .add-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #0a2a44;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 3px 10px rgba(10,42,68,0.2);
+        }
+        
+        .add-button:hover {
+            background: #123456;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10,42,68,0.3);
+        }
+        
+        .add-button i {
+            font-size: 16px;
+        }
+        
+        #file-name {
+            font-size: 13px;
+            color: #4a5568;
+            margin-left: 10px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        /* ===== GALLERY GRID ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 2px solid white;
+            transition: transform 0.2s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .empty-gallery {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            color: #718096;
+        }
+        
+        .empty-gallery i {
+            font-size: 40px;
+            color: #d0e0f0;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #718096;
+            font-size: 13px;
+            border-top: 1px solid #d0e0f0;
+            padding-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .add-button {
+                align-self: flex-end;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="card">
@@ -25,22 +187,34 @@
         </div>
 
         <div class="content">
-            <h2 class="section-title">GALERI KELAS</h2>
-            <div class="description">Mengabadikan momen kegiatan kelas XII TKJ 3, pelatihan, dan event akademik.</div>
-
-            <div style="margin-top:20px; margin-bottom:10px;">
-                <label for="uploadPhotos" style="font-weight:600;">Unggah Foto Baru:</label><br>
-                <input type="file" id="uploadPhotos" accept="image/*" multiple style="margin-top:8px;">
-                <div id="uploadNote" style="font-size:14px; color:#1e3a5f; margin-top:6px;">Pilih beberapa file gambar lalu lihat preview langsung di galeri.</div>
-            </div>
-
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- Gallery akan diisi oleh JavaScript -->
-            </div>
-
-            <div class="footer" style="margin-top: 24px;">
-                <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
-                <span>🔔 Angkatan 2024</span>
+            <div class="main-container">
+                <!-- Header dengan judul dan button add di pojok -->
+                <div class="header-section">
+                    <div>
+                        <h2>GALERI KELAS</h2>
+                        <div class="description">
+                            Mengabadikan momen kegiatan kelas XII TKJ 3
+                        </div>
+                    </div>
+                    
+                    <!-- Add Button di pojok kanan -->
+                    <label for="uploadPhotos" class="add-button">
+                        <i class="fas fa-plus"></i> Tambah Foto
+                    </label>
+                    <input type="file" id="uploadPhotos" accept="image/*" multiple>
+                    <span id="file-name"></span>
+                </div>
+                
+                <hr>
+                
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Akan diisi oleh JavaScript -->
+                </div>
+                
+                <div class="footer">
+                    <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
+                </div>
             </div>
         </div>
     </div>
@@ -48,20 +222,37 @@
     <script>
         const uploadInput = document.getElementById('uploadPhotos');
         const galleryGrid = document.getElementById('galleryGrid');
+        const fileName = document.getElementById('file-name');
 
         // Load saved images from localStorage
         function loadGallery() {
             const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            
+            if (savedImages.length === 0) {
+                galleryGrid.innerHTML = `
+                    <div class="empty-gallery">
+                        <i class="fas fa-images"></i>
+                        <p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p>
+                    </div>
+                `;
+                return;
+            }
+            
             galleryGrid.innerHTML = '';
             savedImages.forEach(imgData => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
                 const img = document.createElement('img');
                 img.src = imgData;
                 img.alt = 'Gallery image';
-                img.style.borderRadius = '14px';
-                img.style.objectFit = 'cover';
-                img.style.height = '180px';
-                galleryGrid.appendChild(img);
+                
+                item.appendChild(img);
+                galleryGrid.appendChild(item);
             });
+            
+            // Update info
+            fileName.textContent = `${savedImages.length} foto tersimpan`;
         }
 
         // Save images to localStorage
@@ -71,14 +262,19 @@
 
         uploadInput.addEventListener('change', (event) => {
             const files = event.target.files;
-            if (!files.length) return;
-
+            if (files.length === 0) return;
+            
             const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
             const readers = [];
+            let addedCount = 0;
 
             Array.from(files).forEach(file => {
-                if (!file.type.startsWith('image/')) return;
+                if (!file.type.startsWith('image/')) {
+                    alert('File ' + file.name + ' bukan gambar. Lewati.');
+                    return;
+                }
                 
+                addedCount++;
                 const reader = new FileReader();
                 readers.push(new Promise((resolve) => {
                     reader.onload = function(e) {
@@ -92,7 +288,13 @@
             Promise.all(readers).then(() => {
                 saveToLocalStorage(savedImages);
                 loadGallery();
-                document.getElementById('uploadNote').textContent = 'Foto berhasil ditambahkan! Tersimpan di browser.';
+                
+                // Tampilkan notifikasi sementara
+                fileName.textContent = `${addedCount} foto ditambahkan`;
+                setTimeout(() => {
+                    const total = savedImages.length;
+                    fileName.textContent = `${total} foto tersimpan`;
+                }, 3000);
             });
         });
 
