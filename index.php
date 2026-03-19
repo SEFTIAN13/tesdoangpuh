@@ -15,10 +15,17 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
+<<<<<<< HEAD:index.php
                     <a href="index.php">HOME</a>
                     <a href="profil.php">Profil Kelas</a>
                     <a href="galery.php">Galeri</a>
                     <a href="hubungi.php">Hubungi kami</a>
+=======
+                    <a href="index.html">HOME</a>
+                    <a href="profil.html">Profil Kelas</a>
+                    <a href="galery.html">Galeri</a>
+                    <a href="hubungi.html">Hubungi kami</a>
+>>>>>>> b4c4b07 (apa saja):index.html
                 </nav>
             </div>
         </div>
