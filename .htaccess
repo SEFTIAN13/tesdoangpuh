@@ -1,8 +1,11 @@
-RewriteEngine On
-# Clean URL routing for HTML files
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(profil|galery|tentang|hubungi)$ $1.html [L]
+# Izinkan akses ke file JSON
+<Files "students.json">
+    Order Allow,Deny
+    Allow from all
+</Files>
 
-# Optional: default index
-DirectoryIndex index.html
+# Redirect jika perlu
+RewriteEngine On
+# Jika ada permintaan ke /api/students tanpa ekstensi, arahkan ke api/students.php
+RewriteRule ^api/students$ api/students.php [L]
+RewriteRule ^api/stats$ api/stats.php [L]

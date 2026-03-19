@@ -2,10 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>XII TKJ 3 - Profil Kelas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri XII TKJ 3</title>
     <link rel="stylesheet" href="style.css">
-</head>
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Background putih kebiruan */
         body {
@@ -63,7 +64,7 @@
             margin: 15px 0 20px 0;
         }
         
-        /* ===== ADD FOTO BUTTON DI POJOK ===== */
+        /* Add button */
         .add-button {
             display: flex;
             align-items: center;
@@ -100,7 +101,7 @@
             display: none;
         }
         
-        /* ===== GALLERY GRID ===== */
+        /* Gallery grid */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -160,7 +161,6 @@
                 align-items: flex-start;
                 gap: 15px;
             }
-            
             .add-button {
                 align-self: flex-end;
             }
@@ -176,18 +176,16 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
-                    <a href="index.html">HOME</a>
-                    <a href="profil.html">Profil Kelas</a>
-                    <a href="galery.html">Galeri</a>
-                    <a href="tentang.html">Tentang</a>
-                    <a href="hubungi.html">Hubungi kami</a>
+                    <a href="index.php">HOME</a>
+                    <a href="profil.php">Profil Kelas</a>
+                    <a href="galery.php">Galeri</a>
+                    <a href="hubungi.php">Hubungi kami</a>
                 </nav>
             </div>
         </div>
 
         <div class="content">
             <div class="main-container">
-                <!-- Header dengan judul dan button add di pojok -->
                 <div class="header-section">
                     <div>
                         <h2>GALERI KELAS</h2>
@@ -196,7 +194,6 @@
                         </div>
                     </div>
                     
-                    <!-- Add Button di pojok kanan -->
                     <label for="uploadPhotos" class="add-button">
                         <i class="fas fa-plus"></i> Tambah Foto
                     </label>
@@ -206,9 +203,8 @@
                 
                 <hr>
                 
-                <!-- Gallery Grid -->
                 <div class="gallery-grid" id="galleryGrid">
-                    <!-- Akan diisi oleh JavaScript -->
+                    <!-- Akan diisi JavaScript -->
                 </div>
                 
                 <div class="footer">
@@ -223,7 +219,6 @@
         const galleryGrid = document.getElementById('galleryGrid');
         const fileName = document.getElementById('file-name');
 
-        // Load saved images from localStorage
         function loadGallery() {
             const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
             
@@ -241,20 +236,16 @@
             savedImages.forEach(imgData => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
-                
                 const img = document.createElement('img');
                 img.src = imgData;
                 img.alt = 'Gallery image';
-                
                 item.appendChild(img);
                 galleryGrid.appendChild(item);
             });
             
-            // Update info
             fileName.textContent = `${savedImages.length} foto tersimpan`;
         }
 
-        // Save images to localStorage
         function saveToLocalStorage(images) {
             localStorage.setItem('galleryImages', JSON.stringify(images));
         }
@@ -287,8 +278,6 @@
             Promise.all(readers).then(() => {
                 saveToLocalStorage(savedImages);
                 loadGallery();
-                
-                // Tampilkan notifikasi sementara
                 fileName.textContent = `${addedCount} foto ditambahkan`;
                 setTimeout(() => {
                     const total = savedImages.length;
@@ -297,7 +286,6 @@
             });
         });
 
-        // Initial load
         loadGallery();
     </script>
 </body>

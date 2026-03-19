@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>XII TKJ 3 - Profil Kelas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Kelas XII TKJ 3</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,11 +15,10 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
-                    <a href="index.html">HOME</a>
-                    <a href="profil.html">Profil Kelas</a>
-                    <a href="galery.html">Galeri</a>
-                    <a href="tentang.html">Tentang</a>
-                    <a href="hubungi.html">Hubungi kami</a>
+                    <a href="index.php">HOME</a>
+                    <a href="profil.php">Profil Kelas</a>
+                    <a href="galery.php">Galeri</a>
+                    <a href="hubungi.php">Hubungi kami</a>
                 </nav>
             </div>
         </div>
@@ -99,7 +98,7 @@
 
         async function loadStudents() {
             try {
-                let url = '/api/students';
+                let url = 'api/students.php';
                 const q = filterSearch.value.trim();
                 const role = filterRole.value.trim();
                 const params = new URLSearchParams();
@@ -144,7 +143,7 @@
             }
 
             try {
-                const res = await fetch('/api/students', {
+                const res = await fetch('api/students.php', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(student)
