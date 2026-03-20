@@ -5,38 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri XII TKJ 3</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase.config.js"></script>
     <style>
-        /* Background putih kebiruan */
-        body {
-            background-color: #e6f0fa;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .card {
-            background-color: transparent;
-        }
-        
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            min-height: 70vh;
-        }
-        
-        .main-container {
-            background: #ffffff;
-            border-radius: 30px;
-            padding: 30px 30px;
-            max-width: 1000px;
-            width: 100%;
-            box-shadow: 0 10px 25px rgba(0,40,80,0.1);
-        }
-        
-        /* Header dengan judul di tengah dan button di pojok */
         .gallery-header {
             display: flex;
             justify-content: space-between;
@@ -65,7 +38,6 @@
             margin: 15px 0 25px 0;
         }
         
-        /* ===== ADD FOTO BUTTON ===== */
         .add-button {
             display: flex;
             align-items: center;
@@ -88,18 +60,17 @@
         .add-button:hover {
             background: #123456;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(10,42,68,0.3);
         }
         
-        .add-button i {
-            font-size: 16px;
+        .add-button.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
         input[type="file"] {
             display: none;
         }
         
-        /* ===== GALLERY GRID ===== */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -120,7 +91,6 @@
         
         .gallery-item:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         
         .gallery-item:hover::after {
@@ -163,7 +133,12 @@
             margin-bottom: 15px;
         }
         
-        /* ===== MODAL LIGHTBOX ===== */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #718096;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -173,7 +148,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.9);
-            overflow: auto;
         }
         
         .modal-content {
@@ -186,18 +160,15 @@
             left: 50%;
             transform: translate(-50%, -50%);
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
         
         .close-modal {
             position: absolute;
             top: 20px;
             right: 35px;
-            color: #f1f1f1;
+            color: white;
             font-size: 40px;
-            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
             z-index: 1001;
         }
         
@@ -205,53 +176,27 @@
             color: #ffd700;
         }
         
-        .modal-controls {
+        .modal-btn {
             position: absolute;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 1001;
-        }
-        
-        .modal-btn {
             background: rgba(255,255,255,0.2);
             color: white;
             border: 2px solid white;
             padding: 12px 25px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s;
             backdrop-filter: blur(5px);
+            z-index: 1001;
         }
         
         .modal-btn:hover {
             background: white;
             color: #0a2a44;
-            transform: scale(1.05);
-        }
-        
-        .modal-btn i {
-            font-size: 18px;
-        }
-        
-        .modal-caption {
-            position: absolute;
-            bottom: 100px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: white;
-            font-size: 16px;
-            background: rgba(0,0,0,0.5);
-            padding: 8px;
-            backdrop-filter: blur(5px);
         }
         
         .footer {
@@ -263,7 +208,6 @@
             padding-top: 20px;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .gallery-header {
                 flex-direction: column;
@@ -283,26 +227,6 @@
             .add-button {
                 align-self: flex-end;
                 margin-left: 0;
-            }
-            
-            .modal-content {
-                max-width: 95%;
-            }
-            
-            .modal-btn {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .gallery-header h2 {
-                font-size: 24px;
-            }
-            
-            .add-button {
-                padding: 8px 16px;
-                font-size: 14px;
             }
         }
     </style>
@@ -325,13 +249,10 @@
         </div>
 
         <div class="content">
-            <div class="main-container">
-                <!-- Header dengan judul di tengah dan button di pojok -->
+            <div class="main-container" style="background: white; border-radius: 30px; padding: 30px;">
                 <div class="gallery-header">
                     <h2>GALERI KELAS</h2>
-                    
-                    <!-- Add Button di pojok kanan -->
-                    <label for="uploadPhotos" class="add-button">
+                    <label for="uploadPhotos" class="add-button" id="uploadBtn">
                         <i class="fas fa-plus"></i> Tambah Foto
                     </label>
                     <input type="file" id="uploadPhotos" accept="image/*" multiple>
@@ -339,9 +260,8 @@
                 
                 <hr>
                 
-                <!-- Gallery Grid -->
                 <div class="gallery-grid" id="galleryGrid">
-                    <!-- Akan diisi oleh JavaScript -->
+                    <div class="loading">Memuat galeri...</div>
                 </div>
                 
                 <div class="footer">
@@ -351,149 +271,163 @@
         </div>
     </div>
     
-    <!-- MODAL LIGHTBOX -->
     <div id="imageModal" class="modal">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="modalImage">
-        <div class="modal-caption" id="modalCaption"></div>
-        <div class="modal-controls">
-            <button class="modal-btn" id="downloadBtn">
-                <i class="fas fa-download"></i> Download
-            </button>
-        </div>
+        <button class="modal-btn" id="downloadBtn">
+            <i class="fas fa-download"></i> Download
+        </button>
     </div>
     
     <script>
-        const uploadInput = document.getElementById('uploadPhotos');
+        // Cek apakah supabase tersedia
+        if (typeof window.supabaseClient === 'undefined') {
+            alert('Error: Supabase tidak terhubung. Periksa file supabase-config.js');
+        }
+
         const galleryGrid = document.getElementById('galleryGrid');
+        const uploadInput = document.getElementById('uploadPhotos');
+        const uploadBtn = document.getElementById('uploadBtn');
         
         // Modal elements
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
-        const modalCaption = document.getElementById('modalCaption');
         const closeBtn = document.querySelector('.close-modal');
         const downloadBtn = document.getElementById('downloadBtn');
-        
-        let currentImageSrc = '';
+        let currentImageUrl = '';
 
-        // Load saved images from localStorage
-        function loadGallery() {
-            const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
-            
-            if (savedImages.length === 0) {
-                galleryGrid.innerHTML = `
-                    <div class="empty-gallery">
-                        <i class="fas fa-images"></i>
-                        <p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p>
-                    </div>
-                `;
+        // Load gallery from Supabase
+        async function loadGallery() {
+            try {
+                const { data: images, error } = await window.supabaseClient
+                    .from('gallery')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                renderGallery(images || []);
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat galeri. Periksa koneksi internet.</p></div>';
+            }
+        }
+        
+        function renderGallery(images) {
+            if (images.length === 0) {
+                galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-images"></i><p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p></div>';
                 return;
             }
             
             galleryGrid.innerHTML = '';
-            savedImages.forEach((imgData, index) => {
+            images.forEach((image, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
-                item.setAttribute('data-index', index);
-                
                 const img = document.createElement('img');
-                img.src = imgData;
+                img.src = image.image_url;
                 img.alt = `Foto ${index + 1}`;
-                
                 item.appendChild(img);
-                
-                // Klik untuk buka modal
-                item.addEventListener('click', function() {
-                    openModal(imgData, `Foto ${index + 1}`);
-                });
-                
+                item.onclick = () => openModal(image.image_url);
                 galleryGrid.appendChild(item);
             });
         }
-
-        // Open modal with image
-        function openModal(imgSrc, caption) {
+        
+        // Upload foto ke Supabase Storage
+        async function uploadGalleryPhoto(file) {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `gallery/${fileName}`;
+            
+            const { data, error } = await window.supabaseClient.storage
+                .from('images')
+                .upload(filePath, file);
+            
+            if (error) throw error;
+            
+            // Get public URL
+            const { data: urlData } = window.supabaseClient.storage
+                .from('images')
+                .getPublicUrl(filePath);
+            
+            return urlData.publicUrl;
+        }
+        
+        // Upload multiple files
+        uploadInput.addEventListener('change', async (e) => {
+            const files = e.target.files;
+            if (!files.length) return;
+            
+            uploadBtn.classList.add('disabled');
+            const originalText = uploadBtn.innerHTML;
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Mengunggah...';
+            
+            let successCount = 0;
+            let failCount = 0;
+            
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) {
+                    failCount++;
+                    continue;
+                }
+                
+                try {
+                    const url = await uploadGalleryPhoto(file);
+                    await window.supabaseClient.from('gallery').insert({
+                        image_url: url,
+                        file_name: file.name
+                    });
+                    successCount++;
+                } catch (error) {
+                    console.error('Error uploading:', error);
+                    failCount++;
+                }
+            }
+            
+            uploadBtn.innerHTML = originalText;
+            uploadBtn.classList.remove('disabled');
+            uploadInput.value = '';
+            
+            if (successCount > 0) {
+                alert(`${successCount} foto berhasil diunggah!${failCount > 0 ? ` ${failCount} gagal.` : ''}`);
+                loadGallery();
+            } else if (failCount > 0) {
+                alert('Gagal mengunggah foto. Periksa koneksi internet.');
+            }
+        });
+        
+        // Modal functions
+        function openModal(imgSrc) {
+            if (!imgSrc) return;
             modal.style.display = 'block';
             modalImg.src = imgSrc;
-            modalCaption.textContent = caption;
-            currentImageSrc = imgSrc;
-            
-            // Prevent body scrolling
+            currentImageUrl = imgSrc;
             document.body.style.overflow = 'hidden';
         }
-
-        // Close modal
+        
         function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-
-        // Download image
+        
         function downloadImage() {
-            if (!currentImageSrc) return;
-            
-            // Create a temporary link
+            if (!currentImageUrl) return;
             const link = document.createElement('a');
-            link.href = currentImageSrc;
-            link.download = 'galeri-tkj3-' + new Date().getTime() + '.jpg';
-            document.body.appendChild(link);
+            link.href = currentImageUrl;
+            link.download = 'galeri-tkj3-' + Date.now() + '.jpg';
             link.click();
-            document.body.removeChild(link);
         }
-
-        // Event listeners for modal
-        closeBtn.addEventListener('click', closeModal);
         
-        downloadBtn.addEventListener('click', downloadImage);
+        closeBtn.onclick = closeModal;
+        downloadBtn.onclick = downloadImage;
         
-        // Click outside modal to close
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Escape key to close
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'block') {
-                closeModal();
-            }
-        });
-
-        // Save images to localStorage
-        function saveToLocalStorage(images) {
-            localStorage.setItem('galleryImages', JSON.stringify(images));
-        }
-
-        uploadInput.addEventListener('change', (event) => {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
-            const readers = [];
-
-            Array.from(files).forEach(file => {
-                if (!file.type.startsWith('image/')) {
-                    alert('File ' + file.name + ' bukan gambar. Lewati.');
-                    return;
-                }
-                
-                const reader = new FileReader();
-                readers.push(new Promise((resolve) => {
-                    reader.onload = function(e) {
-                        savedImages.push(e.target.result);
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                }));
-            });
-
-            Promise.all(readers).then(() => {
-                saveToLocalStorage(savedImages);
-                loadGallery();
-            });
-        });
-
+        window.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+        
+        window.onkeydown = (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+        };
+        
         // Initial load
         loadGallery();
     </script>

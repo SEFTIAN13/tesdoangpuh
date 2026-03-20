@@ -2,231 +2,350 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri XII TKJ 3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Hubungi XII TKJ 3</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome untuk logo -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="supabase-config.js"></script>
     <style>
-        .gallery-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            position: relative;
-        }
-        
-        .gallery-header h2 {
-            font-size: 32px;
-            color: #2c5282;
-            font-weight: 700;
+        /* Background PUTIH KEBIRUAN untuk halaman */
+        body {
+            background-color: #e6f0fa;
             margin: 0;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: max-content;
-            text-align: center;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
         }
         
-        hr {
+        .card {
+            background-color: transparent;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Konten di tengah */
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            min-height: 70vh;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Background PUTIH untuk container konten */
+        .main-container {
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 30px 25px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 15px 30px rgba(0,40,80,0.15);
+            color: #333333;
+            box-sizing: border-box;
+        }
+        
+        .main-container h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #0a2a44;
+            font-weight: 700;
+        }
+        
+        .main-container .description {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 15px;
+            background: transparent;
+            padding: 0;
+            border: none;
+        }
+        
+        .main-container hr {
             border: none;
             border-top: 2px solid #d0e0f0;
             width: 100%;
-            margin: 15px 0 25px 0;
+            margin: 20px 0;
         }
         
-        .add-button {
+        /* Contact grid untuk IG & TikTok */
+        .contact-grid {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #0a2a44;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            box-shadow: 0 3px 10px rgba(10,42,68,0.2);
-            white-space: nowrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            text-align: center;
+            flex: 0 1 250px;
+            padding: 20px 15px;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* LOGO MANUAL UKURAN 60px */
+        .contact-item .logo-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            display: block;
             margin-left: auto;
-            z-index: 1;
+            margin-right: auto;
         }
         
-        .add-button:hover {
-            background: #123456;
-            transform: translateY(-2px);
+        .instagram-item {
+            background: linear-gradient(135deg, #f09433 0%, #d62976 100%);
+            box-shadow: 0 10px 20px rgba(214, 41, 118, 0.3);
         }
         
-        .add-button.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .tiktok-item {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
-        input[type="file"] {
-            display: none;
+        .contact-item h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 600;
         }
         
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+        .contact-item .username {
+            font-size: 16px;
+            color: white;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .follow-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 2px solid white;
+            transition: all 0.3s;
+        }
+        
+        .follow-btn:hover {
+            background: white;
+            color: #333;
+            transform: scale(1.05);
+        }
+        
+        /* Lokasi Section */
+        .location-section {
             margin-top: 20px;
         }
         
-        .gallery-item {
+        .location-section h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #0a2a44;
+            text-align: center;
             position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            aspect-ratio: 1/1;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border: 2px solid white;
-            transition: transform 0.2s;
-            cursor: pointer;
         }
         
-        .gallery-item:hover {
-            transform: scale(1.02);
+        .location-section h3:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #0a2a44;
+            margin: 10px auto 0;
+            border-radius: 3px;
         }
         
-        .gallery-item:hover::after {
-            content: '\f00e';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            width: 30px;
-            height: 30px;
+        .location-card {
+            background: #f8fafc;
+            border-radius: 25px;
+            padding: 25px;
+            border: 1px solid #d0e0f0;
+            margin-bottom: 25px;
+        }
+        
+        .school-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .school-icon {
+            width: 60px;
+            height: 60px;
+            background: #e6f0fa;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
-        .empty-gallery {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: #f8fafc;
-            border-radius: 16px;
-            color: #718096;
-        }
-        
-        .empty-gallery i {
-            font-size: 48px;
-            color: #d0e0f0;
-            margin-bottom: 15px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: #718096;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-        }
-        
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 90%;
-            max-height: 80vh;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 10px;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        
-        .close-modal:hover {
-            color: #ffd700;
-        }
-        
-        .modal-btn {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-            z-index: 1001;
-        }
-        
-        .modal-btn:hover {
-            background: white;
+            font-size: 30px;
             color: #0a2a44;
         }
         
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #718096;
-            font-size: 14px;
-            border-top: 1px solid #d0e0f0;
-            padding-top: 20px;
+        .school-title h4 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #0a2a44;
         }
         
+        .school-title p {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            border: 1px solid #d0e0f0;
+        }
+        
+        .info-box i {
+            font-size: 20px;
+            width: 30px;
+            color: #0a2a44;
+        }
+        
+        .info-box .label {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 3px;
+        }
+        
+        .info-box .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .address-box {
+            background: #e6f0fa;
+            padding: 18px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #0a2a44;
+        }
+        
+        .address-box i {
+            color: #0a2a44;
+            margin-right: 10px;
+        }
+        
+        .address-box p {
+            line-height: 1.6;
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 2px solid #d0e0f0;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+            display: block;
+        }
+        
+        .footer {
+            margin-top: 25px;
+            color: #718096;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        /* Responsive untuk HP */
         @media (max-width: 768px) {
-            .gallery-header {
+            .main-container {
+                padding: 25px 20px;
+            }
+            
+            .contact-grid {
+                gap: 20px;
+            }
+            
+            .contact-item {
+                flex: 0 1 220px;
+                padding: 15px 12px;
+            }
+            
+            .contact-item .logo-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .school-header {
                 flex-direction: column;
-                gap: 15px;
-                min-height: auto;
+                text-align: center;
             }
             
-            .gallery-header h2 {
-                font-size: 28px;
-                position: relative;
-                left: auto;
-                transform: none;
-                width: 100%;
-                margin-bottom: 10px;
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 20px 15px;
             }
             
-            .add-button {
-                align-self: flex-end;
-                margin-left: 0;
+            .main-container h2 {
+                font-size: 24px;
+            }
+            
+            .contact-item {
+                flex: 0 1 100%;
+                max-width: 280px;
+            }
+            
+            .contact-item .logo-icon {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .contact-item h3 {
+                font-size: 18px;
+            }
+            
+            .location-section h3 {
+                font-size: 22px;
+            }
+            
+            .school-title h4 {
+                font-size: 20px;
+            }
+            
+            .map-container iframe {
+                height: 200px;
             }
         }
     </style>
@@ -249,19 +368,103 @@
         </div>
 
         <div class="content">
-            <div class="main-container" style="background: white; border-radius: 30px; padding: 30px;">
-                <div class="gallery-header">
-                    <h2>GALERI KELAS</h2>
-                    <label for="uploadPhotos" class="add-button" id="uploadBtn">
-                        <i class="fas fa-plus"></i> Tambah Foto
-                    </label>
-                    <input type="file" id="uploadPhotos" accept="image/*" multiple>
+            <!-- Container putih di atas background biru muda -->
+            <div class="main-container">
+                <h2>HUBUNGI KAMI</h2>
+                <div class="description">
+                
                 </div>
                 
                 <hr>
                 
-                <div class="gallery-grid" id="galleryGrid">
-                    <div class="loading">Memuat galeri...</div>
+                <!-- Contact Grid: Instagram & TikTok dengan LOGO MANUAL -->
+                <div class="contact-grid">
+                    <!-- Instagram -->
+                    <div class="contact-item instagram-item">
+                        <img class="logo-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/60px-Instagram_logo_2016.svg.png" alt="Instagram">
+                        <h3>Instagram</h3>
+                        <div class="username">@ofcns.tkjthree_</div>
+                        <a href="https://www.instagram.com/ofcns.tkjthree_" target="_blank" class="follow-btn">Follow</a>
+                    </div>
+                    
+                    <!-- TikTok -->
+                    <div class="contact-item tiktok-item">
+                        <img class="logo-icon" src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
+                        <h3>TikTok</h3>
+                        <div class="username">@xii_tkj3.account</div>
+                        <a href="https://www.tiktok.com/@xii_tkj3.account" target="_blank" class="follow-btn">Follow</a>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- LOKASI SECTION -->
+                <div class="location-section">
+                    <h3>Lokasi Sekolah</h3>
+                    
+                    <div class="location-card">
+                        <!-- Header Sekolah -->
+                        <div class="school-header">
+                            <div class="school-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div class="school-title">
+                                <h4>SMKN 1 RANCAEKEK</h4>
+                                <p><i class="fas fa-star" style="color: #fbbf24;"></i> 4.5 ★ (122 ulasan)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Info Grid (Telepon dan Email SUDAH DIHAPUS) -->
+                        <div class="info-grid">
+                            <div class="info-box">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <div class="label">Kecamatan</div>
+                                    <div class="value">Rancaekek</div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <i class="fas fa-city"></i>
+                                <div>
+                                    <div class="label">Kabupaten</div>
+                                    <div class="value">Bandung</div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <i class="fas fa-code-branch"></i>
+                                <div>
+                                    <div class="label">Kode Pos</div>
+                                    <div class="value">40394</div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <i class="fas fa-globe"></i>
+                                <div>
+                                    <div class="label">Website</div>
+                                    <div class="value">smkn1rancaekek.sch.id</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Alamat Lengkap -->
+                        <div class="address-box">
+                            <p>
+                                <i class="fas fa-location-dot"></i> 
+                                <strong>Alamat Lengkap:</strong><br>
+                                Jl. Bojong Salam, Rancaekek, Kec. Rancaekek,<br>
+                                Kabupaten Bandung, Jawa Barat 40394, Indonesia
+                            </p>
+                        </div>
+                        
+                        <!-- Google Maps -->
+                        <div class="map-container">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.123456789!2d107.806281!3d-6.988362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68b8a123456789%3A0x123456789abcdef!2sSMKN%201%20Rancaekek!5e0!3m2!1sid!2sid!4v1234567890" 
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="footer">
@@ -270,166 +473,5 @@
             </div>
         </div>
     </div>
-    
-    <div id="imageModal" class="modal">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <button class="modal-btn" id="downloadBtn">
-            <i class="fas fa-download"></i> Download
-        </button>
-    </div>
-    
-    <script>
-        // Cek apakah supabase tersedia
-        if (typeof supabase === 'undefined') {
-            alert('Error: Supabase tidak terhubung. Periksa file supabase-config.js');
-        }
-
-        const galleryGrid = document.getElementById('galleryGrid');
-        const uploadInput = document.getElementById('uploadPhotos');
-        const uploadBtn = document.getElementById('uploadBtn');
-        
-        // Modal elements
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        const closeBtn = document.querySelector('.close-modal');
-        const downloadBtn = document.getElementById('downloadBtn');
-        let currentImageUrl = '';
-
-        // Load gallery from Supabase
-        async function loadGallery() {
-            try {
-                const { data: images, error } = await supabase
-                    .from('gallery')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                renderGallery(images || []);
-            } catch (error) {
-                console.error('Error loading gallery:', error);
-                galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat galeri. Periksa koneksi internet.</p></div>';
-            }
-        }
-        
-        function renderGallery(images) {
-            if (images.length === 0) {
-                galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-images"></i><p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p></div>';
-                return;
-            }
-            
-            galleryGrid.innerHTML = '';
-            images.forEach((image, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                const img = document.createElement('img');
-                img.src = image.image_url;
-                img.alt = `Foto ${index + 1}`;
-                item.appendChild(img);
-                item.onclick = () => openModal(image.image_url);
-                galleryGrid.appendChild(item);
-            });
-        }
-        
-        // Upload foto ke Supabase Storage
-        async function uploadGalleryPhoto(file) {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `gallery/${fileName}`;
-            
-            const { data, error } = await supabase.storage
-                .from('images')
-                .upload(filePath, file);
-            
-            if (error) throw error;
-            
-            // Get public URL
-            const { data: urlData } = supabase.storage
-                .from('images')
-                .getPublicUrl(filePath);
-            
-            return urlData.publicUrl;
-        }
-        
-        // Upload multiple files
-        uploadInput.addEventListener('change', async (e) => {
-            const files = e.target.files;
-            if (!files.length) return;
-            
-            uploadBtn.classList.add('disabled');
-            const originalText = uploadBtn.innerHTML;
-            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Mengunggah...';
-            
-            let successCount = 0;
-            let failCount = 0;
-            
-            for (const file of files) {
-                if (!file.type.startsWith('image/')) {
-                    failCount++;
-                    continue;
-                }
-                
-                try {
-                    const url = await uploadGalleryPhoto(file);
-                    await supabase.from('gallery').insert({
-                        image_url: url,
-                        file_name: file.name
-                    });
-                    successCount++;
-                } catch (error) {
-                    console.error('Error uploading:', error);
-                    failCount++;
-                }
-            }
-            
-            uploadBtn.innerHTML = originalText;
-            uploadBtn.classList.remove('disabled');
-            uploadInput.value = '';
-            
-            if (successCount > 0) {
-                alert(`${successCount} foto berhasil diunggah!${failCount > 0 ? ` ${failCount} gagal.` : ''}`);
-                loadGallery();
-            } else if (failCount > 0) {
-                alert('Gagal mengunggah foto. Periksa koneksi internet.');
-            }
-        });
-        
-        // Modal functions
-        function openModal(imgSrc) {
-            if (!imgSrc) return;
-            modal.style.display = 'block';
-            modalImg.src = imgSrc;
-            currentImageUrl = imgSrc;
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        function downloadImage() {
-            if (!currentImageUrl) return;
-            const link = document.createElement('a');
-            link.href = currentImageUrl;
-            link.download = 'galeri-tkj3-' + Date.now() + '.jpg';
-            link.click();
-        }
-        
-        closeBtn.onclick = closeModal;
-        downloadBtn.onclick = downloadImage;
-        
-        window.onclick = (e) => {
-            if (e.target === modal) closeModal();
-        };
-        
-        window.onkeydown = (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-        };
-        
-        // Initial load
-        loadGallery();
-    </script>
 </body>
 </html>
