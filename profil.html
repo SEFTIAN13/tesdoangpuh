@@ -5,6 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>XII TKJ 3 - Profil Kelas</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <style>
+        .member-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .member-card:hover {
+            transform: translateY(-5px);
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+        .photo-preview {
+            margin-top: 10px;
+            max-width: 100px;
+            border-radius: 8px;
+        }
+        .upload-status {
+            margin-left: 12px;
+            color: #1e3a5f;
+        }
+        .upload-status.loading {
+            color: #f39c12;
+        }
+        .upload-status.success {
+            color: #27ae60;
+        }
+        .upload-status.error {
+            color: #e74c3c;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .close-modal:hover {
+            color: #ffd700;
+        }
+        .modal-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            z-index: 1001;
+        }
+        .modal-btn:hover {
+            background: white;
+            color: #0a2a44;
+        }
+    </style>
 </head>
 <body>
     <div class="card">
@@ -51,7 +141,7 @@
             </div>
 
             <div class="member-grid" id="memberGrid">
-                <!-- Data akan diisi oleh JavaScript -->
+                <div class="loading">Memuat data...</div>
             </div>
 
             <h2 class="section-title" style="margin-top:28px;">TAMBAH PROFIL SISWA</h2>
@@ -67,7 +157,7 @@
                     <input type="file" id="studentPhotoFile" accept="image/*" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
                     </label>
                     <div id="photoPreview" style="margin-top:8px; display:none;">
-                        <img id="previewImg" style="max-width:100px; max-height:100px; border-radius:8px;">
+                        <img id="previewImg" class="photo-preview" alt="Preview">
                     </div>
                 </div>
                 
@@ -90,7 +180,7 @@
                 </div>
                 
                 <button type="submit" style="padding:10px 16px;background:#0a2a44;color:white;border:none;border-radius:8px;cursor:pointer;">Tambah Profil</button>
-                <span id="addStatus" style="margin-left:12px; color:#1e3a5f;"></span>
+                <span id="addStatus" class="upload-status"></span>
             </form>
 
             <div class="footer" style="margin-top:24px;">
@@ -100,79 +190,175 @@
         </div>
     </div>
 
+    <!-- Modal untuk lihat foto -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <button class="modal-btn" id="downloadBtn">
+            <i class="fas fa-download"></i> Download
+        </button>
+    </div>
+
     <script>
-        const form = document.getElementById('addStudentForm');
+        // Cek apakah supabase tersedia
+        if (typeof supabase === 'undefined') {
+            alert('Error: Supabase tidak terhubung. Periksa file supabase-config.js');
+        }
+
         const memberGrid = document.getElementById('memberGrid');
-        const status = document.getElementById('addStatus');
         const filterSearch = document.getElementById('filterSearch');
         const filterRole = document.getElementById('filterRole');
         const clearFilter = document.getElementById('clearFilter');
+        const form = document.getElementById('addStudentForm');
+        const statusSpan = document.getElementById('addStatus');
         const studentPhotoFile = document.getElementById('studentPhotoFile');
         const photoPreview = document.getElementById('photoPreview');
         const previewImg = document.getElementById('previewImg');
         
-        // Data siswa kosong (tidak ada data default)
-        let students = [];
+        // Modal elements
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.querySelector('.close-modal');
+        const downloadBtn = document.getElementById('downloadBtn');
+        let currentImageUrl = '';
 
-        // Load data dari localStorage
-        function loadStudentsFromStorage() {
-            const saved = localStorage.getItem('studentsData');
-            if (saved) {
-                students = JSON.parse(saved);
-            } else {
-                students = []; // KOSONG, tidak ada data default
-                saveStudentsToStorage();
+        // Load students from Supabase
+        async function loadStudents() {
+            memberGrid.innerHTML = '<div class="loading">Memuat data...</div>';
+            
+            try {
+                let query = supabase.from('students').select('*');
+                
+                const role = filterRole.value;
+                if (role) {
+                    query = query.eq('role', role);
+                }
+                
+                const { data: students, error } = await query.order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                // Filter search client-side
+                const searchTerm = filterSearch.value.toLowerCase();
+                let filtered = students || [];
+                if (searchTerm) {
+                    filtered = filtered.filter(s => 
+                        s.name?.toLowerCase().includes(searchTerm) ||
+                        s.dream?.toLowerCase().includes(searchTerm) ||
+                        s.social?.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                renderStudents(filtered);
+            } catch (error) {
+                console.error('Error loading students:', error);
+                memberGrid.innerHTML = '<div class="loading">Gagal memuat data. Periksa koneksi internet.</div>';
             }
-            filterStudents();
-        }
-        
-        function saveStudentsToStorage() {
-            localStorage.setItem('studentsData', JSON.stringify(students));
-        }
-        
-        function addMember(student) {
-            const card = document.createElement('div');
-            card.className = 'member-card';
-            card.innerHTML = `<img src="${student.photo}" alt="${student.name}"><h3>${student.name}</h3><p>Peran: ${student.role}</p><p>Akun: ${student.social}</p><p>Cita-cita: ${student.dream}</p>`;
-            memberGrid.appendChild(card);
         }
 
-        function renderStudents(filteredStudents) {
-            memberGrid.innerHTML = '';
-            if (!filteredStudents.length) {
-                memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;">Belum ada profil siswa. Klik "Tambah Profil" untuk menambahkan.</div>';
+        function renderStudents(students) {
+            if (!students || students.length === 0) {
+                memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;text-align:center;padding:40px;">Belum ada profil siswa. Klik "Tambah Profil" untuk menambahkan.</div>';
                 return;
             }
-            filteredStudents.forEach(addMember);
+            
+            memberGrid.innerHTML = '';
+            students.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                card.innerHTML = `
+                    <img src="${student.photo_url || 'https://placehold.co/300x200/e6f0fa/0a2a44?text=No+Image'}" alt="${student.name}">
+                    <h3>${student.name}</h3>
+                    <p>Peran: ${student.role}</p>
+                    <p>Akun: ${student.social || 'Tidak ada'}</p>
+                    <p>Cita-cita: ${student.dream || 'Belum diisi'}</p>
+                `;
+                card.onclick = () => openModal(student.photo_url, student.name);
+                memberGrid.appendChild(card);
+            });
         }
 
-        function filterStudents() {
-            const searchTerm = filterSearch.value.toLowerCase();
-            const roleTerm = filterRole.value.toLowerCase();
+        // Upload foto ke Supabase Storage
+        async function uploadPhoto(file) {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `students/${fileName}`;
             
-            let filtered = students;
+            const { data, error } = await supabase.storage
+                .from('images')
+                .upload(filePath, file);
             
-            if (roleTerm) {
-                filtered = filtered.filter(s => s.role.toLowerCase() === roleTerm);
-            }
+            if (error) throw error;
             
-            if (searchTerm) {
-                filtered = filtered.filter(s => 
-                    s.name.toLowerCase().includes(searchTerm) ||
-                    s.dream.toLowerCase().includes(searchTerm) ||
-                    s.social.toLowerCase().includes(searchTerm)
-                );
-            }
+            // Get public URL
+            const { data: urlData } = supabase.storage
+                .from('images')
+                .getPublicUrl(filePath);
             
-            renderStudents(filtered);
+            return urlData.publicUrl;
         }
 
-        // Preview foto saat dipilih
-        studentPhotoFile.addEventListener('change', function(e) {
+        // Add student to Supabase
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentName').value.trim();
+            const role = document.getElementById('studentRole').value.trim();
+            const social = document.getElementById('studentSocial').value.trim();
+            const dream = document.getElementById('studentDream').value.trim();
+            const photoFile = studentPhotoFile.files[0];
+            
+            if (!name || !role) {
+                statusSpan.textContent = 'Nama dan peran wajib diisi!';
+                statusSpan.className = 'upload-status error';
+                return;
+            }
+            
+            statusSpan.textContent = 'Mengupload foto...';
+            statusSpan.className = 'upload-status loading';
+            
+            try {
+                let photoUrl = 'https://placehold.co/300x200/e6f0fa/0a2a44?text=No+Image';
+                
+                if (photoFile) {
+                    photoUrl = await uploadPhoto(photoFile);
+                }
+                
+                statusSpan.textContent = 'Menyimpan data...';
+                
+                const { error } = await supabase.from('students').insert({
+                    name: name,
+                    role: role,
+                    social: social || 'Tidak ada',
+                    dream: dream || 'Belum diisi',
+                    photo_url: photoUrl
+                });
+                
+                if (error) throw error;
+                
+                statusSpan.textContent = 'Berhasil! Profil siswa ditambahkan.';
+                statusSpan.className = 'upload-status success';
+                form.reset();
+                photoPreview.style.display = 'none';
+                loadStudents();
+                
+                setTimeout(() => {
+                    statusSpan.textContent = '';
+                    statusSpan.className = 'upload-status';
+                }, 3000);
+            } catch (error) {
+                console.error('Error adding student:', error);
+                statusSpan.textContent = 'Gagal menyimpan: ' + error.message;
+                statusSpan.className = 'upload-status error';
+            }
+        });
+
+        // Preview foto
+        studentPhotoFile.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = (event) => {
                     previewImg.src = event.target.result;
                     photoPreview.style.display = 'block';
                 };
@@ -182,82 +368,50 @@
             }
         });
 
-        filterSearch.addEventListener('input', filterStudents);
-        filterRole.addEventListener('change', filterStudents);
+        // Modal functions
+        function openModal(imgSrc, caption) {
+            if (!imgSrc) return;
+            modal.style.display = 'block';
+            modalImg.src = imgSrc;
+            currentImageUrl = imgSrc;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function downloadImage() {
+            if (!currentImageUrl) return;
+            const link = document.createElement('a');
+            link.href = currentImageUrl;
+            link.download = 'student-photo-' + Date.now() + '.jpg';
+            link.click();
+        }
+
+        closeBtn.onclick = closeModal;
+        downloadBtn.onclick = downloadImage;
         
-        clearFilter.addEventListener('click', (e) => {
-            e.preventDefault();
+        window.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+        
+        window.onkeydown = (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+        };
+
+        // Event listeners
+        filterSearch.addEventListener('input', loadStudents);
+        filterRole.addEventListener('change', loadStudents);
+        clearFilter.addEventListener('click', () => {
             filterSearch.value = '';
             filterRole.value = '';
-            filterStudents();
-        });
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('studentName').value.trim();
-            const role = document.getElementById('studentRole').value.trim();
-            const social = document.getElementById('studentSocial').value.trim() || 'Tidak ada';
-            const dream = document.getElementById('studentDream').value.trim() || 'Belum diisi';
-            const photoFile = studentPhotoFile.files[0];
-            
-            if (!name || !role) {
-                status.textContent = 'Nama dan peran wajib diisi!';
-                return;
-            }
-            
-            let photoUrl = 'https://via.placeholder.com/300x200?text=No+Image';
-            
-            if (photoFile) {
-                // Konversi file ke base64
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    photoUrl = event.target.result;
-                    
-                    const newStudent = {
-                        id: students.length + 1,
-                        name: name,
-                        photo: photoUrl,
-                        role: role,
-                        social: social,
-                        dream: dream
-                    };
-                    
-                    students.push(newStudent);
-                    saveStudentsToStorage();
-                    filterStudents();
-                    
-                    status.textContent = 'Berhasil! Profil siswa ditambahkan.';
-                    form.reset();
-                    photoPreview.style.display = 'none';
-                    
-                    setTimeout(() => status.textContent = '', 3000);
-                };
-                reader.readAsDataURL(photoFile);
-            } else {
-                const newStudent = {
-                    id: students.length + 1,
-                    name: name,
-                    photo: photoUrl,
-                    role: role,
-                    social: social,
-                    dream: dream
-                };
-                
-                students.push(newStudent);
-                saveStudentsToStorage();
-                filterStudents();
-                
-                status.textContent = 'Berhasil! Profil siswa ditambahkan.';
-                form.reset();
-                photoPreview.style.display = 'none';
-                
-                setTimeout(() => status.textContent = '', 3000);
-            }
+            loadStudents();
         });
 
         // Initial load
-        loadStudentsFromStorage();
+        loadStudents();
     </script>
 </body>
 </html>
