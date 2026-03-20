@@ -73,14 +73,19 @@ body {
     letter-spacing: 0.4px;
 }
 
+.header h1 {
+    display: none;
+}
+
+/* ===== NAVIGASI DENGAN BACKGROUND TERPISAH ===== */
 .navbar {
-    background-color: #123456;
-    padding: 15px 40px;
+    background-color: transparent;
+    padding: 20px 40px;
     display: flex;
     flex-wrap: wrap;
-    gap: 60px;
-    border-bottom: 1px solid #2a4a6a;
+    gap: 30px;
     justify-content: center;
+    border-bottom: 1px solid #2a4a6a;
 }
 
 .navbar a {
@@ -88,26 +93,27 @@ body {
     text-decoration: none;
     font-size: 18px;
     font-weight: 500;
-    padding: 8px 0;
-    border-bottom: 2px solid transparent;
+    padding: 12px 25px;
+    background-color: #123456;
+    border-radius: 30px;
+    border: 1px solid #2a4a6a;
     transition: all 0.3s ease;
-    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .navbar a:hover {
+    background-color: #1e4a7a;
     color: #ffd966 !important;
-    border-bottom-color: #ffd966;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
 }
 
 .navbar a:active {
-    color: #ffd966 !important;
-    transform: translateY(-2px);
+    background-color: #0a2a44;
+    transform: translateY(0);
 }
 
-<<<<<<< HEAD
-=======
-/* Responsive untuk layar kecil */
 /* ===== PERBAIKAN NAVBAR UNTUK HP ===== */
 @media screen and (max-width: 768px) {
     .header-wrapper {
@@ -137,7 +143,7 @@ body {
     
     .navbar a {
         font-size: 14px;
-        padding: 5px 0;
+        padding: 8px 15px;
         white-space: nowrap;
     }
 }
@@ -150,11 +156,12 @@ body {
     
     .navbar {
         gap: 8px;
+        padding: 8px 10px;
     }
     
     .navbar a {
         font-size: 12px;
-        padding: 4px 0;
+        padding: 6px 12px;
     }
 }
 
@@ -166,14 +173,11 @@ body {
     
     .navbar a {
         font-size: 11px;
+        padding: 4px 8px;
     }
 }
-
 /* ===== AKHIR NAVIGASI ===== */
 
-/* ===== AKHIR NAVIGASI ===== */
-
->>>>>>> b4c4b07 (apa saja)
 .content {
     padding: 40px;
 }
@@ -392,6 +396,7 @@ hr {
     height: 24px;
     object-fit: contain;
 }
+
 .map-frame {
     width: 100%;
     height: 360px;
@@ -401,7 +406,7 @@ hr {
     box-shadow: 0 10px 22px rgba(17,56,93,0.1);
 }
 
-/* Responsive */
+/* ===== RESPONSIVE UNTUK MOBILE ===== */
 @media (max-width: 700px) {
     .navbar {
         gap: 25px;

@@ -43,13 +43,18 @@
             align-items: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            position: relative;
         }
         
         .gallery-header h2 {
             font-size: 32px;
-            color: #0a2a44;
+            color: #2c5282;
             font-weight: 700;
-            margin: 0 auto;
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
             text-align: center;
         }
         
@@ -60,11 +65,7 @@
             margin: 15px 0 25px 0;
         }
         
-<<<<<<< HEAD:galery.php
-        /* Add button */
-=======
         /* ===== ADD FOTO BUTTON ===== */
->>>>>>> b4c4b07 (apa saja):galery.html
         .add-button {
             display: flex;
             align-items: center;
@@ -80,6 +81,8 @@
             border: none;
             box-shadow: 0 3px 10px rgba(10,42,68,0.2);
             white-space: nowrap;
+            margin-left: auto;
+            z-index: 1;
         }
         
         .add-button:hover {
@@ -96,7 +99,7 @@
             display: none;
         }
         
-        /* Gallery grid */
+        /* ===== GALLERY GRID ===== */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -121,7 +124,7 @@
         }
         
         .gallery-item:hover::after {
-            content: '\f00e'; /* Font awesome zoom icon */
+            content: '\f00e';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
@@ -265,17 +268,21 @@
             .gallery-header {
                 flex-direction: column;
                 gap: 15px;
+                min-height: auto;
             }
-<<<<<<< HEAD:galery.php
-=======
             
             .gallery-header h2 {
                 font-size: 28px;
+                position: relative;
+                left: auto;
+                transform: none;
+                width: 100%;
+                margin-bottom: 10px;
             }
             
->>>>>>> b4c4b07 (apa saja):galery.html
             .add-button {
                 align-self: flex-end;
+                margin-left: 0;
             }
             
             .modal-content {
@@ -309,37 +316,21 @@
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
-<<<<<<< HEAD:galery.php
-                    <a href="index.php">HOME</a>
-                    <a href="profil.php">Profil Kelas</a>
-                    <a href="galery.php">Galeri</a>
-                    <a href="hubungi.php">Hubungi kami</a>
-=======
                     <a href="index.html">HOME</a>
                     <a href="profil.html">Profil Kelas</a>
                     <a href="galery.html">Galeri</a>
                     <a href="hubungi.html">Hubungi kami</a>
->>>>>>> b4c4b07 (apa saja):galery.html
                 </nav>
             </div>
         </div>
 
         <div class="content">
             <div class="main-container">
-<<<<<<< HEAD:galery.php
-                <div class="header-section">
-                    <div>
-                        <h2>GALERI KELAS</h2>
-                        <div class="description">
-                            Mengabadikan momen kegiatan kelas XII TKJ 3
-                        </div>
-                    </div>
-=======
                 <!-- Header dengan judul di tengah dan button di pojok -->
                 <div class="gallery-header">
                     <h2>GALERI KELAS</h2>
->>>>>>> b4c4b07 (apa saja):galery.html
                     
+                    <!-- Add Button di pojok kanan -->
                     <label for="uploadPhotos" class="add-button">
                         <i class="fas fa-plus"></i> Tambah Foto
                     </label>
@@ -348,8 +339,9 @@
                 
                 <hr>
                 
+                <!-- Gallery Grid -->
                 <div class="gallery-grid" id="galleryGrid">
-                    <!-- Akan diisi JavaScript -->
+                    <!-- Akan diisi oleh JavaScript -->
                 </div>
                 
                 <div class="footer">
@@ -384,6 +376,7 @@
         
         let currentImageSrc = '';
 
+        // Load saved images from localStorage
         function loadGallery() {
             const savedImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
             
@@ -401,18 +394,12 @@
             savedImages.forEach((imgData, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
-<<<<<<< HEAD:galery.php
-                const img = document.createElement('img');
-                img.src = imgData;
-                img.alt = 'Gallery image';
-=======
                 item.setAttribute('data-index', index);
                 
                 const img = document.createElement('img');
                 img.src = imgData;
                 img.alt = `Foto ${index + 1}`;
                 
->>>>>>> b4c4b07 (apa saja):galery.html
                 item.appendChild(img);
                 
                 // Klik untuk buka modal
@@ -422,12 +409,6 @@
                 
                 galleryGrid.appendChild(item);
             });
-<<<<<<< HEAD:galery.php
-            
-            fileName.textContent = `${savedImages.length} foto tersimpan`;
-        }
-
-=======
         }
 
         // Open modal with image
@@ -480,7 +461,6 @@
         });
 
         // Save images to localStorage
->>>>>>> b4c4b07 (apa saja):galery.html
         function saveToLocalStorage(images) {
             localStorage.setItem('galleryImages', JSON.stringify(images));
         }
@@ -511,17 +491,10 @@
             Promise.all(readers).then(() => {
                 saveToLocalStorage(savedImages);
                 loadGallery();
-<<<<<<< HEAD:galery.php
-                fileName.textContent = `${addedCount} foto ditambahkan`;
-                setTimeout(() => {
-                    const total = savedImages.length;
-                    fileName.textContent = `${total} foto tersimpan`;
-                }, 3000);
-=======
->>>>>>> b4c4b07 (apa saja):galery.html
             });
         });
 
+        // Initial load
         loadGallery();
     </script>
 </body>
