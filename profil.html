@@ -27,6 +27,41 @@
             margin-bottom: 20px;
         }
 
+        .profile-filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-filter-input,
+        .profile-filter-select {
+            min-width: 0;
+            padding: 10px 12px;
+            border: 1px solid #c9d9e9;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .profile-filter-input {
+            flex: 2;
+        }
+
+        .profile-filter-select {
+            flex: 1;
+        }
+
+        .profile-filter-reset {
+            padding: 10px 18px;
+            background: #0a2a44;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
         .profile-header .section-title {
             margin-bottom: 0;
         }
@@ -247,6 +282,17 @@
                 width: 100%;
             }
 
+            .profile-filter-bar {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .profile-filter-input,
+            .profile-filter-select,
+            .profile-filter-reset {
+                width: 100%;
+            }
+
             .student-form-grid {
                 grid-template-columns: 1fr;
             }
@@ -292,15 +338,15 @@
                     </button>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="filterSearch" placeholder="Cari nama/cita-cita/sosmed..." style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
-                    <select id="filterRole" style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
+                <div class="profile-filter-bar">
+                    <input type="text" id="filterSearch" class="profile-filter-input" placeholder="Cari nama/cita-cita/sosmed...">
+                    <select id="filterRole" class="profile-filter-select">
                         <option value="">Semua Role</option>
                         <option value="KETUA KELAS">Ketua Kelas</option>
                         <option value="Bendahara">Bendahara</option>
                         <option value="Siswa">Siswa</option>
                     </select>
-                    <button id="clearFilter" style="padding: 10px 20px; background: #0a2a44; color: white; border: none; border-radius: 8px; cursor: pointer;">Reset</button>
+                    <button id="clearFilter" class="profile-filter-reset">Reset</button>
                 </div>
 
                 <div class="member-grid" id="memberGrid">

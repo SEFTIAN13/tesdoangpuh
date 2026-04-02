@@ -145,13 +145,14 @@ body {
     }
     
     .brand {
-        justify-content: center;
-        margin-bottom: 2px;
+        justify-content: flex-start;
+        margin-bottom: 6px;
     }
     
     .brand span {
-        font-size: 18px;
-        text-align: center;
+        font-size: 17px;
+        text-align: left;
+        max-width: 220px;
     }
     
     .navbar {
@@ -194,7 +195,7 @@ body {
     }
 
     .brand span {
-        font-size: 15px;
+        font-size: 14px;
     }
     
     .navbar {
@@ -220,6 +221,21 @@ body {
     width: min(1120px, calc(100% - 32px));
     margin: 0 auto;
     padding: 42px 0 56px;
+}
+
+@media (max-width: 1024px) {
+    .content {
+        width: min(100% - 24px, 100%);
+        padding: 28px 0 40px;
+    }
+
+    .member-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .section-title {
@@ -476,9 +492,43 @@ hr {
         gap: 12px;
         padding: 14px 16px;
     }
+
+    .clipboard-item {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .member-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .member-card {
+        padding: 10px;
+        border-radius: 14px;
+    }
+
+    .member-card img {
+        height: 190px;
+    }
+
+    .member-card h3 {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .member-card p {
+        font-size: 13px;
+        line-height: 1.45;
+    }
     
     .badge {
         margin-left: 0;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
     
     .markup-share {
@@ -499,5 +549,6 @@ hr {
         flex-direction: column;
         gap: 10px;
         text-align: center;
+        font-size: 12px;
     }
 }
