@@ -29,7 +29,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 15px;
+            padding: 24px 0 38px;
             min-height: 70vh;
             width: 100%;
             max-width: 100%;
@@ -38,19 +38,36 @@
         
         /* Background PUTIH untuk container konten */
         .main-container {
-            background: #ffffff;
-            border-radius: 30px;
-            padding: 30px 25px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 34px;
+            padding: 34px 30px;
             max-width: 1000px;
             width: 100%;
-            box-shadow: 0 15px 30px rgba(0,40,80,0.15);
+            border: 1px solid rgba(191, 216, 240, 0.9);
+            box-shadow: 0 24px 44px rgba(0,40,80,0.15);
             color: #333333;
             box-sizing: border-box;
+        }
+
+        .page-kicker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 14px;
+            margin: 0 auto 16px;
+            border-radius: 999px;
+            background: #e8f3ff;
+            color: #0a2a44;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
         
         .main-container h2 {
             text-align: center;
-            font-size: 28px;
+            font-size: 34px;
             margin-bottom: 10px;
             color: #0a2a44;
             font-weight: 700;
@@ -59,11 +76,14 @@
         .main-container .description {
             text-align: center;
             color: #4a5568;
-            margin-bottom: 20px;
-            font-size: 15px;
+            margin: 0 auto 22px;
+            max-width: 620px;
+            font-size: 16px;
+            line-height: 1.7;
             background: transparent;
             padding: 0;
             border: none;
+            box-shadow: none;
         }
         
         .main-container hr {
@@ -75,23 +95,34 @@
         
         /* Contact grid untuk IG & TikTok */
         .contact-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
             margin: 25px 0;
-            flex-wrap: wrap;
         }
         
         .contact-item {
             text-align: center;
-            flex: 0 1 250px;
-            padding: 20px 15px;
-            border-radius: 20px;
-            transition: transform 0.3s;
+            padding: 24px 20px;
+            border-radius: 28px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
         .contact-item:hover {
             transform: translateY(-5px);
+            box-shadow: 0 22px 30px rgba(14, 35, 61, 0.18);
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            inset: auto -30px -36px auto;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.14);
         }
         
         /* LOGO MANUAL UKURAN 60px */
@@ -102,6 +133,8 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
+            z-index: 1;
         }
         
         .instagram-item {
@@ -119,6 +152,8 @@
             margin-bottom: 10px;
             color: white;
             font-weight: 600;
+            position: relative;
+            z-index: 1;
         }
         
         .contact-item .username {
@@ -126,18 +161,22 @@
             color: white;
             margin-bottom: 15px;
             opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
         
         .follow-btn {
             display: inline-block;
             background: rgba(255,255,255,0.2);
             color: white;
-            padding: 8px 30px;
+            padding: 10px 30px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 500;
             border: 2px solid white;
             transition: all 0.3s;
+            position: relative;
+            z-index: 1;
         }
         
         .follow-btn:hover {
@@ -171,10 +210,11 @@
         
         .location-card {
             background: #f8fafc;
-            border-radius: 25px;
-            padding: 25px;
+            border-radius: 28px;
+            padding: 28px;
             border: 1px solid #d0e0f0;
             margin-bottom: 25px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
         }
         
         .school-header {
@@ -286,16 +326,13 @@
         /* Responsive untuk HP */
         @media (max-width: 768px) {
             .main-container {
-                padding: 25px 20px;
+                border-radius: 28px;
+                padding: 26px 20px;
             }
             
             .contact-grid {
-                gap: 20px;
-            }
-            
-            .contact-item {
-                flex: 0 1 220px;
-                padding: 15px 12px;
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
             
             .contact-item .logo-icon {
@@ -315,21 +352,33 @@
         
         @media (max-width: 480px) {
             .main-container {
-                padding: 20px 15px;
+                padding: 22px 16px;
             }
             
             .main-container h2 {
-                font-size: 24px;
+                font-size: 28px;
+            }
+
+            .page-kicker {
+                font-size: 11px;
+                margin-bottom: 12px;
             }
             
             .contact-item {
-                flex: 0 1 100%;
-                max-width: 280px;
+                text-align: left;
+                padding: 18px 16px;
             }
             
             .contact-item .logo-icon {
                 width: 45px;
                 height: 45px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .follow-btn {
+                width: 100%;
+                text-align: center;
             }
             
             .contact-item h3 {
@@ -345,7 +394,7 @@
             }
             
             .map-container iframe {
-                height: 200px;
+                height: 220px;
             }
         }
     </style>
@@ -370,9 +419,10 @@
         <div class="content">
             <!-- Container putih di atas background biru muda -->
             <div class="main-container">
+                <div class="page-kicker">Sosial Media dan Lokasi</div>
                 <h2>HUBUNGI KAMI</h2>
                 <div class="description">
-                
+                    Tetap terhubung dengan XII TKJ 3 lewat Instagram, TikTok, dan informasi lokasi sekolah kami. Di HP, semua kontak dibuat lebih cepat dijangkau dan lebih nyaman dibaca.
                 </div>
                 
                 <hr>
@@ -384,7 +434,7 @@
                         <img class="logo-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/60px-Instagram_logo_2016.svg.png" alt="Instagram">
                         <h3>Instagram</h3>
                         <div class="username">@ofcns.tkjthree_</div>
-                        <a href="https://www.instagram.com/ofcns.tkjthree_" target="_blank" class="follow-btn">Follow</a>
+                        <a href="https://www.instagram.com/ofcns.tkjthree_" target="_blank" rel="noopener noreferrer" class="follow-btn">Follow</a>
                     </div>
                     
                     <!-- TikTok -->
@@ -392,7 +442,7 @@
                         <img class="logo-icon" src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
                         <h3>TikTok</h3>
                         <div class="username">@xii_tkj3.account</div>
-                        <a href="https://www.tiktok.com/@xii_tkj3.account" target="_blank" class="follow-btn">Follow</a>
+                        <a href="https://www.tiktok.com/@xii_tkj3.account" target="_blank" rel="noopener noreferrer" class="follow-btn">Follow</a>
                     </div>
                 </div>
                 

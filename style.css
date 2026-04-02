@@ -5,8 +5,17 @@
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
+:root {
+    --page-bg: linear-gradient(180deg, #dfeeff 0%, #edf4fb 34%, #f8fbff 100%);
+    --panel-bg: rgba(255, 255, 255, 0.95);
+    --panel-border: rgba(163, 190, 220, 0.42);
+    --nav-surface: rgba(8, 28, 48, 0.26);
+    --nav-pill: rgba(18, 52, 86, 0.9);
+    --nav-pill-active: #1e5d92;
+}
+
 body {
-    background-color: #eef2f7;
+    background: var(--page-bg);
     min-height: 100vh;
     padding: 0;
     margin: 0;
@@ -15,7 +24,7 @@ body {
 .card {
     width: 100%;
     max-width: none;
-    background-color: white;
+    background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     overflow: hidden;
@@ -37,6 +46,8 @@ body {
     justify-content: space-between;
     gap: 16px;
     min-height: 80px;
+    max-width: 1180px;
+    margin: 0 auto;
 }
 
 .header::after {
@@ -71,6 +82,7 @@ body {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 0.4px;
+    line-height: 1.1;
 }
 
 .header h1 {
@@ -79,31 +91,33 @@ body {
 
 /* ===== NAVIGASI DENGAN BACKGROUND TERPISAH ===== */
 .navbar {
-    background-color: transparent;
-    padding: 20px 40px;
+    background: var(--nav-surface);
+    padding: 10px 14px;
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-    border-bottom: 1px solid #2a4a6a;
+    gap: 12px;
+    justify-content: flex-end;
+    border: 1px solid rgba(154, 187, 220, 0.22);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
 }
 
 .navbar a {
     color: #f0f8ff;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    padding: 12px 25px;
-    background-color: #123456;
+    padding: 11px 18px;
+    background-color: var(--nav-pill);
     border-radius: 30px;
-    border: 1px solid #2a4a6a;
+    border: 1px solid rgba(177, 208, 237, 0.14);
     transition: all 0.3s ease;
     white-space: nowrap;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
 .navbar a:hover {
-    background-color: #1e4a7a;
+    background-color: var(--nav-pill-active);
     color: #ffd966 !important;
     transform: translateY(-3px);
     box-shadow: 0 5px 10px rgba(0,0,0,0.3);
@@ -122,68 +136,91 @@ body {
     
     .header {
         flex-direction: column;
-        padding: 10px 15px;
+        align-items: stretch;
+        padding: 14px 14px 16px;
         min-height: auto;
     }
     
     .brand {
-        margin-bottom: 5px;
+        justify-content: center;
+        margin-bottom: 2px;
     }
     
     .brand span {
         font-size: 18px;
+        text-align: center;
     }
     
     .navbar {
-        padding: 10px 15px;
-        gap: 12px;
-        justify-content: center;
-        flex-wrap: wrap;
+        padding: 8px;
+        gap: 8px;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
     
     .navbar a {
         font-size: 14px;
-        padding: 8px 15px;
-        white-space: nowrap;
+        padding: 10px 16px;
+        scroll-snap-align: start;
+        flex: 0 0 auto;
+    }
+
+    .navbar::-webkit-scrollbar {
+        display: none;
     }
 }
 
 /* Untuk HP kecil */
 @media screen and (max-width: 480px) {
+    .header::after {
+        display: none;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand img.logo {
+        width: 38px;
+        height: 38px;
+    }
+
     .brand span {
-        font-size: 16px;
+        font-size: 15px;
     }
     
     .navbar {
-        gap: 8px;
-        padding: 8px 10px;
+        border-radius: 22px;
     }
     
     .navbar a {
-        font-size: 12px;
-        padding: 6px 12px;
+        font-size: 13px;
+        padding: 10px 14px;
     }
 }
 
 /* Untuk HP dengan layar sangat kecil */
 @media screen and (max-width: 360px) {
-    .navbar {
-        gap: 5px;
-    }
-    
     .navbar a {
-        font-size: 11px;
-        padding: 4px 8px;
+        font-size: 12px;
+        padding: 9px 12px;
     }
 }
 /* ===== AKHIR NAVIGASI ===== */
 
 .content {
-    padding: 40px;
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 42px 0 56px;
 }
 
 .section-title {
-    font-size: 32px;
+    font-size: clamp(28px, 4vw, 38px);
     font-weight: 700;
     color: #0a2a44;
     margin-bottom: 25px;
@@ -194,13 +231,14 @@ body {
 
 .description {
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: #1e3a5f;
-    background-color: #f0f8ff;
+    background: var(--panel-bg);
     padding: 25px 30px;
-    border-radius: 20px;
+    border-radius: 24px;
     margin-bottom: 30px;
-    border: 1px solid #c9d9e9;
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 20px 40px rgba(20, 56, 96, 0.08);
 }
 
 .description strong {
@@ -278,12 +316,13 @@ hr {
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
-    background-color: white;
-    border: 1px solid #b0c8e0;
-    border-radius: 40px;
-    padding: 10px 25px;
-    width: fit-content;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 28px;
+    padding: 16px 22px;
+    width: min(100%, 760px);
     margin-bottom: 25px;
+    box-shadow: 0 18px 38px rgba(20, 56, 96, 0.08);
 }
 
 .share-text {
@@ -408,27 +447,31 @@ hr {
 
 /* ===== RESPONSIVE UNTUK MOBILE ===== */
 @media (max-width: 700px) {
-    .navbar {
-        gap: 25px;
-        padding: 15px 20px;
-    }
-    
-    .navbar a {
-        font-size: 16px;
-    }
-    
     .content {
-        padding: 25px 20px;
+        width: min(100% - 20px, 100%);
+        padding: 22px 0 34px;
     }
     
     .section-title {
-        font-size: 26px;
+        font-size: 24px;
+        border-left-width: 6px;
+        padding-left: 14px;
+        margin-bottom: 18px;
+    }
+
+    .description {
+        font-size: 15px;
+        padding: 18px 16px;
+        border-radius: 20px;
+        margin-bottom: 18px;
     }
     
     .clipboard-notice {
         flex-direction: column;
         align-items: flex-start;
         border-radius: 25px;
+        gap: 12px;
+        padding: 14px 16px;
     }
     
     .badge {
@@ -436,7 +479,17 @@ hr {
     }
     
     .markup-share {
-        border-radius: 25px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        border-radius: 22px;
+        padding: 14px;
+    }
+
+    .share-link {
+        width: 100%;
+        text-align: center;
+        padding: 10px 14px;
     }
     
     .footer {

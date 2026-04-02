@@ -10,6 +10,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="supabase.config.js"></script>
     <style>
+        .main-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 34px;
+            padding: 30px;
+            border: 1px solid rgba(191, 216, 240, 0.9);
+            box-shadow: 0 24px 44px rgba(0,40,80,0.12);
+        }
+
         .gallery-header {
             display: flex;
             justify-content: space-between;
@@ -209,6 +217,11 @@
         }
         
         @media (max-width: 768px) {
+            .main-container {
+                border-radius: 26px;
+                padding: 22px 16px;
+            }
+
             .gallery-header {
                 flex-direction: column;
                 gap: 15px;
@@ -225,7 +238,8 @@
             }
             
             .add-button {
-                align-self: flex-end;
+                align-self: stretch;
+                justify-content: center;
                 margin-left: 0;
             }
         }
@@ -249,7 +263,7 @@
         </div>
 
         <div class="content">
-            <div class="main-container" style="background: white; border-radius: 30px; padding: 30px;">
+            <div class="main-container">
                 <div class="gallery-header">
                     <h2>GALERI KELAS</h2>
                     <label for="uploadPhotos" class="add-button" id="uploadBtn">
@@ -282,7 +296,7 @@
     <script>
         // Cek apakah supabase tersedia
         if (typeof window.supabaseClient === 'undefined') {
-            alert('Error: Supabase tidak terhubung. Periksa file supabase-config.js');
+            alert('Error: Supabase tidak terhubung. Periksa file supabase.config.js');
         }
 
         const galleryGrid = document.getElementById('galleryGrid');

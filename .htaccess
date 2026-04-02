@@ -6,6 +6,6 @@
 
 # Redirect jika perlu
 RewriteEngine On
-# Jika ada permintaan ke /api/students tanpa ekstensi, arahkan ke api/students.php
-RewriteRule ^api/students$ api/students.php [L]
-RewriteRule ^api/stats$ api/stats.php [L]
+# Jika ada permintaan ke /api/students tanpa ekstensi, arahkan ke file yang tersedia
+RewriteRule ^api/students$ api/student.php [L]
+RewriteRule ^api/stats$ api/api/state.php [L]
