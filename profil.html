@@ -6,40 +6,172 @@
     <title>XII TKJ 3 - Profil Kelas</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="supabase.config.js"></script>
     <style>
+        .profile-shell {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 34px;
+            padding: 30px;
+            border: 1px solid rgba(191, 216, 240, 0.9);
+            box-shadow: 0 24px 44px rgba(0,40,80,0.12);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+            margin-bottom: 20px;
+        }
+
+        .profile-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .add-student-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #0a2a44;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 24px rgba(10,42,68,0.22);
+        }
+
+        .add-student-btn:hover {
+            background: #123456;
+            transform: translateY(-2px);
+        }
+
+        .add-student-btn:disabled {
+            opacity: 0.72;
+            cursor: default;
+            transform: none;
+        }
+
+        .student-form-panel {
+            background: #f7fbff;
+            padding: 20px;
+            border-radius: 22px;
+            border: 1px solid #c9d9e9;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+            margin: 24px 0 26px;
+        }
+
+        .student-form-panel.hidden {
+            display: none;
+        }
+
+        .student-form-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .student-form-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2a44;
+        }
+
+        .close-form-btn {
+            border: none;
+            background: #e8f0fa;
+            color: #0a2a44;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .student-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 16px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            color: #0a2a44;
+            font-weight: 600;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #a0b8d0;
+            border-radius: 12px;
+            background: white;
+            font-size: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
         .member-card {
             cursor: pointer;
             transition: transform 0.2s;
         }
+
         .member-card:hover {
             transform: translateY(-5px);
         }
+
         .loading {
             text-align: center;
             padding: 40px;
             color: #718096;
         }
+
         .photo-preview {
             margin-top: 10px;
-            max-width: 100px;
-            border-radius: 8px;
+            max-width: 120px;
+            border-radius: 12px;
         }
+
         .upload-status {
-            margin-left: 12px;
             color: #1e3a5f;
         }
+
         .upload-status.loading {
             color: #f39c12;
         }
+
         .upload-status.success {
             color: #27ae60;
         }
+
         .upload-status.error {
             color: #e74c3c;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -50,6 +182,7 @@
             height: 100%;
             background-color: rgba(0,0,0,0.9);
         }
+
         .modal-content {
             margin: auto;
             display: block;
@@ -61,6 +194,7 @@
             transform: translate(-50%, -50%);
             border-radius: 10px;
         }
+
         .close-modal {
             position: absolute;
             top: 20px;
@@ -70,9 +204,11 @@
             cursor: pointer;
             z-index: 1001;
         }
+
         .close-modal:hover {
             color: #ffd700;
         }
+
         .modal-btn {
             position: absolute;
             bottom: 30px;
@@ -90,9 +226,30 @@
             backdrop-filter: blur(5px);
             z-index: 1001;
         }
+
         .modal-btn:hover {
             background: white;
             color: #0a2a44;
+        }
+
+        @media (max-width: 768px) {
+            .profile-shell {
+                border-radius: 26px;
+                padding: 22px 16px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .add-student-btn {
+                width: 100%;
+            }
+
+            .student-form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -101,7 +258,7 @@
         <div class="header-wrapper">
             <div class="header">
                 <div class="brand">
-                    <img src="logo.png" alt="logo" class="logo">
+                    <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek" class="logo">
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
                 <nav class="navbar">
@@ -112,85 +269,95 @@
                 </nav>
             </div>
         </div>
+
         <div class="content">
-            <h2 class="section-title">PROFIL KELAS</h2>
-            <div class="description">Kelas XII TKJ 3 berada di SMKN 1 RANCAEKEK. Kami fokus pada pembelajaran jaringan, pemrograman, dan infrastruktur TIK.</div>
-            <div class="description" style="margin-top:14px;">
-                <strong>HERA FRANSISKA, M.T.I</strong> - Kepala Program Studi TKJ
-            </div>
-            <div class="clipboard-notice" style="flex-direction:column; align-items:flex-start; gap:8px; margin-top:18px;">
-                <div class="clipboard-item"><strong>MUHAMMAD DIMAS</strong> - Ketua Kelas</div>
-                <div class="clipboard-item"><strong>MUHAMMAD FAHRI</strong> - Wakil Ketua</div>
-                <div class="clipboard-item"><strong>MUHAMMAD HILMY</strong> - Bendahara</div>
-                <div class="clipboard-item"><strong>MUHAMMAD FIKRI</strong> - Anggota</div>
-                <div class="clipboard-item"><strong>MUHAMMAD DANI</strong> - Anggota</div>
-            </div>
-
-            <h2 class="section-title" style="margin-top:24px;">PROFIL SISWA</h2>
-            
-            <!-- Filter Section -->
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                <input type="text" id="filterSearch" placeholder="Cari nama/cita-cita/sosmed..." style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
-                <select id="filterRole" style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
-                    <option value="">Semua Role</option>
-                    <option value="KETUA KELAS">Ketua Kelas</option>
-                    <option value="Bendahara">Bendahara</option>
-                    <option value="Siswa">Siswa</option>
-                </select>
-                <button id="clearFilter" style="padding: 10px 20px; background: #0a2a44; color: white; border: none; border-radius: 8px; cursor: pointer;">Reset</button>
-            </div>
-
-            <div class="member-grid" id="memberGrid">
-                <div class="loading">Memuat data...</div>
-            </div>
-
-            <h2 class="section-title" style="margin-top:28px;">TAMBAH PROFIL SISWA</h2>
-            <form id="addStudentForm" style="background:#f7fbff;padding:16px;border-radius:16px;border:1px solid #c9d9e9;">
-                <div style="margin-bottom:10px;">
-                    <label>Nama<br>
-                    <input type="text" id="studentName" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
-                    </label>
+            <div class="profile-shell">
+                <h2 class="section-title">PROFIL KELAS</h2>
+                <div class="description">Kelas XII TKJ 3 berada di SMKN 1 RANCAEKEK. Kami fokus pada pembelajaran jaringan, pemrograman, dan infrastruktur TIK.</div>
+                <div class="description" style="margin-top:14px;">
+                    <strong>HERA FRANSISKA, M.T.I</strong> - Kepala Program Studi TKJ
                 </div>
-                
-                <div style="margin-bottom:10px;">
-                    <label>Foto (Upload)<br>
-                    <input type="file" id="studentPhotoFile" accept="image/*" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
-                    </label>
-                    <div id="photoPreview" style="margin-top:8px; display:none;">
-                        <img id="previewImg" class="photo-preview" alt="Preview">
+                <div class="clipboard-notice" style="flex-direction:column; align-items:flex-start; gap:8px; margin-top:18px;">
+                    <div class="clipboard-item"><strong>MUHAMMAD DIMAS</strong> - Ketua Kelas</div>
+                    <div class="clipboard-item"><strong>MUHAMMAD FAHRI</strong> - Wakil Ketua</div>
+                    <div class="clipboard-item"><strong>MUHAMMAD HILMY</strong> - Bendahara</div>
+                    <div class="clipboard-item"><strong>MUHAMMAD FIKRI</strong> - Anggota</div>
+                    <div class="clipboard-item"><strong>MUHAMMAD DANI</strong> - Anggota</div>
+                </div>
+
+                <div class="profile-header">
+                    <h2 class="section-title">PROFIL SISWA</h2>
+                    <button type="button" class="add-student-btn" id="toggleStudentForm">
+                        <i class="fas fa-user-plus"></i> Tambah Siswa
+                    </button>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <input type="text" id="filterSearch" placeholder="Cari nama/cita-cita/sosmed..." style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
+                    <select id="filterRole" style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid #c9d9e9; border-radius: 8px;">
+                        <option value="">Semua Role</option>
+                        <option value="KETUA KELAS">Ketua Kelas</option>
+                        <option value="Bendahara">Bendahara</option>
+                        <option value="Siswa">Siswa</option>
+                    </select>
+                    <button id="clearFilter" style="padding: 10px 20px; background: #0a2a44; color: white; border: none; border-radius: 8px; cursor: pointer;">Reset</button>
+                </div>
+
+                <div class="member-grid" id="memberGrid">
+                    <div class="loading">Memuat data...</div>
+                </div>
+
+                <div class="student-form-panel hidden" id="studentFormPanel">
+                    <div class="student-form-top">
+                        <div class="student-form-title">Tambah Profil Siswa</div>
+                        <button type="button" class="close-form-btn" id="closeStudentForm" aria-label="Tutup form">&times;</button>
                     </div>
-                </div>
-                
-                <div style="margin-bottom:10px;">
-                    <label>Peran (ketua/bendahara/siswa)<br>
-                    <input type="text" id="studentRole" required style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
-                    </label>
-                </div>
-                
-                <div style="margin-bottom:10px;">
-                    <label>Akun Sosmed<br>
-                    <input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
-                    </label>
-                </div>
-                
-                <div style="margin-bottom:10px;">
-                    <label>Cita-cita<br>
-                    <input type="text" id="studentDream" style="width:100%;padding:8px;border:1px solid #a0b8d0;border-radius:8px;">
-                    </label>
-                </div>
-                
-                <button type="submit" style="padding:10px 16px;background:#0a2a44;color:white;border:none;border-radius:8px;cursor:pointer;">Tambah Profil</button>
-                <span id="addStatus" class="upload-status"></span>
-            </form>
+                    <form id="addStudentForm">
+                        <div class="student-form-grid">
+                            <div class="form-field">
+                                <label for="studentName">Nama</label>
+                                <input type="text" id="studentName" required>
+                            </div>
 
-            <div class="footer" style="margin-top:24px;">
-                <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
-                <span>Angkatan 2024</span>
+                            <div class="form-field">
+                            <label for="studentRole">Peran</label>
+                            <input type="text" id="studentRole" required placeholder="Contoh: Wakil Ketua">
+                        </div>
+
+                            <div class="form-field full">
+                                <label for="studentPhotoFile">Foto (Upload)</label>
+                                <input type="file" id="studentPhotoFile" accept="image/*">
+                                <div id="photoPreview" style="margin-top:8px; display:none;">
+                                    <img id="previewImg" class="photo-preview" alt="Preview">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="studentSocial">Akun Sosmed</label>
+                                <input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn">
+                            </div>
+
+                            <div class="form-field">
+                                <label for="studentDream">Cita-cita</label>
+                                <input type="text" id="studentDream" placeholder="Contoh: Network Engineer">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="add-student-btn">Simpan Profil</button>
+                            <span id="addStatus" class="upload-status"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="footer" style="margin-top:24px;">
+                    <span>&copy; 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
+                    <span>Angkatan 2026</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal untuk lihat foto -->
     <div id="imageModal" class="modal">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="modalImage">
@@ -200,7 +367,6 @@
     </div>
 
     <script>
-        // Cek apakah supabase tersedia
         if (typeof window.supabaseClient === 'undefined') {
             alert('Error: Supabase tidak terhubung. Periksa file supabase.config.js');
         }
@@ -209,46 +375,59 @@
         const filterSearch = document.getElementById('filterSearch');
         const filterRole = document.getElementById('filterRole');
         const clearFilter = document.getElementById('clearFilter');
+        const studentFormPanel = document.getElementById('studentFormPanel');
+        const toggleStudentFormBtn = document.getElementById('toggleStudentForm');
+        const closeStudentFormBtn = document.getElementById('closeStudentForm');
         const form = document.getElementById('addStudentForm');
         const statusSpan = document.getElementById('addStatus');
         const studentPhotoFile = document.getElementById('studentPhotoFile');
         const photoPreview = document.getElementById('photoPreview');
         const previewImg = document.getElementById('previewImg');
-        
-        // Modal elements
+
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
         const closeBtn = document.querySelector('.close-modal');
         const downloadBtn = document.getElementById('downloadBtn');
         let currentImageUrl = '';
 
-        // Load students from Supabase
+        function openStudentForm() {
+            studentFormPanel.classList.remove('hidden');
+            toggleStudentFormBtn.innerHTML = '<i class="fas fa-pen"></i> Form Terbuka';
+            toggleStudentFormBtn.disabled = true;
+            document.getElementById('studentName').focus();
+        }
+
+        function closeStudentForm() {
+            studentFormPanel.classList.add('hidden');
+            toggleStudentFormBtn.innerHTML = '<i class="fas fa-user-plus"></i> Tambah Siswa';
+            toggleStudentFormBtn.disabled = false;
+        }
+
         async function loadStudents() {
             memberGrid.innerHTML = '<div class="loading">Memuat data...</div>';
-            
+
             try {
                 let query = window.supabaseClient.from('students').select('*');
-                
                 const role = filterRole.value;
+
                 if (role) {
                     query = query.eq('role', role);
                 }
-                
+
                 const { data: students, error } = await query.order('created_at', { ascending: false });
-                
                 if (error) throw error;
-                
-                // Filter search client-side
+
                 const searchTerm = filterSearch.value.toLowerCase();
                 let filtered = students || [];
+
                 if (searchTerm) {
-                    filtered = filtered.filter(s => 
-                        s.name?.toLowerCase().includes(searchTerm) ||
-                        s.dream?.toLowerCase().includes(searchTerm) ||
-                        s.social?.toLowerCase().includes(searchTerm)
+                    filtered = filtered.filter((student) =>
+                        student.name?.toLowerCase().includes(searchTerm) ||
+                        student.dream?.toLowerCase().includes(searchTerm) ||
+                        student.social?.toLowerCase().includes(searchTerm)
                     );
                 }
-                
+
                 renderStudents(filtered);
             } catch (error) {
                 console.error('Error loading students:', error);
@@ -258,12 +437,12 @@
 
         function renderStudents(students) {
             if (!students || students.length === 0) {
-                memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;text-align:center;padding:40px;">Belum ada profil siswa. Klik "Tambah Profil" untuk menambahkan.</div>';
+                memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;text-align:center;padding:40px;">Belum ada profil siswa. Klik "Tambah Siswa" untuk menambahkan.</div>';
                 return;
             }
-            
+
             memberGrid.innerHTML = '';
-            students.forEach(student => {
+            students.forEach((student) => {
                 const card = document.createElement('div');
                 card.className = 'member-card';
                 card.innerHTML = `
@@ -278,54 +457,51 @@
             });
         }
 
-        // Upload foto ke Supabase Storage
         async function uploadPhoto(file) {
             const fileExt = file.name.split('.').pop();
             const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
             const filePath = `students/${fileName}`;
-            
-            const { data, error } = await window.supabaseClient.storage
+
+            const { error } = await window.supabaseClient.storage
                 .from('images')
                 .upload(filePath, file);
-            
+
             if (error) throw error;
-            
-            // Get public URL
+
             const { data: urlData } = window.supabaseClient.storage
                 .from('images')
                 .getPublicUrl(filePath);
-            
+
             return urlData.publicUrl;
         }
 
-        // Add student to Supabase
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const name = document.getElementById('studentName').value.trim();
             const role = document.getElementById('studentRole').value.trim();
             const social = document.getElementById('studentSocial').value.trim();
             const dream = document.getElementById('studentDream').value.trim();
             const photoFile = studentPhotoFile.files[0];
-            
+
             if (!name || !role) {
                 statusSpan.textContent = 'Nama dan peran wajib diisi!';
                 statusSpan.className = 'upload-status error';
                 return;
             }
-            
+
             statusSpan.textContent = 'Mengupload foto...';
             statusSpan.className = 'upload-status loading';
-            
+
             try {
                 let photoUrl = 'https://placehold.co/300x200/e6f0fa/0a2a44?text=No+Image';
-                
+
                 if (photoFile) {
                     photoUrl = await uploadPhoto(photoFile);
                 }
-                
+
                 statusSpan.textContent = 'Menyimpan data...';
-                
+
                 const { error } = await window.supabaseClient.from('students').insert({
                     name: name,
                     role: role,
@@ -333,19 +509,13 @@
                     dream: dream || 'Belum diisi',
                     photo_url: photoUrl
                 });
-                
+
                 if (error) throw error;
-                
-                statusSpan.textContent = 'Berhasil! Profil siswa ditambahkan.';
-                statusSpan.className = 'upload-status success';
+
                 form.reset();
                 photoPreview.style.display = 'none';
+                closeStudentForm();
                 loadStudents();
-                
-                setTimeout(() => {
-                    statusSpan.textContent = '';
-                    statusSpan.className = 'upload-status';
-                }, 3000);
             } catch (error) {
                 console.error('Error adding student:', error);
                 statusSpan.textContent = 'Gagal menyimpan: ' + error.message;
@@ -353,9 +523,9 @@
             }
         });
 
-        // Preview foto
         studentPhotoFile.addEventListener('change', (e) => {
             const file = e.target.files[0];
+
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
@@ -368,8 +538,7 @@
             }
         });
 
-        // Modal functions
-        function openModal(imgSrc, caption) {
+        function openModal(imgSrc) {
             if (!imgSrc) return;
             modal.style.display = 'block';
             modalImg.src = imgSrc;
@@ -392,16 +561,17 @@
 
         closeBtn.onclick = closeModal;
         downloadBtn.onclick = downloadImage;
-        
+        toggleStudentFormBtn.addEventListener('click', openStudentForm);
+        closeStudentFormBtn.addEventListener('click', closeStudentForm);
+
         window.onclick = (e) => {
             if (e.target === modal) closeModal();
         };
-        
+
         window.onkeydown = (e) => {
             if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
         };
 
-        // Event listeners
         filterSearch.addEventListener('input', loadStudents);
         filterRole.addEventListener('change', loadStudents);
         clearFilter.addEventListener('click', () => {
@@ -410,7 +580,6 @@
             loadStudents();
         });
 
-        // Initial load
         loadStudents();
     </script>
 </body>
