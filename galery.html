@@ -64,7 +64,7 @@
             margin-left: auto;
             z-index: 1;
         }
-        
+
         .add-button:hover {
             background: #123456;
             transform: translateY(-2px);
@@ -93,12 +93,13 @@
             aspect-ratio: 1/1;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             border: 2px solid white;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
         }
-        
+
         .gallery-item:hover {
             transform: scale(1.02);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .gallery-item:hover::after {
@@ -117,6 +118,30 @@
             align-items: center;
             justify-content: center;
             font-size: 14px;
+        }
+
+        .gallery-delete-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(155, 44, 44, 0.92);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .gallery-delete-btn:hover {
+            background: #c53030;
+            transform: scale(1.05);
         }
         
         .gallery-item img {
@@ -342,8 +367,17 @@
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 const img = document.createElement('img');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'gallery-delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
                 img.src = image.image_url;
                 img.alt = `Foto ${index + 1}`;
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    await deleteGalleryImage(image);
+                });
+                item.appendChild(deleteBtn);
                 item.appendChild(img);
                 item.onclick = () => openModal(image.image_url);
                 galleryGrid.appendChild(item);
@@ -427,12 +461,85 @@
             document.body.style.overflow = 'auto';
         }
         
-        function downloadImage() {
+        function extractStorageTarget(url) {
+            const parsedUrl = new URL(url);
+            const segments = parsedUrl.pathname.split('/').filter(Boolean);
+            const accessIndex = segments.findIndex((segment) => segment === 'public' || segment === 'authenticated');
+
+            if (accessIndex === -1 || !segments[accessIndex + 1]) {
+                throw new Error('URL storage tidak valid');
+            }
+
+            return {
+                bucket: segments[accessIndex + 1],
+                path: segments.slice(accessIndex + 2).join('/')
+            };
+        }
+
+        async function deleteGalleryImage(image) {
+            const confirmed = window.confirm('Hapus foto ini dari galeri?');
+            if (!confirmed) return;
+
+            try {
+                const { error } = await window.supabaseClient
+                    .from('gallery')
+                    .delete()
+                    .eq('id', image.id);
+
+                if (error) throw error;
+
+                if (image.image_url) {
+                    try {
+                        const { bucket, path } = extractStorageTarget(image.image_url);
+                        await window.supabaseClient.storage.from(bucket).remove([path]);
+                    } catch (storageError) {
+                        console.warn('Gagal menghapus file foto galeri:', storageError);
+                    }
+                }
+
+                if (currentImageUrl === image.image_url) {
+                    closeModal();
+                }
+
+                loadGallery();
+            } catch (error) {
+                console.error('Error deleting gallery image:', error);
+                alert('Gagal menghapus foto galeri.');
+            }
+        }
+
+        async function downloadImage() {
             if (!currentImageUrl) return;
-            const link = document.createElement('a');
-            link.href = currentImageUrl;
-            link.download = 'galeri-tkj3-' + Date.now() + '.jpg';
-            link.click();
+
+            try {
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengunduh...';
+                const { bucket, path } = extractStorageTarget(currentImageUrl);
+                const extension = currentImageUrl.split('.').pop()?.split('?')[0] || 'jpg';
+                const filename = `galeri-tkj3-${Date.now()}.${extension}`;
+                const { data, error } = await window.supabaseClient.storage
+                    .from(bucket)
+                    .download(path);
+
+                if (error) {
+                    throw error;
+                }
+
+                const blobUrl = URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error('Error downloading image:', error);
+                alert('Download gagal. Coba lagi sebentar.');
+            } finally {
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+            }
         }
         
         closeBtn.onclick = closeModal;
