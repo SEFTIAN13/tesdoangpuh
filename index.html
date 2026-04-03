@@ -14,10 +14,75 @@
             box-shadow: 0 24px 44px rgba(0,40,80,0.12);
         }
 
+        .home-hero {
+            position: relative;
+            min-height: 460px;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 28px;
+            background:
+                linear-gradient(180deg, rgba(6, 25, 40, 0.18), rgba(6, 25, 40, 0.42)),
+                url('hero-home.jpg') center center/contain no-repeat;
+            background-color: #eef4fa;
+            box-shadow: 0 22px 42px rgba(21, 54, 83, 0.18);
+        }
+
+        .home-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 100%),
+                linear-gradient(180deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 100%);
+            background-size: 50% 100%, 100% 50%;
+            pointer-events: none;
+        }
+
+        .home-hero::after {
+            content: '';
+            position: absolute;
+            inset: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            border-radius: 24px;
+            pointer-events: none;
+        }
+
+        .home-intro {
+            display: grid;
+            gap: 16px;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .home-intro .section-title {
+            width: 100%;
+            text-align: left;
+        }
+
+        .home-intro .description {
+            width: min(100%, 980px);
+        }
+
+        .home-intro .markup-share {
+            width: min(100%, 980px);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .home-intro .markup-share .share-link {
+            margin-top: 0 !important;
+        }
+
         @media (max-width: 768px) {
             .home-shell {
                 border-radius: 26px;
                 padding: 22px 16px;
+            }
+
+            .home-hero {
+                min-height: 320px;
             }
         }
     </style>
@@ -41,18 +106,26 @@
 
         <div class="content" id="home">
             <div class="home-shell">
-                <h2 class="section-title">HI, WELCOME TO XII TKJ 3</h2>
-                <div class="description">
-                    Website ini adalah web resmi yang dirancang dan dikembangkan oleh kelas kami, XII TKJ 3, untuk memperkenalkan kelas dan aktivitas kami.
+                <div class="home-intro">
+                    <h2 class="section-title">HI, WELCOME TO XII TKJ 3</h2>
                 </div>
-                <div class="description" style="margin-top:14px;">
-                    <strong>SMKN 1 RANCAEKEK</strong><br>
-                    Sekolah Menengah Kejuruan, fokus Teknik Komputer dan Jaringan.
-                </div>
-                <div class="markup-share" style="margin-top:14px;">
-                    <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0;">Alamat: Jl. Jendral Sudirman, Rancaekek</div>
-                    <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0; margin-top:6px;">Email: smkn1rancaekek@example.com</div>
-                    <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0; margin-top:6px;">Telp: +62 878-9019-8284</div>
+
+                <section class="home-hero" aria-label="Foto kelas XII TKJ 3">
+                </section>
+
+                <div class="home-intro">
+                    <div class="description">
+                        Website ini adalah web resmi yang dirancang dan dikembangkan oleh kelas kami, XII TKJ 3, untuk memperkenalkan kelas, aktivitas, dan kebersamaan kami.
+                    </div>
+                    <div class="description" style="margin-top:14px;">
+                        <strong>SMKN 1 RANCAEKEK</strong><br>
+                        Sekolah Menengah Kejuruan, fokus Teknik Komputer dan Jaringan.
+                    </div>
+                    <div class="markup-share" style="margin-top:14px;">
+                        <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0;">Alamat: Jl. Jendral Sudirman, Rancaekek</div>
+                        <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0; margin-top:6px;">Email: smkn1rancaekek@example.com</div>
+                        <div class="share-link" style="cursor:auto; background:#f0f8ff; border:1px solid #a0b8d0; margin-top:6px;">Telp: +62 878-9019-8284</div>
+                    </div>
                 </div>
             </div>
         </div>

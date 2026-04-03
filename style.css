@@ -6,12 +6,12 @@
 }
 
 :root {
-    --page-bg: linear-gradient(180deg, #dfeeff 0%, #edf4fb 34%, #f8fbff 100%);
+    --page-bg: linear-gradient(180deg, #e6f1fb 0%, #eef5fb 34%, #f9fbfe 100%);
     --panel-bg: rgba(255, 255, 255, 0.95);
-    --panel-border: rgba(163, 190, 220, 0.42);
-    --nav-surface: rgba(8, 28, 48, 0.26);
-    --nav-pill: rgba(18, 52, 86, 0.9);
-    --nav-pill-active: #1e5d92;
+    --panel-border: rgba(159, 191, 220, 0.42);
+    --nav-surface: rgba(214, 232, 246, 0.2);
+    --nav-pill: rgba(232, 243, 251, 0.5);
+    --nav-pill-active: #b8dbf3;
 }
 
 body {
@@ -35,8 +35,8 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: linear-gradient(90deg, #0f3d6a, #164a7a);
-    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    background: linear-gradient(90deg, #5f91bd, #79add3 52%, #98c4e6 100%);
+    box-shadow: 0 8px 24px rgba(54, 95, 133, 0.2);
 }
 
 .header {
@@ -54,9 +54,9 @@ body {
     content: '';
     display: block;
     height: 30px;
-    background: radial-gradient(circle at 20% 0, transparent 10px, #0f3d6a 10px),
-                radial-gradient(circle at 50% 0, transparent 10px, #0f3d6a 10px),
-                radial-gradient(circle at 80% 0, transparent 10px, #0f3d6a 10px);
+    background: radial-gradient(circle at 20% 0, transparent 10px, #6d9dc7 10px),
+                radial-gradient(circle at 50% 0, transparent 10px, #6d9dc7 10px),
+                radial-gradient(circle at 80% 0, transparent 10px, #6d9dc7 10px);
     background-size: 100px 30px;
     background-repeat: repeat-x;
     transform: translateY(10px);
@@ -81,7 +81,7 @@ body {
 }
 
 .brand span {
-    color: #f5fff9;
+    color: #f7fbff;
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 0.4px;
@@ -100,9 +100,9 @@ body {
     flex-wrap: wrap;
     gap: 12px;
     justify-content: flex-end;
-    border: 1px solid rgba(154, 187, 220, 0.22);
+    border: 1px solid rgba(230, 242, 251, 0.28);
     border-radius: 999px;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
 }
 
 @media screen and (max-width: 1024px) {
@@ -133,28 +133,28 @@ body {
 }
 
 .navbar a {
-    color: #f0f8ff;
+    color: #153a59;
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
     padding: 11px 18px;
     background-color: var(--nav-pill);
     border-radius: 30px;
-    border: 1px solid rgba(177, 208, 237, 0.14);
+    border: 1px solid rgba(232, 243, 251, 0.7);
     transition: all 0.3s ease;
     white-space: nowrap;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 18px rgba(56, 96, 132, 0.12);
 }
 
 .navbar a:hover {
     background-color: var(--nav-pill-active);
-    color: #ffd966 !important;
+    color: #102f4a !important;
     transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 22px rgba(56, 96, 132, 0.16);
 }
 
 .navbar a:active {
-    background-color: #0a2a44;
+    background-color: #9ecae7;
     transform: translateY(0);
 }
 
