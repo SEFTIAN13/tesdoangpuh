@@ -172,6 +172,31 @@
             padding: 60px;
             color: #718096;
         }
+
+        .gallery-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 22px;
+        }
+
+        .gallery-more-btn {
+            border: 1px solid #bfd4e8;
+            background: #eef7ff;
+            color: #0a2a44;
+            padding: 11px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 8px 18px rgba(20, 56, 96, 0.08);
+        }
+
+        .gallery-more-btn:hover {
+            background: #dcecff;
+        }
+
+        .gallery-more-btn.hidden {
+            display: none;
+        }
         
         .modal {
             display: none;
@@ -325,6 +350,9 @@
                 <div class="gallery-grid" id="galleryGrid">
                     <div class="loading">Memuat galeri...</div>
                 </div>
+                <div class="gallery-actions">
+                    <button type="button" class="gallery-more-btn hidden" id="loadMoreBtn">Tampilkan Lebih Banyak</button>
+                </div>
                 
                 <div class="footer">
                     <span>© 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
@@ -350,6 +378,10 @@
         const galleryGrid = document.getElementById('galleryGrid');
         const uploadInput = document.getElementById('uploadPhotos');
         const uploadBtn = document.getElementById('uploadBtn');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const GALLERY_BATCH_SIZE = 12;
+        let allGalleryImages = [];
+        let visibleGalleryCount = GALLERY_BATCH_SIZE;
         
         // Modal elements
         const modal = document.getElementById('imageModal');
@@ -373,16 +405,30 @@
                 
                 if (error) throw error;
                 
-                renderGallery(images || []);
+                allGalleryImages = images || [];
+                visibleGalleryCount = GALLERY_BATCH_SIZE;
+                renderGallery();
             } catch (error) {
                 console.error('Error loading gallery:', error);
                 galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat galeri. Periksa koneksi internet.</p></div>';
+                loadMoreBtn.classList.add('hidden');
             }
         }
         
-        function renderGallery(images) {
+        function updateLoadMoreButton() {
+            if (allGalleryImages.length > visibleGalleryCount) {
+                loadMoreBtn.classList.remove('hidden');
+            } else {
+                loadMoreBtn.classList.add('hidden');
+            }
+        }
+
+        function renderGallery() {
+            const images = allGalleryImages.slice(0, visibleGalleryCount);
+
             if (images.length === 0) {
                 galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-images"></i><p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p></div>';
+                loadMoreBtn.classList.add('hidden');
                 return;
             }
             
@@ -401,6 +447,8 @@
                 }
                 img.src = image.image_url;
                 img.alt = `Foto ${index + 1}`;
+                img.loading = 'lazy';
+                img.decoding = 'async';
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', async (e) => {
                         e.stopPropagation();
@@ -412,6 +460,8 @@
                 item.onclick = () => openModal(image.image_url);
                 galleryGrid.appendChild(item);
             });
+
+            updateLoadMoreButton();
         }
         
         // Upload foto ke Supabase Storage
@@ -479,6 +529,11 @@
             } else if (failCount > 0) {
                 alert('Gagal mengunggah foto. Periksa koneksi internet.');
             }
+        });
+
+        loadMoreBtn.addEventListener('click', () => {
+            visibleGalleryCount += GALLERY_BATCH_SIZE;
+            renderGallery();
         });
         
         // Modal functions
