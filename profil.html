@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="supabase.config.js"></script>
+    <script src="auth.js"></script>
     <style>
         .profile-shell {
             background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -19,125 +20,113 @@
 
         .profile-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
             margin-top: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
-        .structure-section {
-            margin-bottom: 30px;
-        }
-
-        .structure-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0a2a44;
-            margin-bottom: 18px;
-        }
-
-        .structure-flow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .structure-card {
-            width: min(100%, 460px);
+        .wali-kelas-box {
+            margin-bottom: 28px;
             background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 100%);
             border: 1px solid #c7dbef;
-            border-radius: 22px;
-            padding: 18px 22px;
-            text-align: center;
-            box-shadow: 0 16px 34px rgba(20, 56, 96, 0.08);
-        }
-
-        .structure-card.lead {
-            width: min(100%, 520px);
-        }
-
-        .structure-photo {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 14px;
             border-radius: 24px;
-            object-fit: cover;
-            display: block;
-            border: 3px solid #d6e6f5;
-            box-shadow: 0 12px 24px rgba(20, 56, 96, 0.12);
-            background: #eef4fa;
+            padding: 20px 24px;
+            box-shadow: 0 16px 34px rgba(20, 56, 96, 0.08);
+            text-align: center;
         }
 
-        .structure-role {
+        .wali-kelas-label {
             font-size: 13px;
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #4e7aa4;
             margin-bottom: 8px;
             font-weight: 700;
+            text-align: center;
         }
 
-        .structure-name {
-            font-size: 24px;
+        .wali-kelas-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .wali-kelas-card {
+            background: #ffffff;
+            border: 1px solid #d4e3f1;
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 12px 24px rgba(20, 56, 96, 0.08);
+        }
+
+        .wali-kelas-name {
+            font-size: 20px;
             font-weight: 800;
             color: #0a2a44;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
-        .structure-branch {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            width: min(100%, 760px);
+        .wali-kelas-photo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 14px;
+            border-radius: 24px;
+            border: 3px solid #d6e6f5;
+            box-shadow: 0 12px 24px rgba(20, 56, 96, 0.12);
+            background: #eef4fa;
         }
 
-        .structure-line {
-            width: 2px;
-            height: 18px;
-            background: linear-gradient(180deg, #7fb1dd 0%, #c7dbef 100%);
-            border-radius: 999px;
-        }
-
-        .profile-filter-bar {
+        .wali-kelas-toolbar {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
         }
 
-        .profile-filter-input,
-        .profile-filter-select {
-            min-width: 0;
-            padding: 10px 12px;
-            border: 1px solid #c9d9e9;
-            border-radius: 10px;
-            background: #fff;
-            font-size: 14px;
+        .wali-kelas-static {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
         }
 
-        .profile-filter-input {
-            flex: 2;
+        .wali-kelas-list,
+        .wali-kelas-toolbar {
+            display: none !important;
         }
 
-        .profile-filter-select {
-            flex: 1;
+        .wali-kelas-static-item {
+            background: #ffffff;
+            border: 1px solid #d4e3f1;
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 12px 24px rgba(20, 56, 96, 0.08);
         }
 
-        .profile-filter-reset {
-            padding: 10px 18px;
-            background: #0a2a44;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
+        .wali-kelas-static-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .wali-kelas-actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .profile-header .section-title {
             margin-bottom: 0;
+            text-align: center;
+        }
+
+        .profile-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 24px;
         }
 
         .add-student-btn {
@@ -203,6 +192,42 @@
             border-radius: 26px;
             border: 1px solid rgba(189, 211, 233, 0.95);
             box-shadow: 0 28px 60px rgba(4, 23, 42, 0.22);
+        }
+
+        .wali-form-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(7, 23, 38, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .wali-form-modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .wali-form-panel {
+            width: min(520px, 100%);
+            background: linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+            padding: 24px;
+            border-radius: 26px;
+            border: 1px solid rgba(189, 211, 233, 0.95);
+            box-shadow: 0 28px 60px rgba(4, 23, 42, 0.22);
+        }
+
+        .wali-form-grid {
+            display: grid;
+            gap: 14px;
         }
 
         .student-form-top {
@@ -412,13 +437,12 @@
                 padding: 22px 16px;
             }
 
-            .profile-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
             .add-student-btn {
                 width: 100%;
+            }
+
+            .profile-toolbar {
+                justify-content: stretch;
             }
 
             .profile-filter-bar {
@@ -444,10 +468,6 @@
             .student-form-grid {
                 grid-template-columns: 1fr;
             }
-
-            .structure-branch {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -459,69 +479,61 @@
                     <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek" class="logo">
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
-                <nav class="navbar">
-                    <a href="index.html">HOME</a>
-                    <a href="profil.html">Profil Kelas</a>
-                    <a href="galery.html">Galeri</a>
-                    <a href="hubungi.html">Hubungi kami</a>
-                </nav>
+                <div class="header-actions">
+                    <nav class="navbar">
+                        <a href="index.html">HOME</a>
+                        <a href="profil.html">Profil Kelas</a>
+                        <a href="galery.html">Galeri</a>
+                        <a href="hubungi.html">Hubungi kami</a>
+                    </nav>
+                    <button type="button" class="auth-toggle" id="authToggle">Login</button>
+                </div>
             </div>
         </div>
 
         <div class="content">
             <div class="profile-shell">
-                <div class="structure-section">
-                    <h3 class="structure-title">STRUKTUR KELAS</h3>
-                    <div class="structure-flow">
-                        <div class="structure-card lead">
-                            <img class="structure-photo" src="https://placehold.co/220x220/e6f0fa/0a2a44?text=Wali+Kelas" alt="Foto Wali Kelas">
-                            <div class="structure-role">Wali Kelas</div>
-                            <div class="structure-name">HERA FRANSISKA, M.T.I</div>
-                        </div>
-                        <div class="structure-line"></div>
-                        <div class="structure-card">
-                            <img class="structure-photo" src="https://placehold.co/220x220/e6f0fa/0a2a44?text=Ketua" alt="Foto Ketua Murid">
-                            <div class="structure-role">Ketua Murid</div>
-                            <div class="structure-name">MUHAMMAD DIMAS</div>
-                        </div>
-                        <div class="structure-line"></div>
-                        <div class="structure-branch">
-                            <div class="structure-card">
-                                <img class="structure-photo" src="https://placehold.co/220x220/e6f0fa/0a2a44?text=Wakil" alt="Foto Wakil">
-                                <div class="structure-role">Wakil</div>
-                                <div class="structure-name">MUHAMMAD FAHRI</div>
-                            </div>
-                            <div class="structure-card">
-                                <img class="structure-photo" src="https://placehold.co/220x220/e6f0fa/0a2a44?text=Bendahara" alt="Foto Bendahara">
-                                <div class="structure-role">Bendahara</div>
-                                <div class="structure-name">MUHAMMAD HILMY</div>
+                <div class="wali-kelas-box">
+                    <div class="wali-kelas-label">Wali Kelas</div>
+                    <div class="wali-kelas-static">
+                        <div class="wali-kelas-static-item">
+                            <img class="wali-kelas-photo" src="https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas+1" alt="Foto Wali Kelas 1" data-wali-photo>
+                            <div class="wali-kelas-name" data-wali-name>HERA FRANSISKA, M.T.I</div>
+                            <div class="wali-kelas-static-actions">
+                                <button type="button" class="edit-student-btn" data-edit-wali="0">Edit</button>
                             </div>
                         </div>
-                        <div class="structure-line"></div>
-                        <div class="structure-card">
-                            <img class="structure-photo" src="https://placehold.co/220x220/e6f0fa/0a2a44?text=Sekretaris" alt="Foto Sekretaris">
-                            <div class="structure-role">Sekretaris</div>
-                            <div class="structure-name">Belum Diisi</div>
+                        <div class="wali-kelas-static-item">
+                            <img class="wali-kelas-photo" src="https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas+2" alt="Foto Wali Kelas 2" data-wali-photo>
+                            <div class="wali-kelas-name" data-wali-name>DEWI LESTARI, S.Pd</div>
+                            <div class="wali-kelas-static-actions">
+                                <button type="button" class="edit-student-btn" data-edit-wali="1">Edit</button>
+                            </div>
                         </div>
+                        <div class="wali-kelas-static-item">
+                            <img class="wali-kelas-photo" src="https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas+3" alt="Foto Wali Kelas 3" data-wali-photo>
+                            <div class="wali-kelas-name" data-wali-name>RUDI HARTONO, S.Kom</div>
+                            <div class="wali-kelas-static-actions">
+                                <button type="button" class="edit-student-btn" data-edit-wali="2">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wali-kelas-list" id="waliKelasList"></div>
+                    <div class="wali-kelas-toolbar">
+                        <button type="button" class="add-student-btn" id="toggleWaliForm">
+                            <i class="fas fa-user-plus"></i> Tambah Wali Kelas
+                        </button>
                     </div>
                 </div>
 
                 <div class="profile-header">
-                    <h2 class="section-title">PROFIL KELAS</h2>
+                    <h2 class="section-title">SISWA</h2>
+                </div>
+
+                <div class="profile-toolbar">
                     <button type="button" class="add-student-btn" id="toggleStudentForm">
                         <i class="fas fa-user-plus"></i> Tambah Siswa
                     </button>
-                </div>
-
-                <div class="profile-filter-bar">
-                    <input type="text" id="filterSearch" class="profile-filter-input" placeholder="Cari nama/cita-cita/sosmed...">
-                    <select id="filterRole" class="profile-filter-select">
-                        <option value="">Semua Role</option>
-                        <option value="KETUA KELAS">Ketua Kelas</option>
-                        <option value="Bendahara">Bendahara</option>
-                        <option value="Siswa">Siswa</option>
-                    </select>
-                    <button id="clearFilter" class="profile-filter-reset">Reset</button>
                 </div>
 
                 <div class="member-grid" id="memberGrid">
@@ -548,22 +560,12 @@
                         <input type="text" id="studentName" required>
                     </div>
 
-                    <div class="form-field">
-                        <label for="studentRole">Peran</label>
-                        <input type="text" id="studentRole" required placeholder="Contoh: Wakil Ketua">
-                    </div>
-
                     <div class="form-field full">
                         <label for="studentPhotoFile">Foto (Upload)</label>
                         <input type="file" id="studentPhotoFile" accept="image/*">
                         <div id="photoPreview" style="margin-top:8px; display:none;">
                             <img id="previewImg" class="photo-preview" alt="Preview">
                         </div>
-                    </div>
-
-                    <div class="form-field">
-                        <label for="studentSocial">Akun Sosmed</label>
-                        <input type="text" id="studentSocial" placeholder="IG/Twitter/LinkedIn">
                     </div>
 
                     <div class="form-field">
@@ -575,6 +577,34 @@
                 <div class="form-actions">
                     <button type="submit" class="add-student-btn" id="submitStudentForm">Simpan Profil</button>
                     <span id="addStatus" class="upload-status"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="wali-form-modal hidden" id="waliFormModal" aria-hidden="true">
+        <div class="wali-form-panel">
+            <div class="student-form-top">
+                <div class="student-form-title">Ubah Wali Kelas</div>
+                <button type="button" class="close-form-btn" id="closeWaliForm" aria-label="Tutup form wali">&times;</button>
+            </div>
+            <form id="waliForm">
+                <div class="wali-form-grid">
+                    <div class="form-field">
+                        <label for="waliName">Nama</label>
+                        <input type="text" id="waliName" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="waliPhotoFile">Foto (Upload)</label>
+                        <input type="file" id="waliPhotoFile" accept="image/*">
+                        <div id="waliPhotoPreview" style="margin-top:8px; display:none;">
+                            <img id="waliPreviewImg" class="photo-preview" alt="Preview Wali">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="add-student-btn">Simpan Wali Kelas</button>
+                    <span id="waliStatus" class="upload-status"></span>
                 </div>
             </form>
         </div>
@@ -594,9 +624,16 @@
         }
 
         const memberGrid = document.getElementById('memberGrid');
-        const filterSearch = document.getElementById('filterSearch');
-        const filterRole = document.getElementById('filterRole');
-        const clearFilter = document.getElementById('clearFilter');
+        const waliKelasList = document.getElementById('waliKelasList');
+        const toggleWaliFormBtn = document.getElementById('toggleWaliForm');
+        const waliFormModal = document.getElementById('waliFormModal');
+        const closeWaliFormBtn = document.getElementById('closeWaliForm');
+        const waliForm = document.getElementById('waliForm');
+        const waliNameInput = document.getElementById('waliName');
+        const waliPhotoFile = document.getElementById('waliPhotoFile');
+        const waliPhotoPreview = document.getElementById('waliPhotoPreview');
+        const waliPreviewImg = document.getElementById('waliPreviewImg');
+        const waliStatus = document.getElementById('waliStatus');
         const studentFormModal = document.getElementById('studentFormModal');
         const studentFormPanel = document.getElementById('studentFormPanel');
         const toggleStudentFormBtn = document.getElementById('toggleStudentForm');
@@ -616,6 +653,78 @@
         let currentImageUrl = '';
         let editingStudentId = null;
         let editingStudentPhotoUrl = '';
+        const waliStorageKey = 'xii_tkj3_wali_kelas';
+        const defaultWaliKelas = [];
+
+        function applyAdminView() {
+            const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+            toggleStudentFormBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+            toggleWaliFormBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+        }
+
+        function loadWaliKelas() {
+            let waliData = defaultWaliKelas;
+            try {
+                const stored = localStorage.getItem(waliStorageKey);
+                if (stored) {
+                    waliData = JSON.parse(stored);
+                }
+            } catch (error) {
+                console.warn('Gagal membaca data wali kelas:', error);
+            }
+
+            waliKelasList.innerHTML = '';
+
+            if (!waliData || waliData.length === 0) {
+                waliKelasList.innerHTML = '<div style="grid-column:1/-1;color:#355574;text-align:center;padding:18px;">Belum ada data wali kelas.</div>';
+                return;
+            }
+
+            waliData.forEach((wali, index) => {
+                const card = document.createElement('div');
+                card.className = 'wali-kelas-card';
+                card.innerHTML = `
+                    <img class="wali-kelas-photo" src="${wali.photo_url || 'https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas'}" alt="${wali.name}">
+                    <div class="wali-kelas-name">${wali.name}</div>
+                    ${typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn() ? `<div class="wali-kelas-actions"><button type="button" class="delete-student-btn" data-index="${index}">Hapus</button></div>` : ''}
+                `;
+
+                const deleteBtn = card.querySelector('.delete-student-btn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', () => {
+                        deleteWaliKelas(index);
+                    });
+                }
+
+                waliKelasList.appendChild(card);
+            });
+        }
+
+        function openWaliForm() {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
+            loadWaliKelas();
+            waliStatus.textContent = '';
+            waliStatus.className = 'upload-status';
+            waliForm.reset();
+            waliPhotoPreview.style.display = 'none';
+            waliFormModal.classList.remove('hidden');
+            waliFormModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            waliNameInput.focus();
+        }
+
+        function closeWaliForm() {
+            waliFormModal.classList.add('hidden');
+            waliFormModal.setAttribute('aria-hidden', 'true');
+            waliStatus.textContent = '';
+            waliStatus.className = 'upload-status';
+            waliPhotoFile.value = '';
+            if (studentFormModal.classList.contains('hidden') && modal.style.display !== 'block') {
+                document.body.classList.remove('modal-open');
+            }
+        }
 
         function resetStudentFormState() {
             form.reset();
@@ -630,6 +739,9 @@
         }
 
         function openStudentForm() {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
             if (!editingStudentId) {
                 resetStudentFormState();
             }
@@ -640,14 +752,15 @@
         }
 
         function openEditStudentForm(student) {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
             resetStudentFormState();
             editingStudentId = student.id;
             editingStudentPhotoUrl = student.photo_url || '';
             studentFormTitle.textContent = 'Edit Profil Siswa';
             submitStudentForm.innerHTML = 'Update Profil';
             document.getElementById('studentName').value = student.name || '';
-            document.getElementById('studentRole').value = student.role || '';
-            document.getElementById('studentSocial').value = student.social === 'Tidak ada' ? '' : (student.social || '');
             document.getElementById('studentDream').value = student.dream === 'Belum diisi' ? '' : (student.dream || '');
 
             if (editingStudentPhotoUrl) {
@@ -671,28 +784,13 @@
             memberGrid.innerHTML = '<div class="loading">Memuat data...</div>';
 
             try {
-                let query = window.supabaseClient.from('students').select('*');
-                const role = filterRole.value;
-
-                if (role) {
-                    query = query.eq('role', role);
-                }
-
-                const { data: students, error } = await query.order('created_at', { ascending: false });
+                const { data: students, error } = await window.supabaseClient
+                    .from('students')
+                    .select('*')
+                    .order('created_at', { ascending: false });
                 if (error) throw error;
 
-                const searchTerm = filterSearch.value.toLowerCase();
-                let filtered = students || [];
-
-                if (searchTerm) {
-                    filtered = filtered.filter((student) =>
-                        student.name?.toLowerCase().includes(searchTerm) ||
-                        student.dream?.toLowerCase().includes(searchTerm) ||
-                        student.social?.toLowerCase().includes(searchTerm)
-                    );
-                }
-
-                renderStudents(filtered);
+                renderStudents(students || []);
             } catch (error) {
                 console.error('Error loading students:', error);
                 memberGrid.innerHTML = '<div class="loading">Gagal memuat data. Periksa koneksi internet.</div>';
@@ -712,25 +810,26 @@
                 card.innerHTML = `
                     <img src="${student.photo_url || 'https://placehold.co/300x200/e6f0fa/0a2a44?text=No+Image'}" alt="${student.name}">
                     <h3>${student.name}</h3>
-                    <p>Peran: ${student.role}</p>
-                    <p>Akun: ${student.social || 'Tidak ada'}</p>
                     <p>Cita-cita: ${student.dream || 'Belum diisi'}</p>
                     <div class="member-card-actions">
-                        <button type="button" class="edit-student-btn">Edit</button>
-                        <button type="button" class="delete-student-btn">Hapus</button>
+                        ${typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn() ? '<button type="button" class="edit-student-btn">Edit</button><button type="button" class="delete-student-btn">Hapus</button>' : ''}
                     </div>
                 `;
                 card.onclick = () => openModal(student.photo_url, student.name);
                 const editBtn = card.querySelector('.edit-student-btn');
                 const deleteBtn = card.querySelector('.delete-student-btn');
-                editBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEditStudentForm(student);
-                });
-                deleteBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    await deleteStudent(student);
-                });
+                if (editBtn) {
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEditStudentForm(student);
+                    });
+                }
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        await deleteStudent(student);
+                    });
+                }
                 memberGrid.appendChild(card);
             });
         }
@@ -753,17 +852,93 @@
             return urlData.publicUrl;
         }
 
+        waliForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
+
+            const name = waliNameInput.value.trim();
+            const photoFile = waliPhotoFile.files[0];
+
+            if (!name) {
+                waliStatus.textContent = 'Nama wajib diisi!';
+                waliStatus.className = 'upload-status error';
+                return;
+            }
+
+            waliStatus.textContent = 'Menyimpan data...';
+            waliStatus.className = 'upload-status loading';
+
+            try {
+                let photoUrl = 'https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas';
+                if (photoFile) {
+                    photoUrl = await uploadPhoto(photoFile);
+                }
+
+                let waliData = [];
+                try {
+                    const stored = localStorage.getItem(waliStorageKey);
+                    if (stored) {
+                        waliData = JSON.parse(stored);
+                    }
+                } catch (storageError) {
+                    console.warn('Gagal membaca storage wali kelas:', storageError);
+                }
+
+                waliData.push({
+                    name: name,
+                    photo_url: photoUrl
+                });
+
+                localStorage.setItem(waliStorageKey, JSON.stringify(waliData));
+
+                loadWaliKelas();
+                closeWaliForm();
+            } catch (error) {
+                console.error('Error saving wali kelas:', error);
+                waliStatus.textContent = 'Gagal menyimpan wali kelas.';
+                waliStatus.className = 'upload-status error';
+            }
+        });
+
+        function deleteWaliKelas(index) {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
+
+            const confirmed = window.confirm('Hapus data wali kelas ini?');
+            if (!confirmed) return;
+
+            try {
+                let waliData = [];
+                const stored = localStorage.getItem(waliStorageKey);
+                if (stored) {
+                    waliData = JSON.parse(stored);
+                }
+
+                waliData.splice(index, 1);
+                localStorage.setItem(waliStorageKey, JSON.stringify(waliData));
+                loadWaliKelas();
+            } catch (error) {
+                console.error('Gagal menghapus wali kelas:', error);
+            }
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
+
             const name = document.getElementById('studentName').value.trim();
-            const role = document.getElementById('studentRole').value.trim();
-            const social = document.getElementById('studentSocial').value.trim();
             const dream = document.getElementById('studentDream').value.trim();
             const photoFile = studentPhotoFile.files[0];
 
-            if (!name || !role) {
-                statusSpan.textContent = 'Nama dan peran wajib diisi!';
+            if (!name) {
+                statusSpan.textContent = 'Nama wajib diisi!';
                 statusSpan.className = 'upload-status error';
                 return;
             }
@@ -786,8 +961,6 @@
                         .from('students')
                         .update({
                             name: name,
-                            role: role,
-                            social: social || 'Tidak ada',
                             dream: dream || 'Belum diisi',
                             photo_url: photoUrl
                         })
@@ -795,8 +968,8 @@
                 } else {
                     ({ error } = await window.supabaseClient.from('students').insert({
                         name: name,
-                        role: role,
-                        social: social || 'Tidak ada',
+                        role: 'Siswa',
+                        social: 'Tidak ada',
                         dream: dream || 'Belum diisi',
                         photo_url: photoUrl
                     }));
@@ -825,6 +998,19 @@
                 reader.readAsDataURL(file);
             } else {
                 photoPreview.style.display = 'none';
+            }
+        });
+
+        waliPhotoFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    waliPreviewImg.src = event.target.result;
+                    waliPhotoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
         });
 
@@ -859,6 +1045,9 @@
         }
 
         async function deleteStudent(student) {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
             const confirmed = window.confirm(`Hapus profil ${student.name}?`);
             if (!confirmed) return;
 
@@ -932,9 +1121,15 @@
         downloadBtn.onclick = downloadImage;
         toggleStudentFormBtn.addEventListener('click', openStudentForm);
         closeStudentFormBtn.addEventListener('click', closeStudentForm);
+        toggleWaliFormBtn.addEventListener('click', openWaliForm);
+        closeWaliFormBtn.addEventListener('click', closeWaliForm);
 
         studentFormModal.addEventListener('click', (e) => {
             if (e.target === studentFormModal) closeStudentForm();
+        });
+
+        waliFormModal.addEventListener('click', (e) => {
+            if (e.target === waliFormModal) closeWaliForm();
         });
 
         window.addEventListener('click', (e) => {
@@ -946,20 +1141,196 @@
                 closeStudentForm();
             }
 
+            if (e.key === 'Escape' && !waliFormModal.classList.contains('hidden')) {
+                closeWaliForm();
+            }
+
             if (e.key === 'Escape' && modal.style.display === 'block') {
                 closeModal();
             }
         });
 
-        filterSearch.addEventListener('input', loadStudents);
-        filterRole.addEventListener('change', loadStudents);
-        clearFilter.addEventListener('click', () => {
-            filterSearch.value = '';
-            filterRole.value = '';
+        document.addEventListener('DOMContentLoaded', () => {
+            applyAdminView();
+            loadWaliKelas();
+        });
+
+        window.addEventListener('authchange', () => {
+            applyAdminView();
+            loadWaliKelas();
             loadStudents();
         });
 
         loadStudents();
+    </script>
+    <script>
+        (function () {
+            const waliStorageKey = 'xii_tkj3_wali_static_cards';
+            const waliFormModal = document.getElementById('waliFormModal');
+            const closeWaliFormBtn = document.getElementById('closeWaliForm');
+            const waliForm = document.getElementById('waliForm');
+            const waliNameInput = document.getElementById('waliName');
+            const waliPhotoFile = document.getElementById('waliPhotoFile');
+            const waliPhotoPreview = document.getElementById('waliPhotoPreview');
+            const waliPreviewImg = document.getElementById('waliPreviewImg');
+            const waliStatus = document.getElementById('waliStatus');
+            const waliNameEls = Array.from(document.querySelectorAll('[data-wali-name]'));
+            const waliPhotoEls = Array.from(document.querySelectorAll('[data-wali-photo]'));
+            const editButtons = Array.from(document.querySelectorAll('[data-edit-wali]'));
+            let activeWaliIndex = null;
+
+            if (!waliFormModal || !waliForm || !waliNameInput || !waliPhotoFile) {
+                return;
+            }
+
+            function getDefaultWaliData() {
+                return waliNameEls.map((el, index) => ({
+                    name: el.textContent.trim(),
+                    photo_url: waliPhotoEls[index]?.getAttribute('src') || 'https://placehold.co/300x300/e6f0fa/0a2a44?text=Wali+Kelas'
+                }));
+            }
+
+            function getWaliData() {
+                const defaults = getDefaultWaliData();
+                try {
+                    const stored = localStorage.getItem(waliStorageKey);
+                    if (!stored) return defaults;
+                    const parsed = JSON.parse(stored);
+                    return Array.isArray(parsed) && parsed.length ? parsed : defaults;
+                } catch (error) {
+                    console.warn('Gagal membaca data wali kelas statis:', error);
+                    return defaults;
+                }
+            }
+
+            function saveWaliData(data) {
+                localStorage.setItem(waliStorageKey, JSON.stringify(data));
+            }
+
+            function renderWaliData() {
+                const data = getWaliData();
+                data.forEach((wali, index) => {
+                    if (waliNameEls[index]) waliNameEls[index].textContent = wali.name;
+                    if (waliPhotoEls[index]) waliPhotoEls[index].src = wali.photo_url;
+                });
+
+                const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+                editButtons.forEach((button) => {
+                    button.style.display = isAdmin ? 'inline-flex' : 'none';
+                });
+            }
+
+            function openWaliEditor(index) {
+                if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                    return;
+                }
+
+                const data = getWaliData();
+                const current = data[index];
+                if (!current) return;
+
+                activeWaliIndex = index;
+                waliNameInput.value = current.name || '';
+                waliPreviewImg.src = current.photo_url || '';
+                waliPhotoPreview.style.display = current.photo_url ? 'block' : 'none';
+                waliPhotoFile.value = '';
+                waliStatus.textContent = '';
+                waliStatus.className = 'upload-status';
+                waliFormModal.classList.remove('hidden');
+                waliFormModal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+                waliNameInput.focus();
+            }
+
+            function closeWaliEditor() {
+                activeWaliIndex = null;
+                waliFormModal.classList.add('hidden');
+                waliFormModal.setAttribute('aria-hidden', 'true');
+                waliStatus.textContent = '';
+                waliStatus.className = 'upload-status';
+                waliForm.reset();
+                waliPhotoPreview.style.display = 'none';
+                if (document.getElementById('studentFormModal').classList.contains('hidden') && document.getElementById('imageModal').style.display !== 'block') {
+                    document.body.classList.remove('modal-open');
+                }
+            }
+
+            editButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    openWaliEditor(Number(button.dataset.editWali));
+                });
+            });
+
+            closeWaliFormBtn?.addEventListener('click', closeWaliEditor);
+
+            waliFormModal.addEventListener('click', (e) => {
+                if (e.target === waliFormModal) closeWaliEditor();
+            });
+
+            waliPhotoFile.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) {
+                    waliPhotoPreview.style.display = 'none';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    waliPreviewImg.src = event.target.result;
+                    waliPhotoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            });
+
+            waliForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                    return;
+                }
+
+                if (activeWaliIndex === null) return;
+
+                const name = waliNameInput.value.trim();
+                const photoFile = waliPhotoFile.files[0];
+                if (!name) {
+                    waliStatus.textContent = 'Nama wajib diisi!';
+                    waliStatus.className = 'upload-status error';
+                    return;
+                }
+
+                waliStatus.textContent = 'Menyimpan data...';
+                waliStatus.className = 'upload-status loading';
+
+                try {
+                    const data = getWaliData();
+                    let photoUrl = data[activeWaliIndex]?.photo_url || waliPhotoEls[activeWaliIndex]?.src || '';
+
+                    if (photoFile && typeof uploadPhoto === 'function') {
+                        photoUrl = await uploadPhoto(photoFile);
+                    }
+
+                    data[activeWaliIndex] = { name, photo_url: photoUrl };
+                    saveWaliData(data);
+                    renderWaliData();
+                    closeWaliEditor();
+                } catch (error) {
+                    console.error('Gagal menyimpan wali kelas:', error);
+                    waliStatus.textContent = 'Gagal menyimpan data.';
+                    waliStatus.className = 'upload-status error';
+                }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !waliFormModal.classList.contains('hidden')) {
+                    closeWaliEditor();
+                }
+            });
+
+            window.addEventListener('authchange', renderWaliData);
+            document.addEventListener('DOMContentLoaded', renderWaliData);
+            renderWaliData();
+        })();
     </script>
 </body>
 </html>

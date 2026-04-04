@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>XII TKJ 3 - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .home-shell {
             background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -14,20 +16,85 @@
             box-shadow: 0 24px 44px rgba(0,40,80,0.12);
         }
 
-        .home-hero {
+        .home-shell,
+        .home-shell * {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+        }
+
+        .home {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 28px;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .home-content h3 {
+            font-size: clamp(30px, 4.5vw, 52px);
+            line-height: 1.18;
+            color: #0a2a44;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .home-content h3 span {
+            color: #4e93c9;
+        }
+
+        .home-content p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #284765;
+            max-width: 560px;
+        }
+
+        .social-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .social-icons a {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            background: linear-gradient(180deg, #eef7ff 0%, #e3eef9 100%);
+            color: #0a2a44;
+            border: 1px solid #bfd4e8;
+            box-shadow: 0 10px 22px rgba(20, 56, 96, 0.08);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            background: #dcecff;
+        }
+
+        .social-icons svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            display: block;
+        }
+
+        .home-photo {
             position: relative;
             min-height: 460px;
             border-radius: 30px;
             overflow: hidden;
-            margin-bottom: 28px;
             background:
                 linear-gradient(180deg, rgba(6, 25, 40, 0.18), rgba(6, 25, 40, 0.42)),
-                url('hero-home.jpg') center center/contain no-repeat;
+                url('hero-home-old.jpg') center center/contain no-repeat;
             background-color: #eef4fa;
             box-shadow: 0 22px 42px rgba(21, 54, 83, 0.18);
         }
 
-        .home-hero::after {
+        .home-photo::after {
             content: '';
             position: absolute;
             inset: 24px;
@@ -36,97 +103,122 @@
             pointer-events: none;
         }
 
-        .home-copy {
-            max-width: 980px;
-            margin: 0 auto;
-        }
-
-        .home-copy .section-title {
-            margin-bottom: 18px;
-        }
-
-        .home-lead {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #1e3a5f;
-            margin-bottom: 24px;
-        }
-
-        .campus-title {
-            font-size: clamp(28px, 4vw, 34px);
-            color: #0a2a44;
-            font-weight: 800;
-            text-align: center;
-            margin: 10px 0 26px;
-            letter-spacing: 0.02em;
-        }
-
-        .about-label {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 700;
-            color: #123456;
-            margin-bottom: 16px;
-            letter-spacing: 0.08em;
-        }
-
-        .about-copy {
-            text-align: center;
-            color: #2a4b69;
-            font-size: 17px;
-            line-height: 1.8;
-            max-width: 840px;
-            margin: 0 auto 28px;
-        }
-
-        .home-info-panel {
-            background: #ffffff;
-            border: 1px solid rgba(191, 216, 240, 0.9);
+        .hero {
+            position: relative;
+            min-height: 300px;
             border-radius: 30px;
-            padding: 28px 26px;
-            box-shadow: 0 20px 40px rgba(20, 56, 96, 0.08);
+            overflow: hidden;
+            margin-bottom: 28px;
+            background:
+                linear-gradient(180deg, rgba(6, 25, 40, 0.16), rgba(6, 25, 40, 0.34)),
+                url('hero-home.jpg') center 28%/cover no-repeat;
+            background-color: #e8f0f8;
+            box-shadow: 0 22px 42px rgba(21, 54, 83, 0.14);
         }
 
-        .home-info-grid {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: 26px;
-            align-items: start;
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 22px;
+            border: 1px solid rgba(255,255,255,0.62);
+            border-radius: 20px;
+            pointer-events: none;
         }
 
-        .home-logo-box {
+        .hero-text {
+            min-height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(180deg, #f6fbff 0%, #ecf4fb 100%);
-            border: 1px solid #d2e2f0;
-            border-radius: 24px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
             padding: 24px;
-            min-height: 220px;
         }
 
-        .home-logo-box img {
-            width: 130px;
-            height: 130px;
-            object-fit: contain;
+        .hero-text h2 {
+            color: #ffffff;
+            font-size: clamp(24px, 3.4vw, 42px);
+            font-weight: 800;
+            letter-spacing: 0.04em;
         }
 
-        .home-detail-list {
+        .about {
+            margin-bottom: 28px;
+        }
+
+        .about .container {
+            text-align: center;
+        }
+
+        .about .container h3 {
+            font-size: 22px;
+            color: #123456;
+            margin-bottom: 14px;
+            letter-spacing: 0.12em;
+        }
+
+        .about .container p {
+            max-width: 860px;
+            margin: 0 auto;
+            color: #284765;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .footer-home {
+            background: linear-gradient(90deg, #c9e7ff 0%, #89c4f0 32%, #4d92c5 68%, #245986 100%);
+            border: 1px solid rgba(78, 132, 179, 0.24);
+            border-radius: 30px;
+            padding: 28px 24px 20px;
+            box-shadow: 0 18px 38px rgba(29, 74, 112, 0.16);
+        }
+
+        .footer-container {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px 22px;
+            grid-template-columns: 1.1fr 1fr 1fr 1fr;
+            gap: 18px;
+            align-items: start;
         }
 
-        .home-detail-item h3 {
+        .footer-box h4 {
+            color: #ffffff;
+            margin-bottom: 10px;
             font-size: 16px;
-            color: #0a2a44;
-            margin-bottom: 8px;
         }
 
-        .home-detail-item p {
-            color: #355574;
+        .footer-box p {
+            color: rgba(255, 255, 255, 0.95);
             line-height: 1.7;
-            font-size: 15px;
+            font-size: 14px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-brand-img {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .footer-bottom {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.24);
+            text-align: center;
+            background: rgba(16, 56, 92, 0.22);
+            border-radius: 18px;
+        }
+
+        .footer-bottom h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
         }
 
         @media (max-width: 768px) {
@@ -135,25 +227,35 @@
                 padding: 22px 16px;
             }
 
-            .home-hero {
+            .home {
+                grid-template-columns: 1fr;
+            }
+
+            .home-photo {
                 min-height: 320px;
             }
 
-            .campus-title {
-                font-size: 24px;
-                margin-bottom: 20px;
+            .hero {
+                min-height: 220px;
+                border-radius: 24px;
             }
 
-            .about-copy {
-                font-size: 15px;
+            .hero::after {
+                inset: 14px;
+                border-radius: 16px;
             }
 
-            .home-info-grid {
+            .hero-text {
+                min-height: 220px;
+            }
+
+            .footer-container {
                 grid-template-columns: 1fr;
             }
 
-            .home-detail-list {
-                grid-template-columns: 1fr;
+            .footer-brand {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -166,61 +268,97 @@
                     <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek" class="logo">
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
-                <nav class="navbar">
-                    <a href="index.html">HOME</a>
-                    <a href="profil.html">Profil Kelas</a>
-                    <a href="galery.html">Galeri</a>
-                    <a href="hubungi.html">Hubungi kami</a>
-                </nav>
+                <div class="header-actions">
+                    <nav class="navbar">
+                        <a href="index.html">HOME</a>
+                        <a href="profil.html">Profil Kelas</a>
+                        <a href="galery.html">Galeri</a>
+                        <a href="hubungi.html">Hubungi kami</a>
+                    </nav>
+                    <button type="button" class="auth-toggle" id="authToggle">Login</button>
+                </div>
             </div>
         </div>
 
         <div class="content" id="home">
             <div class="home-shell">
-                <section class="home-hero" aria-label="Foto kelas XII TKJ 3">
-                </section>
+                <section class="home">
+                    <div class="home-content">
+                        <h3>HI, WELCOME <span>TO XII TKJ 3</span></h3>
+                        <p>
+                            Website ini adalah web resmi yang dirancang dan dikembangkan oleh kelas kami XII TKJ 3
+                            untuk memperkenalkan kelas kami.
+                        </p>
 
-                <div class="home-copy">
-                    <h2 class="section-title">HI, WELCOME TO XII TKJ 3</h2>
-                    <p class="home-lead">
-                        Website ini adalah web resmi yang dirancang dan dikembangkan oleh kelas kami, XII TKJ 3, untuk memperkenalkan kelas kami.
-                    </p>
-
-                    <h3 class="campus-title">SMKN 1 RANCAEKEK</h3>
-                    <div class="about-label">ABOUT</div>
-                    <p class="about-copy">
-                        Web ini adalah website resmi kelas kami yang ditujukan untuk memperkenalkan kelas kami, menampilkan kebersamaan, dan membagikan dokumentasi kegiatan XII TKJ 3.
-                    </p>
-
-                    <div class="home-info-panel">
-                        <div class="home-info-grid">
-                            <div class="home-logo-box">
-                                <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek">
-                            </div>
-
-                            <div class="home-detail-list">
-                                <div class="home-detail-item">
-                                    <h3>SMKN 1 RANCAEKEK</h3>
-                                    <p>Sekolah Menengah Kejuruan dengan fokus pembelajaran Teknik Komputer dan Jaringan.</p>
-                                </div>
-                                <div class="home-detail-item">
-                                    <h3>Pendaftaran</h3>
-                                    <p>Email: smkn1rancaekek@example.com</p>
-                                </div>
-                                <div class="home-detail-item">
-                                    <h3>Developer</h3>
-                                    <p>+62 878-9019-8284</p>
-                                </div>
-                                <div class="home-detail-item">
-                                    <h3>Alamat</h3>
-                                    <p>Jl. Jendral Sudirman, Rancaekek</p>
-                                </div>
-                            </div>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/profile.php?id=100081001788879" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.6 1.7-1.6H17V4.8c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.5v3h2.8v8h3.2Z"/></svg>
+                            </a>
+                            <a href="https://www.youtube.com/@chanelsmkn1rancaekek773" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>
+                            </a>
+                            <a href="https://www.instagram.com/smkn1rancaekek/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 1.9A3.9 3.9 0 0 0 3.9 7.8v8.4a3.9 3.9 0 0 0 3.9 3.9h8.4a3.9 3.9 0 0 0 3.9-3.9V7.8a3.9 3.9 0 0 0-3.9-3.9H7.8Zm8.9 1.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 6.9A5.1 5.1 0 1 1 6.9 12 5.1 5.1 0 0 1 12 6.9Zm0 1.9A3.2 3.2 0 1 0 15.2 12 3.2 3.2 0 0 0 12 8.8Z"/></svg>
+                            </a>
+                            <a href="https://www.tiktok.com/@smkn1rancaekek?lang=id-ID" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.9 2c.2 1.7 1.2 3.1 2.7 4a6 6 0 0 0 3 .8v3a9 9 0 0 1-4.6-1.3v6.4a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.1a3 3 0 1 0 2 2.8V2h1.9Z"/></svg>
+                            </a>
+                            <a href="https://smkn1rancaekek.sch.id/" target="_blank" rel="noopener noreferrer" aria-label="Website Sekolah">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm6.93 9h-3.02a15.36 15.36 0 0 0-1.38-5A8.03 8.03 0 0 1 18.93 11ZM12 4.04c.84 1.08 1.75 3.18 2.05 5.96H9.95C10.25 7.22 11.16 5.12 12 4.04ZM4.07 13h3.02a15.36 15.36 0 0 0 1.38 5A8.03 8.03 0 0 1 4.07 13Zm3.02-2H4.07a8.03 8.03 0 0 1 4.4-5 15.36 15.36 0 0 0-1.38 5ZM12 19.96c-.84-1.08-1.75-3.18-2.05-5.96h4.1c-.3 2.78-1.21 4.88-2.05 5.96ZM14.32 12H9.68c-.04-.67-.06-1.33-.06-2s.02-1.33.06-2h4.64c.04.67.06 1.33.06 2s-.02 1.33-.06 2Zm1.21 6a15.36 15.36 0 0 0 1.38-5h3.02a8.03 8.03 0 0 1-4.4 5Z"/></svg>
+                            </a>
                         </div>
                     </div>
-                </div>
+
+                    <div class="home-photo" aria-label="Foto kelas XII TKJ 3"></div>
+                </section>
+
+                <section class="hero">
+                    <div class="hero-text">
+                        <h2>SMKN 1 RANCAEKEK</h2>
+                    </div>
+                </section>
+
+                <section class="about">
+                    <div class="container">
+                        <h3>ABOUT</h3>
+                        <p>
+                            Web ini adalah web resmi kelas kami yang ditujukan untuk memperkenalkan kelas kami
+                            yakni kelas XII TKJ 3, serta menampilkan kebersamaan dan dokumentasi kegiatan kelas.
+                        </p>
+                    </div>
+                </section>
+
+                <footer class="footer-home">
+                    <div class="footer-container">
+                        <div class="footer-box footer-brand">
+                            <img src="logo-sekolah-transparent.png" class="footer-brand-img" alt="Logo">
+                            <h4>SMKN 1 RANCAEKEK</h4>
+                        </div>
+
+                        <div class="footer-box">
+                            <h4>PENDAFTARAN</h4>
+                            <p>Email: smknrancaekek1@gmail.com</p>
+                            <p>Telp: +62 857-8548-6586</p>
+                        </div>
+
+                        <div class="footer-box">
+                            <h4>Developer</h4>
+                            <p>+62 858-4778-3433</p>
+                        </div>
+
+                        <div class="footer-box">
+                            <h4>Alamat</h4>
+                            <p>Jl. Bojong Salam, Rancaekek, Kec. Rancaekek,<br>Kabupaten Bandung, Jawa Barat 40394, Indonesia</p>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <h3>&copy; 2026 XII TKJ 3</h3>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
+    <script src="auth.js"></script>
 </body>
 </html>

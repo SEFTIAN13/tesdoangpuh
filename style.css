@@ -50,6 +50,15 @@ body {
     margin: 0 auto;
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .header::after {
     content: '';
     display: block;
@@ -111,6 +120,12 @@ body {
         gap: 14px;
     }
 
+    .header-actions {
+        flex: 1 1 100%;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
     .brand {
         flex: 1 1 280px;
     }
@@ -146,6 +161,27 @@ body {
     box-shadow: 0 8px 18px rgba(56, 96, 132, 0.12);
 }
 
+.auth-toggle {
+    color: #153a59;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 20px;
+    background-color: var(--nav-pill);
+    border-radius: 30px;
+    border: 1px solid rgba(232, 243, 251, 0.7);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(56, 96, 132, 0.12);
+    cursor: pointer;
+    align-self: center;
+    margin-left: 6px;
+}
+
+.auth-toggle[data-state="logged-in"] {
+    background-color: #d8ecff;
+    color: #0a2a44;
+}
+
 .navbar a:hover {
     background-color: var(--nav-pill-active);
     color: #102f4a !important;
@@ -156,6 +192,13 @@ body {
 .navbar a:active {
     background-color: #9ecae7;
     transform: translateY(0);
+}
+
+.auth-toggle:hover {
+    background-color: var(--nav-pill-active);
+    color: #102f4a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(56, 96, 132, 0.16);
 }
 
 /* ===== PERBAIKAN NAVBAR UNTUK HP ===== */
@@ -174,6 +217,12 @@ body {
     .brand {
         justify-content: flex-start;
         margin-bottom: 6px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 0;
     }
     
     .brand span {
@@ -197,6 +246,15 @@ body {
         padding: 10px 12px;
         text-align: center;
         min-width: 0;
+    }
+
+    .auth-toggle {
+        font-size: 14px;
+        padding: 10px 12px;
+        text-align: center;
+        min-width: 0;
+        width: 100%;
+        align-self: stretch;
     }
 
     .navbar::-webkit-scrollbar {
@@ -228,6 +286,11 @@ body {
     }
     
     .navbar a {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+
+    .auth-toggle {
         font-size: 13px;
         padding: 9px 10px;
     }
@@ -413,6 +476,108 @@ hr {
     padding-top: 20px;
     border-top: 1px solid #d0dcec;
     margin-top: 10px;
+}
+
+body.auth-modal-open {
+    overflow: hidden;
+}
+
+.auth-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(8, 24, 39, 0.42);
+    backdrop-filter: blur(10px);
+}
+
+.auth-modal.hidden {
+    display: none;
+}
+
+.auth-panel {
+    width: min(100%, 420px);
+    background: linear-gradient(180deg, #ffffff 0%, #f5faff 100%);
+    border-radius: 26px;
+    border: 1px solid rgba(191, 216, 240, 0.95);
+    padding: 24px;
+    box-shadow: 0 24px 50px rgba(13, 40, 65, 0.18);
+}
+
+.auth-panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.auth-panel-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0a2a44;
+}
+
+.auth-close-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: #e8f0fa;
+    color: #0a2a44;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.auth-field label {
+    font-weight: 600;
+    color: #123456;
+}
+
+.auth-field input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #b6cce2;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 15px;
+}
+
+.auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.auth-submit-btn {
+    border: none;
+    background: #0a2a44;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.auth-status {
+    color: #1e3a5f;
+    font-size: 14px;
+}
+
+.auth-status.error {
+    color: #c53030;
 }
 
 .contact-cards {

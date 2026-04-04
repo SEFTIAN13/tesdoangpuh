@@ -9,6 +9,7 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="supabase.config.js"></script>
+    <script src="auth.js"></script>
     <style>
         .main-container {
             background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -282,12 +283,15 @@
                     <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek" class="logo">
                     <span>TEKNIK KOMPUTER DAN JARINGAN</span>
                 </div>
-                <nav class="navbar">
-                    <a href="index.html">HOME</a>
-                    <a href="profil.html">Profil Kelas</a>
-                    <a href="galery.html">Galeri</a>
-                    <a href="hubungi.html">Hubungi kami</a>
-                </nav>
+                <div class="header-actions">
+                    <nav class="navbar">
+                        <a href="index.html">HOME</a>
+                        <a href="profil.html">Profil Kelas</a>
+                        <a href="galery.html">Galeri</a>
+                        <a href="hubungi.html">Hubungi kami</a>
+                    </nav>
+                    <button type="button" class="auth-toggle" id="authToggle">Login</button>
+                </div>
             </div>
         </div>
 
@@ -339,6 +343,11 @@
         const downloadBtn = document.getElementById('downloadBtn');
         let currentImageUrl = '';
 
+        function applyAdminView() {
+            const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+            uploadBtn.style.display = isAdmin ? 'flex' : 'none';
+        }
+
         // Load gallery from Supabase
         async function loadGallery() {
             try {
@@ -367,17 +376,23 @@
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 const img = document.createElement('img');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.className = 'gallery-delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+                let deleteBtn = null;
+                if (isAdmin) {
+                    deleteBtn = document.createElement('button');
+                    deleteBtn.type = 'button';
+                    deleteBtn.className = 'gallery-delete-btn';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                }
                 img.src = image.image_url;
                 img.alt = `Foto ${index + 1}`;
-                deleteBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    await deleteGalleryImage(image);
-                });
-                item.appendChild(deleteBtn);
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        await deleteGalleryImage(image);
+                    });
+                    item.appendChild(deleteBtn);
+                }
                 item.appendChild(img);
                 item.onclick = () => openModal(image.image_url);
                 galleryGrid.appendChild(item);
@@ -406,6 +421,10 @@
         
         // Upload multiple files
         uploadInput.addEventListener('change', async (e) => {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                uploadInput.value = '';
+                return;
+            }
             const files = e.target.files;
             if (!files.length) return;
             
@@ -477,6 +496,9 @@
         }
 
         async function deleteGalleryImage(image) {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
             const confirmed = window.confirm('Hapus foto ini dari galeri?');
             if (!confirmed) return;
 
@@ -552,6 +574,15 @@
         window.onkeydown = (e) => {
             if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
         };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyAdminView();
+        });
+
+        window.addEventListener('authchange', () => {
+            applyAdminView();
+            loadGallery();
+        });
         
         // Initial load
         loadGallery();
