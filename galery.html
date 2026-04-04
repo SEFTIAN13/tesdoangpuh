@@ -270,7 +270,22 @@
             }
 
             .gallery-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .gallery-delete-btn {
+                width: 30px;
+                height: 30px;
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
             }
         }
     </style>

@@ -37,13 +37,17 @@
         }
 
         .wali-kelas-label {
-            font-size: 13px;
-            letter-spacing: 0.12em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: #4e7aa4;
-            margin-bottom: 8px;
-            font-weight: 700;
+            color: #0a2a44;
+            margin-bottom: 18px;
+            font-weight: 800;
             text-align: center;
+            line-height: 1.1;
         }
 
         .wali-kelas-list {
@@ -121,6 +125,8 @@
         .profile-header .section-title {
             margin-bottom: 0;
             text-align: center;
+            border-left: none;
+            padding-left: 0;
         }
 
         .profile-toolbar {
@@ -295,9 +301,10 @@
 
         .member-card-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: auto;
+            padding-top: 12px;
         }
 
         .edit-student-btn {
@@ -337,10 +344,47 @@
         .member-card {
             cursor: pointer;
             transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #dce8f4;
+            border-radius: 22px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            padding: 18px 16px 16px;
+            box-shadow: 0 18px 34px rgba(20, 56, 96, 0.12);
+            min-height: 100%;
         }
 
         .member-card:hover {
             transform: translateY(-5px);
+        }
+
+        .member-card img {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            height: auto;
+            object-fit: cover;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 22px rgba(18, 52, 86, 0.14);
+            background: #eef4fa;
+        }
+
+        .member-card h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            line-height: 1.45;
+            color: #16496f;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .member-card p {
+            margin: 0;
+            color: #4a5f75;
+            font-size: 14px;
+            line-height: 1.55;
         }
 
         .loading {
@@ -467,6 +511,11 @@
                 word-break: break-word;
             }
 
+            .wali-kelas-label {
+                font-size: 22px;
+                margin-bottom: 14px;
+            }
+
             .wali-kelas-static-actions {
                 margin-top: 8px;
             }
@@ -511,33 +560,35 @@
 
             .member-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
+                gap: 12px;
                 margin-top: 8px;
             }
 
             .member-card {
-                padding: 8px;
-                border-radius: 14px;
+                padding: 12px 10px;
+                border-radius: 18px;
             }
 
             .member-card img {
-                height: 120px;
-                border-radius: 10px;
+                height: auto;
+                margin-bottom: 12px;
+                border-radius: 14px;
             }
 
             .member-card h3 {
                 font-size: 12px;
-                margin: 8px 0 4px;
+                margin: 0 0 6px;
             }
 
             .member-card p {
                 font-size: 10px;
-                line-height: 1.35;
+                line-height: 1.45;
             }
 
             .member-card-actions {
                 gap: 6px;
                 margin-top: 8px;
+                padding-top: 10px;
             }
 
             .member-card-actions .edit-student-btn,
