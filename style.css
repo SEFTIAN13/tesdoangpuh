@@ -112,6 +112,9 @@ body {
     border: 1px solid rgba(230, 242, 251, 0.28);
     border-radius: 999px;
     backdrop-filter: blur(12px);
+    width: fit-content;
+    max-width: 100%;
+    flex: 0 0 auto;
 }
 
 @media screen and (max-width: 1024px) {
@@ -135,10 +138,12 @@ body {
     }
 
     .navbar {
-        flex: 1 1 420px;
-        justify-content: center;
+        flex: 0 1 auto;
+        justify-content: flex-start;
         gap: 10px;
         padding: 12px;
+        width: fit-content;
+        max-width: 100%;
     }
 
     .navbar a {
