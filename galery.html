@@ -176,7 +176,10 @@
         .gallery-actions {
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 12px;
             margin-top: 22px;
+            flex-wrap: wrap;
         }
 
         .gallery-more-btn {
@@ -196,6 +199,12 @@
 
         .gallery-more-btn.hidden {
             display: none;
+        }
+
+        .gallery-page-info {
+            color: #355574;
+            font-size: 14px;
+            font-weight: 600;
         }
         
         .modal {
@@ -351,7 +360,9 @@
                     <div class="loading">Memuat galeri...</div>
                 </div>
                 <div class="gallery-actions">
-                    <button type="button" class="gallery-more-btn hidden" id="loadMoreBtn">Tampilkan Lebih Banyak</button>
+                    <button type="button" class="gallery-more-btn hidden" id="prevPageBtn">Sebelumnya</button>
+                    <span class="gallery-page-info hidden" id="galleryPageInfo"></span>
+                    <button type="button" class="gallery-more-btn hidden" id="nextPageBtn">Berikutnya</button>
                 </div>
                 
                 <div class="footer">
@@ -378,10 +389,12 @@
         const galleryGrid = document.getElementById('galleryGrid');
         const uploadInput = document.getElementById('uploadPhotos');
         const uploadBtn = document.getElementById('uploadBtn');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const GALLERY_BATCH_SIZE = 12;
-        let allGalleryImages = [];
-        let visibleGalleryCount = GALLERY_BATCH_SIZE;
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const galleryPageInfo = document.getElementById('galleryPageInfo');
+        const GALLERY_BATCH_SIZE = 8;
+        let currentGalleryPage = 1;
+        let totalGalleryItems = 0;
         
         // Modal elements
         const modal = document.getElementById('imageModal');
@@ -396,39 +409,62 @@
         }
 
         // Load gallery from Supabase
-        async function loadGallery() {
+        async function loadGallery(page = 1) {
             try {
-                const { data: images, error } = await window.supabaseClient
+                const from = (page - 1) * GALLERY_BATCH_SIZE;
+                const to = from + GALLERY_BATCH_SIZE - 1;
+                const { data: images, error, count } = await window.supabaseClient
                     .from('gallery')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+                    .select('*', { count: 'exact' })
+                    .order('created_at', { ascending: false })
+                    .range(from, to);
                 
                 if (error) throw error;
-                
-                allGalleryImages = images || [];
-                visibleGalleryCount = GALLERY_BATCH_SIZE;
-                renderGallery();
+
+                currentGalleryPage = page;
+                totalGalleryItems = count || 0;
+                renderGallery(images || []);
             } catch (error) {
                 console.error('Error loading gallery:', error);
                 galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-exclamation-triangle"></i><p>Gagal memuat galeri. Periksa koneksi internet.</p></div>';
-                loadMoreBtn.classList.add('hidden');
-            }
-        }
-        
-        function updateLoadMoreButton() {
-            if (allGalleryImages.length > visibleGalleryCount) {
-                loadMoreBtn.classList.remove('hidden');
-            } else {
-                loadMoreBtn.classList.add('hidden');
+                prevPageBtn.classList.add('hidden');
+                nextPageBtn.classList.add('hidden');
+                galleryPageInfo.classList.add('hidden');
             }
         }
 
-        function renderGallery() {
-            const images = allGalleryImages.slice(0, visibleGalleryCount);
+        function updatePaginationControls(imagesLength) {
+            const totalPages = Math.max(1, Math.ceil(totalGalleryItems / GALLERY_BATCH_SIZE));
+            const hasItems = totalGalleryItems > 0 && imagesLength > 0;
+
+            if (!hasItems) {
+                prevPageBtn.classList.add('hidden');
+                nextPageBtn.classList.add('hidden');
+                galleryPageInfo.classList.add('hidden');
+                return;
+            }
+
+            galleryPageInfo.textContent = `Halaman ${currentGalleryPage} dari ${totalPages}`;
+            galleryPageInfo.classList.remove('hidden');
+
+            if (currentGalleryPage > 1) {
+                prevPageBtn.classList.remove('hidden');
+            } else {
+                prevPageBtn.classList.add('hidden');
+            }
+
+            if (currentGalleryPage < totalPages) {
+                nextPageBtn.classList.remove('hidden');
+            } else {
+                nextPageBtn.classList.add('hidden');
+            }
+        }
+
+        function renderGallery(images) {
 
             if (images.length === 0) {
                 galleryGrid.innerHTML = '<div class="empty-gallery"><i class="fas fa-images"></i><p>Belum ada foto. Klik "Tambah Foto" untuk memulai.</p></div>';
-                loadMoreBtn.classList.add('hidden');
+                updatePaginationControls(0);
                 return;
             }
             
@@ -461,7 +497,7 @@
                 galleryGrid.appendChild(item);
             });
 
-            updateLoadMoreButton();
+            updatePaginationControls(images.length);
         }
         
         // Upload foto ke Supabase Storage
@@ -531,9 +567,19 @@
             }
         });
 
-        loadMoreBtn.addEventListener('click', () => {
-            visibleGalleryCount += GALLERY_BATCH_SIZE;
-            renderGallery();
+        prevPageBtn.addEventListener('click', () => {
+            if (currentGalleryPage > 1) {
+                loadGallery(currentGalleryPage - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.max(1, Math.ceil(totalGalleryItems / GALLERY_BATCH_SIZE));
+            if (currentGalleryPage < totalPages) {
+                loadGallery(currentGalleryPage + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
         
         // Modal functions
