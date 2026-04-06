@@ -393,6 +393,145 @@
             color: #718096;
         }
 
+        .message-shell {
+            margin-top: 30px;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+            border: 1px solid #d6e6f5;
+            border-radius: 26px;
+            padding: 24px;
+            box-shadow: 0 18px 34px rgba(20, 56, 96, 0.08);
+        }
+
+        .message-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0a2a44;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .message-subtitle {
+            text-align: center;
+            color: #4c6884;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .message-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .message-form textarea,
+        .message-form select,
+        .message-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #b8d0e6;
+            border-radius: 14px;
+            background: #ffffff;
+            font-size: 15px;
+            color: #123456;
+        }
+
+        .message-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .message-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .message-status {
+            color: #355574;
+            font-size: 14px;
+        }
+
+        .message-status.error {
+            color: #c53030;
+        }
+
+        .message-status.success {
+            color: #2f855a;
+        }
+
+        .message-inbox {
+            margin-top: 22px;
+            border-top: 1px solid #d9e7f4;
+            padding-top: 20px;
+        }
+
+        .message-inbox.hidden {
+            display: none;
+        }
+
+        .message-admin-only {
+            display: none;
+        }
+
+        body.admin-logged-in .message-admin-only {
+            display: block;
+        }
+
+        .message-inbox-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2a44;
+            margin-bottom: 12px;
+        }
+
+        .message-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .message-empty {
+            color: #5e7790;
+            font-size: 14px;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .message-item {
+            background: #ffffff;
+            border: 1px solid #d6e6f5;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 10px 22px rgba(20, 56, 96, 0.06);
+        }
+
+        .message-item-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .message-item-target {
+            font-size: 15px;
+            font-weight: 700;
+            color: #123456;
+        }
+
+        .message-item-meta {
+            font-size: 12px;
+            color: #5e7790;
+            margin-top: 4px;
+        }
+
+        .message-item-body {
+            color: #284765;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
         .photo-preview {
             margin-top: 10px;
             max-width: 120px;
@@ -613,6 +752,22 @@
             .student-form-grid {
                 grid-template-columns: 1fr;
             }
+
+            .message-shell {
+                margin-top: 22px;
+                padding: 18px 14px;
+                border-radius: 22px;
+            }
+
+            .message-title {
+                font-size: 20px;
+            }
+
+            .message-form textarea,
+            .message-form select,
+            .message-form input {
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 420px) {
@@ -626,6 +781,10 @@
 
             .member-card img {
                 height: 170px;
+            }
+
+            .message-item-head {
+                flex-direction: column;
             }
         }
     </style>
@@ -643,6 +802,7 @@
                         <a href="index.html">HOME</a>
                         <a href="profil.html">Profil Kelas</a>
                         <a href="galery.html">Galeri</a>
+                        <a href="pesan.html">Pesan</a>
                         <a href="hubungi.html">Hubungi kami</a>
                     </nav>
                     <button type="button" class="auth-toggle" id="authToggle">Login</button>
@@ -698,6 +858,7 @@
                 <div class="member-grid" id="memberGrid">
                     <div class="loading">Memuat data...</div>
                 </div>
+
                 <div class="footer" style="margin-top:24px;">
                     <span>&copy; 2026 - XII TKJ 3 SMKN 1 RANCAEKEK</span>
                     <span>Angkatan 2026</span>
@@ -804,6 +965,13 @@
         const studentPhotoFile = document.getElementById('studentPhotoFile');
         const photoPreview = document.getElementById('photoPreview');
         const previewImg = document.getElementById('previewImg');
+        const messageForm = document.getElementById('messageForm');
+        const messageRecipient = document.getElementById('messageRecipient');
+        const messageSender = document.getElementById('messageSender');
+        const messageBody = document.getElementById('messageBody');
+        const messageStatus = document.getElementById('messageStatus');
+        const messageInbox = document.getElementById('messageInbox');
+        const messageList = document.getElementById('messageList');
 
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
@@ -813,6 +981,9 @@
         let editingStudentId = null;
         let editingStudentPhotoUrl = '';
         let activeWaliIndex = null;
+        let currentStudentOptions = [];
+        let currentWaliOptions = [];
+        const messageStorageKey = 'xii_tkj3_message_box';
         const defaultWaliKelas = [
             {
                 role: 'Wali Kelas 1',
@@ -838,6 +1009,84 @@
             document.querySelectorAll('[data-edit-wali]').forEach((button) => {
                 button.style.display = isAdmin ? 'inline-flex' : 'none';
             });
+            document.body.classList.toggle('admin-logged-in', isAdmin);
+            if (messageInbox) {
+                messageInbox.classList.toggle('hidden', !isAdmin);
+            }
+            renderMessages();
+        }
+
+        function getStoredMessages() {
+            try {
+                const stored = localStorage.getItem(messageStorageKey);
+                if (!stored) return [];
+                const parsed = JSON.parse(stored);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn('Gagal membaca pesan:', error);
+                return [];
+            }
+        }
+
+        function saveStoredMessages(messages) {
+            localStorage.setItem(messageStorageKey, JSON.stringify(messages));
+        }
+
+        function updateMessageRecipientOptions() {
+            if (!messageRecipient) return;
+            const options = [...currentWaliOptions, ...currentStudentOptions];
+            const currentValue = messageRecipient.value;
+            messageRecipient.innerHTML = '<option value="">Pilih nama tujuan...</option>';
+            options.forEach((item) => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                option.textContent = item.label;
+                messageRecipient.appendChild(option);
+            });
+
+            if (options.some((item) => item.name === currentValue)) {
+                messageRecipient.value = currentValue;
+            }
+        }
+
+        function renderMessages() {
+            const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+            if (!messageList) return;
+            if (!isAdmin) {
+                messageList.innerHTML = '';
+                return;
+            }
+
+            const messages = getStoredMessages();
+            if (!messages.length) {
+                messageList.innerHTML = '<div class="message-empty">Belum ada pesan masuk.</div>';
+                return;
+            }
+
+            messageList.innerHTML = '';
+            messages
+                .slice()
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .forEach((message) => {
+                    const item = document.createElement('div');
+                    item.className = 'message-item';
+                    item.innerHTML = `
+                        <div class="message-item-head">
+                            <div>
+                                <div class="message-item-target">Untuk: ${message.recipient}</div>
+                                <div class="message-item-meta">Dari: ${message.sender || 'Anonim'} • ${new Date(message.created_at).toLocaleString('id-ID')}</div>
+                            </div>
+                            <button type="button" class="delete-student-btn" data-message-id="${message.id}">Hapus</button>
+                        </div>
+                        <div class="message-item-body">${message.body}</div>
+                    `;
+                    item.querySelector('[data-message-id]').addEventListener('click', () => {
+                        const nextMessages = getStoredMessages().filter((entry) => entry.id !== message.id);
+                        saveStoredMessages(nextMessages);
+                        renderMessages();
+                    });
+                    messageList.appendChild(item);
+                });
         }
 
         async function loadWaliKelas() {
@@ -863,6 +1112,11 @@
                         waliPhotoEls[index].alt = `Foto ${current.name || wali.name}`;
                     }
                 });
+                currentWaliOptions = defaultWaliKelas.map((wali, index) => ({
+                    name: waliNameEls[index]?.textContent?.trim() || wali.name,
+                    label: `Wali Kelas - ${waliNameEls[index]?.textContent?.trim() || wali.name}`
+                }));
+                updateMessageRecipientOptions();
             } catch (error) {
                 console.error('Error loading wali kelas:', error);
             }
@@ -981,6 +1235,12 @@
             const safeStudents = (students || []).filter((student) => {
                 return student.role === 'Siswa' && student.dream !== 'Wali Kelas';
             });
+
+            currentStudentOptions = safeStudents.map((student) => ({
+                name: student.name,
+                label: `Siswa - ${student.name}`
+            }));
+            updateMessageRecipientOptions();
 
             if (!safeStudents.length) {
                 memberGrid.innerHTML = '<div style="grid-column:1/-1;color:#1e3a5f;text-align:center;padding:40px;">Belum ada profil siswa. Klik "Tambah Siswa" untuk menambahkan.</div>';
@@ -1202,6 +1462,37 @@
             }
         });
 
+        if (messageForm) {
+            messageForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const recipient = messageRecipient.value.trim();
+                const sender = messageSender.value.trim();
+                const body = messageBody.value.trim();
+
+                if (!recipient || !body) {
+                    messageStatus.textContent = 'Tujuan dan isi pesan wajib diisi.';
+                    messageStatus.className = 'message-status error';
+                    return;
+                }
+
+                const messages = getStoredMessages();
+                messages.push({
+                    id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+                    recipient,
+                    sender,
+                    body,
+                    created_at: new Date().toISOString()
+                });
+                saveStoredMessages(messages);
+
+                messageForm.reset();
+                messageStatus.textContent = 'Pesan berhasil dikirim.';
+                messageStatus.className = 'message-status success';
+                renderMessages();
+            });
+        }
+
         function openModal(imgSrc) {
             if (!imgSrc) return;
             modal.style.display = 'block';
@@ -1346,12 +1637,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             applyAdminView();
             loadWaliKelas();
+            renderMessages();
         });
 
         window.addEventListener('authchange', () => {
             applyAdminView();
             loadWaliKelas();
             loadStudents();
+            renderMessages();
         });
 
         loadStudents();

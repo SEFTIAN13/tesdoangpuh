@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>XII TKJ 3 - Pesan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase.config.js"></script>
+    <script src="auth.js"></script>
+    <style>
+        .message-page {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 34px;
+            padding: 30px;
+            border: 1px solid rgba(191, 216, 240, 0.9);
+            box-shadow: 0 24px 44px rgba(0,40,80,0.12);
+        }
+
+        .message-hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .message-hero h2 {
+            font-size: 34px;
+            color: #0a2a44;
+            margin-bottom: 10px;
+        }
+
+        .message-hero p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #4c6884;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .message-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 22px;
+        }
+
+        .message-card {
+            background: #ffffff;
+            border: 1px solid #d6e6f5;
+            border-radius: 26px;
+            padding: 24px;
+            box-shadow: 0 16px 34px rgba(20, 56, 96, 0.08);
+        }
+
+        .message-card h3 {
+            font-size: 22px;
+            color: #0a2a44;
+            margin-bottom: 10px;
+        }
+
+        .message-card p {
+            color: #54708a;
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .message-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .message-form label {
+            display: block;
+            color: #123456;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .message-form textarea,
+        .message-form select,
+        .message-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #b8d0e6;
+            border-radius: 14px;
+            background: #ffffff;
+            font-size: 15px;
+            color: #123456;
+        }
+
+        .message-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .message-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .message-status {
+            color: #355574;
+            font-size: 14px;
+        }
+
+        .message-status.error {
+            color: #c53030;
+        }
+
+        .message-status.success {
+            color: #2f855a;
+        }
+
+        .message-tip-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .message-tip {
+            background: linear-gradient(180deg, #f6fbff 0%, #edf5fd 100%);
+            border: 1px solid #d6e6f5;
+            border-radius: 18px;
+            padding: 14px 16px;
+            color: #36506b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message-inbox {
+            margin-top: 24px;
+            background: #ffffff;
+            border: 1px solid #d6e6f5;
+            border-radius: 26px;
+            padding: 24px;
+            box-shadow: 0 16px 34px rgba(20, 56, 96, 0.08);
+        }
+
+        .message-inbox.hidden {
+            display: none;
+        }
+
+        .message-inbox h3 {
+            font-size: 22px;
+            color: #0a2a44;
+            margin-bottom: 14px;
+        }
+
+        .message-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .message-empty {
+            color: #5e7790;
+            font-size: 14px;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .message-item {
+            background: #ffffff;
+            border: 1px solid #d6e6f5;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 10px 22px rgba(20, 56, 96, 0.06);
+        }
+
+        .message-item-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .message-item-target {
+            font-size: 15px;
+            font-weight: 700;
+            color: #123456;
+        }
+
+        .message-item-meta {
+            font-size: 12px;
+            color: #5e7790;
+            margin-top: 4px;
+        }
+
+        .message-item-body {
+            color: #284765;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 900px) {
+            .message-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .message-page {
+                border-radius: 26px;
+                padding: 20px 14px;
+            }
+
+            .message-hero h2 {
+                font-size: 28px;
+            }
+
+            .message-hero p,
+            .message-card p,
+            .message-tip {
+                font-size: 14px;
+            }
+
+            .message-card,
+            .message-inbox {
+                border-radius: 22px;
+                padding: 18px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header-wrapper">
+            <div class="header">
+                <div class="brand">
+                    <img src="logo-sekolah-transparent.png" alt="Logo SMKN 1 Rancaekek" class="logo">
+                    <span>TEKNIK KOMPUTER DAN JARINGAN</span>
+                </div>
+                <div class="header-actions">
+                    <nav class="navbar">
+                        <a href="index.html">HOME</a>
+                        <a href="profil.html">Profil Kelas</a>
+                        <a href="galery.html">Galeri</a>
+                        <a href="pesan.html">Pesan</a>
+                        <a href="hubungi.html">Hubungi kami</a>
+                    </nav>
+                    <button type="button" class="auth-toggle" id="authToggle">Login</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="message-page">
+                <div class="message-hero">
+                    <h2>PESAN</h2>
+                    <p>Kirim pesan ke wali kelas atau siswa pilihanmu. Nama pengirim opsional, jadi bisa tetap anonim. Semua pengunjung juga bisa melihat pesan yang sudah masuk.</p>
+                </div>
+
+                <div class="message-layout">
+                    <div class="message-card">
+                        <h3>Kirim Pesan</h3>
+                        <p>Pilih tujuan dari nama yang ada di profil kelas, lalu tulis pesanmu.</p>
+                        <form class="message-form" id="messageForm">
+                            <div>
+                                <label for="messageRecipient">Kirim ke</label>
+                                <select id="messageRecipient" required>
+                                    <option value="">Pilih nama tujuan...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="messageSender">Dari (opsional)</label>
+                                <input type="text" id="messageSender" placeholder="Kosongkan jika ingin anonim">
+                            </div>
+                            <div>
+                                <label for="messageBody">Pesan</label>
+                                <textarea id="messageBody" placeholder="Tulis pesan kamu di sini..." required></textarea>
+                            </div>
+                            <div class="message-actions">
+                                <button type="submit" class="add-student-btn">Kirim Pesan</button>
+                                <span class="message-status" id="messageStatus"></span>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="message-card">
+                        <h3>Catatan</h3>
+                        <div class="message-tip-list">
+                            <div class="message-tip">Gunakan fitur ini untuk kirim dukungan, kesan, atau pesan seru ke teman sekelas dan wali kelas.</div>
+                            <div class="message-tip">Kalau kolom "Dari" dikosongkan, pesan akan masuk sebagai anonim.</div>
+                            <div class="message-tip">Semua pesan yang terkirim akan tampil di bawah halaman ini dan bisa dibaca oleh semua pengunjung.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-inbox" id="messageInbox">
+                    <h3>Pesan Masuk</h3>
+                    <div class="message-list" id="messageList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (typeof window.supabaseClient === 'undefined') {
+            alert('Error: Supabase tidak terhubung. Periksa file supabase.config.js');
+        }
+
+        const messageForm = document.getElementById('messageForm');
+        const messageRecipient = document.getElementById('messageRecipient');
+        const messageSender = document.getElementById('messageSender');
+        const messageBody = document.getElementById('messageBody');
+        const messageStatus = document.getElementById('messageStatus');
+        const messageInbox = document.getElementById('messageInbox');
+        const messageList = document.getElementById('messageList');
+        const messageStorageKey = 'xii_tkj3_message_box';
+        const defaultWaliKelas = [
+            { role: 'Wali Kelas 1', name: 'HERA FRANSISKA, M.T.I' },
+            { role: 'Wali Kelas 2', name: 'DEWI LESTARI, S.Pd' },
+            { role: 'Wali Kelas 3', name: 'ANDI HARTONO, S.Kom' }
+        ];
+
+        function getStoredMessages() {
+            try {
+                const stored = localStorage.getItem(messageStorageKey);
+                if (!stored) return [];
+                const parsed = JSON.parse(stored);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn('Gagal membaca pesan:', error);
+                return [];
+            }
+        }
+
+        function saveStoredMessages(messages) {
+            localStorage.setItem(messageStorageKey, JSON.stringify(messages));
+        }
+
+        function renderMessages() {
+            const messages = getStoredMessages();
+            if (!messages.length) {
+                messageList.innerHTML = '<div class="message-empty">Belum ada pesan masuk.</div>';
+                return;
+            }
+
+            messageList.innerHTML = '';
+            messages
+                .slice()
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .forEach((message) => {
+                    const item = document.createElement('div');
+                    item.className = 'message-item';
+                    item.innerHTML = `
+                        <div class="message-item-head">
+                            <div>
+                                <div class="message-item-target">Untuk: ${message.recipient}</div>
+                                <div class="message-item-meta">Dari: ${message.sender || 'Anonim'} • ${new Date(message.created_at).toLocaleString('id-ID')}</div>
+                            </div>
+                        </div>
+                        <div class="message-item-body">${message.body}</div>
+                    `;
+
+                    messageList.appendChild(item);
+                });
+        }
+
+        async function loadRecipients() {
+            try {
+                const { data: waliData } = await window.supabaseClient
+                    .from('students')
+                    .select('name, role')
+                    .in('role', defaultWaliKelas.map((wali) => wali.role));
+
+                const waliMap = new Map((waliData || []).map((item) => [item.role, item.name]));
+                const recipients = defaultWaliKelas.map((wali) => ({
+                    name: waliMap.get(wali.role) || wali.name,
+                    label: `Wali Kelas - ${waliMap.get(wali.role) || wali.name}`
+                }));
+
+                const { data: students } = await window.supabaseClient
+                    .from('students')
+                    .select('name, role, dream')
+                    .eq('role', 'Siswa')
+                    .neq('dream', 'Wali Kelas')
+                    .order('name', { ascending: true });
+
+                (students || []).forEach((student) => {
+                    recipients.push({
+                        name: student.name,
+                        label: `Siswa - ${student.name}`
+                    });
+                });
+
+                messageRecipient.innerHTML = '<option value="">Pilih nama tujuan...</option>';
+                recipients.forEach((recipient) => {
+                    const option = document.createElement('option');
+                    option.value = recipient.name;
+                    option.textContent = recipient.label;
+                    messageRecipient.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Gagal memuat daftar tujuan:', error);
+                messageStatus.textContent = 'Daftar nama belum berhasil dimuat.';
+                messageStatus.className = 'message-status error';
+            }
+        }
+
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const recipient = messageRecipient.value.trim();
+            const sender = messageSender.value.trim();
+            const body = messageBody.value.trim();
+
+            if (!recipient || !body) {
+                messageStatus.textContent = 'Tujuan dan isi pesan wajib diisi.';
+                messageStatus.className = 'message-status error';
+                return;
+            }
+
+            const messages = getStoredMessages();
+            messages.push({
+                id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+                recipient,
+                sender,
+                body,
+                created_at: new Date().toISOString()
+            });
+            saveStoredMessages(messages);
+
+            messageForm.reset();
+            messageStatus.textContent = 'Pesan berhasil dikirim.';
+            messageStatus.className = 'message-status success';
+            renderMessages();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRecipients();
+            renderMessages();
+        });
+    </script>
+</body>
+</html>
