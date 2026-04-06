@@ -175,6 +175,22 @@
             margin-bottom: 8px;
         }
 
+        .message-delete-btn {
+            border: 1px solid #f1c0c0;
+            background: #fff3f3;
+            color: #9b2c2c;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .message-delete-btn:hover {
+            background: #ffe1e1;
+        }
+
         .message-item-target {
             font-size: 15px;
             font-weight: 700;
@@ -220,6 +236,10 @@
             .message-inbox {
                 border-radius: 22px;
                 padding: 18px 14px;
+            }
+
+            .message-item-head {
+                flex-direction: column;
             }
         }
     </style>
@@ -306,43 +326,30 @@
         const messageSender = document.getElementById('messageSender');
         const messageBody = document.getElementById('messageBody');
         const messageStatus = document.getElementById('messageStatus');
-        const messageInbox = document.getElementById('messageInbox');
         const messageList = document.getElementById('messageList');
-        const messageStorageKey = 'xii_tkj3_message_box';
         const defaultWaliKelas = [
             { role: 'Wali Kelas 1', name: 'HERA FRANSISKA, M.T.I' },
             { role: 'Wali Kelas 2', name: 'DEWI LESTARI, S.Pd' },
             { role: 'Wali Kelas 3', name: 'ANDI HARTONO, S.Kom' }
         ];
 
-        function getStoredMessages() {
+        async function renderMessages() {
             try {
-                const stored = localStorage.getItem(messageStorageKey);
-                if (!stored) return [];
-                const parsed = JSON.parse(stored);
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (error) {
-                console.warn('Gagal membaca pesan:', error);
-                return [];
-            }
-        }
+                const isAdmin = typeof window.isAdminLoggedIn === 'function' && window.isAdminLoggedIn();
+                const { data: messages, error } = await window.supabaseClient
+                    .from('messages')
+                    .select('id, recipient, sender, body, created_at')
+                    .order('created_at', { ascending: false });
 
-        function saveStoredMessages(messages) {
-            localStorage.setItem(messageStorageKey, JSON.stringify(messages));
-        }
+                if (error) throw error;
 
-        function renderMessages() {
-            const messages = getStoredMessages();
-            if (!messages.length) {
-                messageList.innerHTML = '<div class="message-empty">Belum ada pesan masuk.</div>';
-                return;
-            }
+                if (!messages || !messages.length) {
+                    messageList.innerHTML = '<div class="message-empty">Belum ada pesan masuk.</div>';
+                    return;
+                }
 
-            messageList.innerHTML = '';
-            messages
-                .slice()
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                .forEach((message) => {
+                messageList.innerHTML = '';
+                messages.forEach((message) => {
                     const item = document.createElement('div');
                     item.className = 'message-item';
                     item.innerHTML = `
@@ -351,12 +358,47 @@
                                 <div class="message-item-target">Untuk: ${message.recipient}</div>
                                 <div class="message-item-meta">Dari: ${message.sender || 'Anonim'} • ${new Date(message.created_at).toLocaleString('id-ID')}</div>
                             </div>
+                            ${isAdmin ? `<button type="button" class="message-delete-btn" data-message-id="${message.id}">Hapus</button>` : ''}
                         </div>
                         <div class="message-item-body">${message.body}</div>
                     `;
 
+                    const deleteBtn = item.querySelector('[data-message-id]');
+                    if (deleteBtn) {
+                        deleteBtn.addEventListener('click', async () => {
+                            await deleteMessage(message.id);
+                        });
+                    }
                     messageList.appendChild(item);
                 });
+            } catch (error) {
+                console.error('Gagal memuat pesan:', error);
+                messageList.innerHTML = '<div class="message-empty">Pesan belum bisa dimuat. Pastikan tabel Supabase `messages` sudah dibuat.</div>';
+            }
+        }
+
+        async function deleteMessage(messageId) {
+            if (typeof window.requireAdminAccess === 'function' && !window.requireAdminAccess()) {
+                return;
+            }
+
+            const confirmed = window.confirm('Hapus pesan ini?');
+            if (!confirmed) return;
+
+            try {
+                const { error } = await window.supabaseClient
+                    .from('messages')
+                    .delete()
+                    .eq('id', messageId);
+
+                if (error) throw error;
+
+                await renderMessages();
+            } catch (error) {
+                console.error('Gagal menghapus pesan:', error);
+                messageStatus.textContent = 'Gagal menghapus pesan: ' + (error.message || 'unknown error');
+                messageStatus.className = 'message-status error';
+            }
         }
 
         async function loadRecipients() {
@@ -400,7 +442,7 @@
             }
         }
 
-        messageForm.addEventListener('submit', (e) => {
+        messageForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const recipient = messageRecipient.value.trim();
@@ -413,25 +455,38 @@
                 return;
             }
 
-            const messages = getStoredMessages();
-            messages.push({
-                id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-                recipient,
-                sender,
-                body,
-                created_at: new Date().toISOString()
-            });
-            saveStoredMessages(messages);
+            try {
+                messageStatus.textContent = 'Mengirim pesan...';
+                messageStatus.className = 'message-status';
 
-            messageForm.reset();
-            messageStatus.textContent = 'Pesan berhasil dikirim.';
-            messageStatus.className = 'message-status success';
-            renderMessages();
+                const { error } = await window.supabaseClient
+                    .from('messages')
+                    .insert({
+                        recipient,
+                        sender: sender || null,
+                        body
+                    });
+
+                if (error) throw error;
+
+                messageForm.reset();
+                messageStatus.textContent = 'Pesan berhasil dikirim.';
+                messageStatus.className = 'message-status success';
+                await renderMessages();
+            } catch (error) {
+                console.error('Gagal mengirim pesan:', error);
+                messageStatus.textContent = 'Gagal mengirim pesan. Pastikan tabel Supabase `messages` sudah siap.';
+                messageStatus.className = 'message-status error';
+            }
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadRecipients();
-            renderMessages();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadRecipients();
+            await renderMessages();
+        });
+
+        window.addEventListener('authchange', async () => {
+            await renderMessages();
         });
     </script>
 </body>
