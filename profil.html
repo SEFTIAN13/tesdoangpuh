@@ -400,6 +400,8 @@
             border-radius: 26px;
             padding: 24px;
             box-shadow: 0 18px 34px rgba(20, 56, 96, 0.08);
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .message-title {
@@ -427,12 +429,14 @@
         .message-form select,
         .message-form input {
             width: 100%;
+            max-width: 100%;
             padding: 12px 14px;
             border: 1px solid #b8d0e6;
             border-radius: 14px;
             background: #ffffff;
             font-size: 15px;
             color: #123456;
+            box-sizing: border-box;
         }
 
         .message-form textarea {
@@ -503,20 +507,35 @@
             border-radius: 18px;
             padding: 16px;
             box-shadow: 0 10px 22px rgba(20, 56, 96, 0.06);
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .message-item-head {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
+            justify-content: flex-start;
             gap: 12px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .message-item-head > div:first-child {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-item-head button {
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .message-item-target {
             font-size: 15px;
             font-weight: 700;
             color: #123456;
+            word-break: break-word;
         }
 
         .message-item-meta {
@@ -530,6 +549,8 @@
             font-size: 14px;
             line-height: 1.6;
             white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .photo-preview {
@@ -1074,7 +1095,6 @@
                         <div class="message-item-head">
                             <div>
                                 <div class="message-item-target">Untuk: ${message.recipient}</div>
-                                <div class="message-item-meta">Dari: ${message.sender || 'Anonim'} • ${new Date(message.created_at).toLocaleString('id-ID')}</div>
                             </div>
                             <button type="button" class="delete-student-btn" data-message-id="${message.id}">Hapus</button>
                         </div>
